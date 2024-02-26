@@ -19,4 +19,4 @@ ICE Nigeria contains automatic phonemic transcriptions created with WebMAUS (Sch
 A major limitation of this study is the limited representation of diverse social variables (such as age, occupation, and gender), which hinders a thorough investigation of language variation and changes in NURSE vowels in NE. The uneven representation of ethnicities within the corpus is particularly noteworthy, as it may result in skewed findings and an incomplete portrayal of the linguistic patterns across different social groups. Additionally, this corpus study may not fully capture the dynamic and evolving nature of language variation and change in the production of NURSE vowels, thereby limiting the ability to discern variations in the tense central vowel in NE comprehensively. While corpus studies provide valuable insights, they should be complemented by other research methodologies, such as fieldwork or targeted data collection, to ensure a more holistic and nuanced understanding of sociolinguistic phenomena (NURSE vowels in NE).
 
 
-test
+
