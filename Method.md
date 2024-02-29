@@ -9,7 +9,7 @@ The data for this study were drawn from the International Corpus of English Nige
   
 **Speech Style**
  
-The selected speech styles are considered formal (Thomas, 2011; Labov, 1966, 1972). This genre is assumed to have a standard form of speaking, presumably suitable for pilot study. Second, studies have revealed broadcasters as a model for standard Nigerian English (citations).
+The selected speech styles are considered formal (Thomas, 2011; Labov, 1966, 1972). This genre is assumed to have a standard form of speaking, presumably suitable for pilot study. Second, studies have revealed broadcasters as a model for standard Nigerian English ((Akindele, 2020; Melefa, 2018; Oyebola & Gut, 2020).
 
 
 **Speakers** 
