@@ -5,7 +5,7 @@
 I created the GitHub repository for my final project on sociophonetic study of NURSEvowels in Nigerian English. Similarly, I created files including `README.md` , `gitignore`, `project_plan`, and `progress_report.md`, `method.md.
 README.md includes the project title, my name, and a project summary.
  
- -`.gitignore` includes `raw`, `Rhistory`, `RData`, `.wav`, `.RDataTmp`
+ - `.gitignore` includes `raw`, `Rhistory`, `RData`, `.wav`, `.RDataTmp`
 
  - `project_plan.md` has been created and contains information on the project's scope, as well as plans     for data manipulation and analysis.
  
