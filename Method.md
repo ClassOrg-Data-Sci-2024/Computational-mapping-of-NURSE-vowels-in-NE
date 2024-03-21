@@ -28,7 +28,7 @@ ICE Nigeria contains automatic phonemic transcriptions created with WebMAUS (Sch
 
 ## Fast Track
 
-Fast Track is an automated formant estimation in vowel analysis. The estimation maps vowel production every 2 milliseconds to capture the most continuous formant realization. In each millisecond that the script captures, it reports 5 formant levels, with the lowest as 4700Hz and the highest as 7550Hz. The estimate generates 20 formant samples and selects a winner after comparison with other possible formant outputs. Unlike previous studies of NURSE vowels that implemented midpoint and three-point vowel measurement, Fast Track captures 20 formant points for each vowel production. This algorithm has better formant representation than midpoint and three-point vowel measurement. Check the figure folder [] ()
+Fast Track is an automated formant estimation in vowel analysis. The estimation maps vowel production every 2 milliseconds to capture the most continuous formant realization. In each millisecond that the script captures, it reports 5 formant levels, with the lowest as 4700Hz and the highest as 7550Hz. The estimate generates 20 formant samples and selects a winner after comparison with other possible formant outputs. Unlike previous studies of NURSE vowels that implemented midpoint and three-point vowel measurement, Fast Track captures 20 formant points for each vowel production. This algorithm has better formant representation than midpoint and three-point vowel measurement. Check [ongoing report](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-NE/blob/main/Ongoing%20word%20report.docx)
 
 
 ## Statistical Analysis
