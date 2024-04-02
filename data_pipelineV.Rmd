@@ -13,7 +13,6 @@ knitr::opts_chunk$set(echo = TRUE, include = TRUE, comment=NA)
 
 #load tidyverse
 library(tidyverse)
-library(ggplot2)
 
 #load excel
 library(readxl)
@@ -25,25 +24,16 @@ The second file (as nurse_segment_info) includes *segment information**
 
 ```{r}
 #load raw file
-#nurse_raw <- read_excel("Users/oamon/OneDrive - University_of_Pittsburgh/Desktop/ICE/ice-nig 4 DS/FastTrack/sounds/bnew_05/nurse_vowel.xlsx")
-
-#loading nurse_vowel as file that contains filename, formants, formant bindwidth, pitch, and harmonity
 nurse_vowel <- read_excel("nurse_vowel.xlsx",
-                                     na=c("", "Na", "NA", "N/A", "n/a", "na", "-", "undefined"))
-
-nurse_segment_info <- read_excel("nurse_segment_info.xlsx",
                                      na=c("", "Na", "NA", "N/A", "n/a", "na", "-", "undefined"))
 
 nurse_raw_aggregated <- read_excel("nurse_raw_aggregated.xlsx",
                                      na=c("", "Na", "NA", "N/A", "n/a", "na", "-", "undefined"))
+
+unstructured_seg_info <- read_csv("unstructured_seg_info.csv",
+                                     na=c("", "Na", "NA", "N/A", "n/a", "na", "-", "undefined"))
 ```
 
-#view
-```{r}
-head(nurse_vowel)
-head(nurse_segment_info)
-head(nurse_raw_aggregated)
-```
 
 #rename the first column in `nurse_raw_aggregated`before joining the dataframes together.
 
@@ -59,8 +49,39 @@ nurse_raw_aggregated <-
 head(nurse_raw_aggregated)
 ```
 
+# Tidy unstructed_seg_info
+
+`unstructed_seg_info` has segment features for NURSE vowels.  
+```{r}
+unstructured_seg_info <- read.csv("unstructured_seg_info.csv")
+
+nurse_segment_info <- separate(unstructured_seg_info, inputfile.outputfile.vowel.interval.duration.start.end.previous_sound.next_sound.omit.word.word_interval.word_start.word_end.previous_word.next_word, 
+                into = c("inputfile", "outputfile", "vowel", "interval", "duration", "start", "end", "previous_sound", "next_sound", "omit", "word", "word_interval", "word_start", "word_end", "previous_word", "next_word"), 
+                sep = ",")
+```
+```{r}
+#before joining nurse_segment_info with the aggregate by outputfile, there must be a similar name between the two dataframes 
+nurse_segment_info <- 
+  nurse_segment_info %>%
+ rename(
+    file_name = contains("outputfile"))
+head(nurse_segment_info)
+```
+
+
+**NURSE vowel production by audio files**
+
+```{r}
+nurse_segment_info %>%
+  select(inputfile)%>%
+  table()
+```
+
+
+
 # remove uninformative columns in `nurse_segment_info`.
 The following columns(`previous_sound`, `next_sound` and `omit`) are dropped in the `nurse_segment_info` because they add no value to the `dataframe`.
+
 
 ```{r}
 nurse_segment_info <- nurse_segment_info %>%
@@ -68,38 +89,22 @@ nurse_segment_info <- nurse_segment_info %>%
 ```
 
 #the data `nurse_segment_info` is now tidy removing uninformative columns 
-
-
-
-
-
-**nurse_segment_info** has 15 columns and **nurse_vowel** has seventeen columns; however,
-
-
+```{r NURSE vowels in NE}
+nurse_segment_info%>%
+  select(vowel)%>%
+  table()
+```
 
 # Combine files
 combine both files as a single `csv` file before `data wrangling`
 
 ```{r}
-combined_data <- merge(nurse_vowel, nurse_segment_info, nurse_raw_aggregated, by = "file_name")
-head(combined_data)
-
-combined_data1 <- merge(nurse_segment_info, nurse_raw_aggregated, by = "file_name")
-head(combined_data)
-#ggplot(combined_data, aes(duration_ms, f0,  colour = vowel))+
- # geom_boxplot()
+#combined_data <- merge(nurse_segment_info, nurse_raw_aggregated, by = "file_name")
+#view(combined_data)
 ```
 
 
-```{r}
-nurse_segment_info%>%
-  select(vowel)%>%
-  table()
 
-#nurse_vowel%>%
- # select(file_name)%>%
-  #table()
-```
 
 # Social variable
 `Social variable` dataset was extracted from the participants [ICE-Nigeria]( http://ice-corpora.net/ice/index.html) to account for how social variables (e.g., `age`, `profession`, `gender`) 
@@ -133,9 +138,10 @@ head(nurse_social_var)
 # What are the effects of social variables on NURSE vowel?
 To calculate the effect of social variables on NURSE vowel, `nurse_social_var` and `nurse_segment_info` data frames are joined by files.
 ```{r}
-nurse_soc_segment <- merge(nurse_segment_info, nurse_social_var, by = "files")
-head(nurse_soc_segment)
+#nurse_soc_segment <- merge(nurse_segment_info, nurse_social_var, by = "files")
 ```
+
+
 The dataframe **nurse_soc_segment** has segment info such as `vowel`, `duration_ms`, start_dur_sec`, `end_dur_sec`, `word`, `word_interval`, `dur_word_start`, `dur_word_end`, `previous_word`, `next_word`, `gender`, `Age_category`, `Profession_category`. 
 
 
@@ -144,7 +150,7 @@ The dataframe **nurse_soc_segment** has segment info such as `vowel`, `duration_
 
 
 
-# Specific questions to answer in the analysis
+# Specific questions to answer in the analysis(Proposed analysis)
 
 A. **Phonetic features**
 
@@ -177,30 +183,29 @@ model 3(formant) = f3 (previous studies show *f3* as a cue for *categorical* or 
 
 
 ```{r}
-library(tidyr)
-
 # Read the CSV file
-data1 <- read.csv("scattered.csv")
-#view(data)
+nurse_segment_info <- read.csv("unstructured_seg_info.csv")
 
-df1 <- separate(data1, inputfile.outputfile.vowel.interval.duration.start.end.previous_sound.next_sound.omit.word.word_interval.word_start.word_end.previous_word.next_word, 
+
+nurse_segment_info <- separate(nurse_segment_info, inputfile.outputfile.vowel.interval.duration.start.end.previous_sound.next_sound.omit.word.word_interval.word_start.word_end.previous_word.next_word, 
                 into = c("inputfile", "outputfile", "vowel", "interval", "duration", "start", "end", "previous_sound", "next_sound", "omit", "word", "word_interval", "word_start", "word_end", "previous_word", "next_word"), 
                 sep = ",")
 
-
+nurse_segment_info %>%
+  select(inputfile)%>%
+  table()
 
 
 # Write the reshaped data to a new CSV file
-write.csv(reshaped_data, "outputfile.csv", row.names = FALSE)
-
+write.csv(nurse_segment_info, "segment_info.csv")
 ```
 # Model comparison
 
 # tidy_csv files for analysis
 ```{r}
 write_csv(nurse_social_var, "nurse_social_var.csv")
-write_csv(nurse_soc_segment, "nurse_soc_segment.csv")
-#write_csv(nurse_raw_aggregated, "nurse_raw_aggregated.csv")
+write_csv(nurse_raw_aggregated, "nurse_raw_aggregated.csv")
+write_csv(nurse_segment_info, "nurse_segment_info.csv")
 ```
 
 # Session info

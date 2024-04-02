@@ -1,4 +1,4 @@
-inputfile,file_name,vowel,interval,duration,start,end,previous_sound,next_sound,omit,word,word_interval,word_start,word_end,previous_word,next_word
+inputfile,outputfile,vowel,interval,duration,start,end,previous_sound,next_sound,omit,word,word_interval,word_start,word_end,previous_word,next_word
 bnew_01,bnew_01_0001,ɔ,2,0.07815562229751549,37.12740474644154,37.20556036873906,-,-,0,worse,92,37.07,38.28,-,according
 bnew_01,bnew_01_0002,ɔ,4,0.09937295362939835,91.41508740409519,91.51446035772459,-,-,0,urge,216,91.43,91.47384046764383,-,the
 bnew_01,bnew_01_0003,ɒ,6,0.08547874237785891,159.16367944101123,159.24915818338908,-,-,0,thursday,353,158.9,159.29,-,on
