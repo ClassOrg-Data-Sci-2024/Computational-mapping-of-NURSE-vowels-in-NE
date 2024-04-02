@@ -1,0 +1,214 @@
+---
+title: "Data Pipeline"
+author: "Oluwasegun Amoniyan"
+date: "03/27/2024"
+output: 
+  github_document: 
+    toc: TRUE
+---
+
+```{r setup}
+##Set knitr options (show both code and output, show output w/o leading #)
+knitr::opts_chunk$set(echo = TRUE, include = TRUE, comment=NA)
+
+#load tidyverse
+library(tidyverse)
+
+#load excel
+library(readxl)
+```
+
+# loading raw files
+The first file (as nurse_vowel) includes **nurse_vowel** that contains **file_name**, **formant trajectories**, **formant bindwidth**, **pitch**, **intensity** and **harmonity**
+The second file (as nurse_segment_info) includes *segment information** 
+
+```{r}
+#load raw file
+nurse_vowel <- read_excel("nurse_vowel.xlsx",
+                                     na=c("", "Na", "NA", "N/A", "n/a", "na", "-", "undefined"))
+
+nurse_raw_aggregated <- read_excel("nurse_raw_aggregated.xlsx",
+                                     na=c("", "Na", "NA", "N/A", "n/a", "na", "-", "undefined"))
+
+unstructured_seg_info <- read_csv("unstructured_seg_info.csv",
+                                     na=c("", "Na", "NA", "N/A", "n/a", "na", "-", "undefined"))
+```
+
+
+#rename the first column in `nurse_raw_aggregated`before joining the dataframes together.
+
+# Working on `nurse_segment_info`
+Data cleaning
+  **remove** uninformative columns including `omit`, `previous_sound` and `next_sound`
+
+```{r}
+nurse_raw_aggregated <- 
+  nurse_raw_aggregated %>%
+ rename(
+    file_name = contains("þÿfile"))
+head(nurse_raw_aggregated)
+```
+
+# Tidy unstructed_seg_info
+
+`unstructed_seg_info` has segment features for NURSE vowels.  
+```{r}
+unstructured_seg_info <- read.csv("unstructured_seg_info.csv")
+
+nurse_segment_info <- separate(unstructured_seg_info, inputfile.outputfile.vowel.interval.duration.start.end.previous_sound.next_sound.omit.word.word_interval.word_start.word_end.previous_word.next_word, 
+                into = c("inputfile", "outputfile", "vowel", "interval", "duration", "start", "end", "previous_sound", "next_sound", "omit", "word", "word_interval", "word_start", "word_end", "previous_word", "next_word"), 
+                sep = ",")
+```
+```{r}
+#before joining nurse_segment_info with the aggregate by outputfile, there must be a similar name between the two dataframes 
+nurse_segment_info <- 
+  nurse_segment_info %>%
+ rename(
+    file_name = contains("outputfile"))
+head(nurse_segment_info)
+```
+
+
+**NURSE vowel production by audio files**
+
+```{r}
+nurse_segment_info %>%
+  select(inputfile)%>%
+  table()
+```
+
+
+
+# remove uninformative columns in `nurse_segment_info`.
+The following columns(`previous_sound`, `next_sound` and `omit`) are dropped in the `nurse_segment_info` because they add no value to the `dataframe`.
+
+
+```{r}
+nurse_segment_info <- nurse_segment_info %>%
+  select(-c("previous_sound", "next_sound", "omit"))
+```
+
+#the data `nurse_segment_info` is now tidy removing uninformative columns 
+```{r NURSE vowels in NE}
+nurse_segment_info%>%
+  select(vowel)%>%
+  table()
+```
+
+# Combine files
+combine both files as a single `csv` file before `data wrangling`
+
+```{r}
+#combined_data <- merge(nurse_segment_info, nurse_raw_aggregated, by = "file_name")
+#view(combined_data)
+```
+
+
+
+
+# Social variable
+`Social variable` dataset was extracted from the participants [ICE-Nigeria]( http://ice-corpora.net/ice/index.html) to account for how social variables (e.g., `age`, `profession`, `gender`) 
+
+## Step 1
+Read the data
+```{r load social variable dataset}
+nurse_social_var <- read_excel("nurse_social_var.xlsx",
+                                     na=c("", "Na", "NA", "N/A", "n/a", "na", "-"))
+head(nurse_social_var)
+```
+
+## Step 2
+**Re-categorize** the `profession` column into `broadcaster` and `politician` rather than the original column that has `Radio presenter`, `TV presenter`, `TV journalist`, `Politician`
+
+```{r}
+nurse_social_var <- nurse_social_var %>%
+  filter(Profession %in% c("Radio presenter", "TV presenter", "TV journalist", "Politician"))%>%
+  mutate(Profession_category = ifelse(Profession %in% c("Radio presenter", "TV presenter", "TV journalist"), "Broadcaster", "Politician"))
+head(nurse_social_var)
+```
+
+## Step 3
+**Re-categorize** the `age` column into `younger` and `older` rather than the original column that has `numerical values`. The original column has between 20 and 75 years. The new category groups ages between 20 and 45 as younger, 46 and above as older
+```{r}
+nurse_social_var <- nurse_social_var %>%
+  filter(Age %in% c(23, 47, 37, 76, 54, 53, 42, 46))%>%
+  mutate(Age_category = ifelse(Age %in% c(23, 37, 42), "younger", "older"))
+head(nurse_social_var)
+```
+# What are the effects of social variables on NURSE vowel?
+To calculate the effect of social variables on NURSE vowel, `nurse_social_var` and `nurse_segment_info` data frames are joined by files.
+```{r}
+#nurse_soc_segment <- merge(nurse_segment_info, nurse_social_var, by = "files")
+```
+
+
+The dataframe **nurse_soc_segment** has segment info such as `vowel`, `duration_ms`, start_dur_sec`, `end_dur_sec`, `word`, `word_interval`, `dur_word_start`, `dur_word_end`, `previous_word`, `next_word`, `gender`, `Age_category`, `Profession_category`. 
+
+
+
+
+
+
+
+# Specific questions to answer in the analysis(Proposed analysis)
+
+A. **Phonetic features**
+
+1. What are the NURSE vowel production (any variation) in NE? (**which** is the over winner in NE variety?) (This identifies how NURSE vowels in NE differs from other English varieties (such as British or American English?)
+- What information does this study reveal on the production of NURSE vowel that differs from the previous studies?
+
+2. What are the formant trajectories of NURSE vowels in NE? (*What* insight does multiple selection of *formants* across time reveal?)
+ 
+3. Aside the *formant* which other acoustic cues explain NURSE peculiarities in NE?
+  - duration ~ 1 + vowel (1|word) 
+  - intensity ~ 1 + vowel (1|word)
+
+4. Do the cutoff for winning formants vary by vowel, gender, ethnicity, or profession? This may further reveal variables that trigger complex in NE NURSE vowels?
+
+B. **Context**
+Does context determine NURSE vowel production in NE?
+    I expect to see something interesting. 
+    duration ~ 1 + (1+vowel|word) (1|speaker)
+    *does* the context(`phonological environment`) determine phoneme production for NURSE vowel in NE?
+    f3 ~ 1 + (1+vowel|word) (1|speaker)
+    *To what extent* does `f3` describe NURSE vowel production in different phonological contexts? (is rhoticization a cue for NURSE vowel in NE)
+    
+C. **Soical variable (Mixed Effects)**
+model 1 = (duration ~ 1 + Age_category + Gender + Ethnicity + Profession_category) (1|Word) + (1|file_name)
+model 2 = (duration ~ 1 + Age_category + Gender + Ethnicity + Profession_category) (1|Word) + (1|file_name)
+model 3 = (f0 ~ 1 + Age_category + Gender + Ethnicity + Profession_category) (1|Word) + (1|file_name))
+(aggregate)
+model 3(formant) = f3 (previous studies show *f3* as a cue for *categorical* or *gradient* rhoticization) What does *f3* reveal in this study?  
+ (f3 ~ 1 + Vowels)
+
+
+```{r}
+# Read the CSV file
+nurse_segment_info <- read.csv("unstructured_seg_info.csv")
+
+
+nurse_segment_info <- separate(nurse_segment_info, inputfile.outputfile.vowel.interval.duration.start.end.previous_sound.next_sound.omit.word.word_interval.word_start.word_end.previous_word.next_word, 
+                into = c("inputfile", "outputfile", "vowel", "interval", "duration", "start", "end", "previous_sound", "next_sound", "omit", "word", "word_interval", "word_start", "word_end", "previous_word", "next_word"), 
+                sep = ",")
+
+nurse_segment_info %>%
+  select(inputfile)%>%
+  table()
+
+
+# Write the reshaped data to a new CSV file
+write.csv(nurse_segment_info, "segment_info.csv")
+```
+# Model comparison
+
+# tidy_csv files for analysis
+```{r}
+write_csv(nurse_social_var, "nurse_social_var.csv")
+write_csv(nurse_raw_aggregated, "nurse_raw_aggregated.csv")
+write_csv(nurse_segment_info, "nurse_segment_info.csv")
+```
+
+# Session info
+```{r}
+sessionInfo()
+```
