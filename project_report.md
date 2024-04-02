@@ -36,10 +36,45 @@ README.md includes the project title, my name, and a project summary.
 Following the forced-aligned segmentation, I have annotated six audio files. These files are **broadcast news** (10) and **broadcast talk** (6). Though I initially planned to annotate three different speech styles, audio annotations took longer than anticipated [read more](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-NE/blob/main/Method.md). Second, the forced-aligned segmentation required manual adjustment as the algorithm does not perfectly segment NURSE phonemes in Nigerian English. The manual adjustment was time-consuming, though faster than manual annotation. For now, I would restrict the annotation to broadcast news and talks. If time permits, I will continue annotating other files. Otherwise, I would analyze the annotated files. This serves as a starting point for future studies. Also, I will restrict the inquiry of social variables to broadcast talks because the broadcast news does not have representativeness of different ethnicities, genders, and ages, which are the primary cues for socio-variables. Meanwhile, broadcast talks have these features. In the future, I will carefully annotate audio files with social variables that interest me.
 
 In general, three `csv` files are ready for analysis
-1. `nurse_aggregated.csv`
-2. `nurse_seg_info`
-3. `nurse_vowel.csv`
+1. `nurse_aggregated.csv`[read](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-NE/blob/main/nurse_raw_aggregated.csv)
+2. `nurse_seg_info`[read](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-NE/blob/main/nurse_segment_info.csv)
+3. `nurse_vowel.csv`[formant at 2ms for multiple times](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-NE/blob/main/nurse_vowel.csv)
 
 Each of the files will be used for different levels of analyses.
 
 The overall findings reveal variations in the NURSE vowel of NE, which is significantly different from how other varieties of English (British and American) produce the phenomenon. Also, each variant has a predicted and winning formant for the explanation of phonetic representations of NURSE vowels in NE [realizations](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-NE/tree/main/file_images).
+
+
+# Proposed analysis
+
+# Specific questions to answer in the analysis(Proposed analysis)
+
+A. **Phonetic features**
+
+1. What are the NURSE vowel production (any variation) in NE? (**which** is the over winner in NE variety?) (This identifies how NURSE vowels in NE differs from other English varieties (such as British or American English?)
+- What information does this study reveal on the production of NURSE vowel that differs from the previous studies?
+
+2. What are the formant trajectories of NURSE vowels in NE? (*What* insight does multiple selection of *formants* across time reveal?)
+ 
+3. Aside the *formant* which other acoustic cues explain NURSE peculiarities in NE?
+  - duration ~ 1 + vowel (1|word) 
+  - intensity ~ 1 + vowel (1|word)
+
+4. Do the cutoff for winning formants vary by vowel, gender, ethnicity, or profession? This may further reveal variables that trigger complex in NE NURSE vowels?
+
+B. **Context**
+Does context determine NURSE vowel production in NE?
+    I expect to see something interesting. 
+    duration ~ 1 + (1+vowel|word) (1|speaker)
+    *does* the context(`phonological environment`) determine phoneme production for NURSE vowel in NE?
+    f3 ~ 1 + (1+vowel|word) (1|speaker)
+    *To what extent* does `f3` describe NURSE vowel production in different phonological contexts? (is rhoticization a cue for NURSE vowel in NE)
+    
+C. **Soical variable (Mixed Effects)**
+model 1 = (duration ~ 1 + Age_category + Gender + Ethnicity + Profession_category) (1|Word) + (1|file_name)
+model 2 = (duration ~ 1 + Age_category + Gender + Ethnicity + Profession_category) (1|Word) + (1|file_name)
+model 3 = (f0 ~ 1 + Age_category + Gender + Ethnicity + Profession_category) (1|Word) + (1|file_name))
+(aggregate)
+model 3(formant) = f3 (previous studies show *f3* as a cue for *categorical* or *gradient* rhoticization) What does *f3* reveal in this study?  
+ (f3 ~ 1 + Vowels)
+
