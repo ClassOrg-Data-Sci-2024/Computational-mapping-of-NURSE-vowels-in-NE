@@ -278,6 +278,31 @@ The dataframe **nurse_soc_segment** has segment info such as `vowel`,
 `duration_ms`,
 start_dur_sec`,`end_dur_sec`,`word`,`word_interval`,`dur_word_start`,`dur_word_end`,`previous_word`,`next_word`,`gender`,`Age_category`,`Profession_category\`.
 
+``` r
+# Read the CSV file
+nurse_segment_info <- read.csv("unstructured_seg_info.csv")
+
+
+nurse_segment_info <- separate(nurse_segment_info, inputfile.outputfile.vowel.interval.duration.start.end.previous_sound.next_sound.omit.word.word_interval.word_start.word_end.previous_word.next_word, 
+                into = c("inputfile", "outputfile", "vowel", "interval", "duration", "start", "end", "previous_sound", "next_sound", "omit", "word", "word_interval", "word_start", "word_end", "previous_word", "next_word"), 
+                sep = ",")
+
+nurse_segment_info %>%
+  select(inputfile)%>%
+  table()
+```
+
+    inputfile
+    bnew_01 bnew_02 bnew_03 bnew_04 bnew_05 bnew_06 bnew_07 bnew_08 bnew_09 bnew_10 
+          9      10       6       8      11      24       9      16      13      19 
+    btal_01 btal_04 btal_21 btal_22 btal_33 btal_36 
+         16      14      35      22      15      19 
+
+``` r
+# Write the reshaped data to a new CSV file
+write.csv(nurse_segment_info, "segment_info.csv")
+```
+
 # Specific questions to answer in the analysis(Proposed analysis)
 
 A. **Phonetic features**
@@ -321,31 +346,6 @@ studies show *f3* as a cue for *categorical* or *gradient*
 rhoticization) What does *f3* reveal in this study?  
 (f3 ~ 1 + Vowels)
 
-``` r
-# Read the CSV file
-nurse_segment_info <- read.csv("unstructured_seg_info.csv")
-
-
-nurse_segment_info <- separate(nurse_segment_info, inputfile.outputfile.vowel.interval.duration.start.end.previous_sound.next_sound.omit.word.word_interval.word_start.word_end.previous_word.next_word, 
-                into = c("inputfile", "outputfile", "vowel", "interval", "duration", "start", "end", "previous_sound", "next_sound", "omit", "word", "word_interval", "word_start", "word_end", "previous_word", "next_word"), 
-                sep = ",")
-
-nurse_segment_info %>%
-  select(inputfile)%>%
-  table()
-```
-
-    inputfile
-    bnew_01 bnew_02 bnew_03 bnew_04 bnew_05 bnew_06 bnew_07 bnew_08 bnew_09 bnew_10 
-          9      10       6       8      11      24       9      16      13      19 
-    btal_01 btal_04 btal_21 btal_22 btal_33 btal_36 
-         16      14      35      22      15      19 
-
-``` r
-# Write the reshaped data to a new CSV file
-write.csv(nurse_segment_info, "segment_info.csv")
-```
-
 # Model comparison
 
 # tidy_csv files for analysis
@@ -354,6 +354,7 @@ write.csv(nurse_segment_info, "segment_info.csv")
 write_csv(nurse_social_var, "nurse_social_var.csv")
 write_csv(nurse_raw_aggregated, "nurse_raw_aggregated.csv")
 write_csv(nurse_segment_info, "nurse_segment_info.csv")
+write_csv(nurse_vowel, "nurse_vowel.csv")
 ```
 
 # Session info

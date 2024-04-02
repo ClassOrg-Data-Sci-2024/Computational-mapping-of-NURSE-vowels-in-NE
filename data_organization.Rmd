@@ -59,6 +59,8 @@ nurse_segment_info <- separate(unstructured_seg_info, inputfile.outputfile.vowel
                 into = c("inputfile", "outputfile", "vowel", "interval", "duration", "start", "end", "previous_sound", "next_sound", "omit", "word", "word_interval", "word_start", "word_end", "previous_word", "next_word"), 
                 sep = ",")
 ```
+
+
 ```{r}
 #before joining nurse_segment_info with the aggregate by outputfile, there must be a similar name between the two dataframes 
 nurse_segment_info <- 
