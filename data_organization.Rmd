@@ -120,7 +120,7 @@ head(nurse_social_var)
 ```
 
 ## Step 2
-**Re-categorize** the `profession` column into `broadcaster` and `politician` rather than the original column that has `Radio presenter`, `TV presenter`, `TV journalist`, `Politician`
+**Re-categorize** the `profession` column into `broadcaster` and `politician` rather than the original column that has `Radio presenter`, `TV presenter`, `TV journalist`, and `Politician`
 
 ```{r}
 nurse_social_var <- nurse_social_var %>%
@@ -137,7 +137,9 @@ nurse_social_var <- nurse_social_var %>%
   mutate(Age_category = ifelse(Age %in% c(23, 37, 42), "younger", "older"))
 head(nurse_social_var)
 ```
+
 # What are the effects of social variables on NURSE vowel?
+
 To calculate the effect of social variables on NURSE vowel, `nurse_social_var` and `nurse_segment_info` data frames are joined by files.
 ```{r}
 #nurse_soc_segment <- merge(nurse_segment_info, nurse_social_var, by = "files")
@@ -147,35 +149,11 @@ To calculate the effect of social variables on NURSE vowel, `nurse_social_var` a
 The dataframe **nurse_soc_segment** has segment info such as `vowel`, `duration_ms`, start_dur_sec`, `end_dur_sec`, `word`, `word_interval`, `dur_word_start`, `dur_word_end`, `previous_word`, `next_word`, `gender`, `Age_category`, `Profession_category`. 
 
 
-
-
-
-
-
-
-
-```{r}
-# Read the CSV file
-nurse_segment_info <- read.csv("unstructured_seg_info.csv")
-
-
-nurse_segment_info <- separate(nurse_segment_info, inputfile.outputfile.vowel.interval.duration.start.end.previous_sound.next_sound.omit.word.word_interval.word_start.word_end.previous_word.next_word, 
-                into = c("inputfile", "outputfile", "vowel", "interval", "duration", "start", "end", "previous_sound", "next_sound", "omit", "word", "word_interval", "word_start", "word_end", "previous_word", "next_word"), 
-                sep = ",")
-
-nurse_segment_info %>%
-  select(inputfile)%>%
-  table()
-
-
-# Write the reshaped data to a new CSV file
-write.csv(nurse_segment_info, "segment_info.csv")
-```
 # Specific questions to answer in the analysis(Proposed analysis)
 
 A. **Phonetic features**
 
-1. What are the NURSE vowel production (any variation) in NE? (**which** is the over winner in NE variety?) (This identifies how NURSE vowels in NE differs from other English varieties (such as British or American English?)
+1. What are the NURSE vowel production (any variation) in NE? (**which** form is the most frequent in NE variety?) (This identifies how NURSE vowels in NE differs from other English varieties (such as British or American English?)
 - What information does this study reveal on the production of NURSE vowel that differs from the previous studies?
 
 2. What are the formant trajectories of NURSE vowels in NE? (*What* insight does multiple selection of *formants* across time reveal?)
