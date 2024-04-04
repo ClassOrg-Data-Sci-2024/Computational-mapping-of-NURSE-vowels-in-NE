@@ -18,10 +18,20 @@ library(tidyverse)
 library(readxl)
 ```
 
+# Data summary
+
+International Corpus of English (ICE) Nigeria (ICE-Nig) corpus comprises 609,581 spoken words and 400,796 written words. The corpus hosts `text files` and `audio files` for different discourse, including `broadcast news`, `broadcat talks`, `classroom conversations`, `non-broadcast` shows, `interviews`, `phone calls`, `conversations`, and `demonstrations`. The website has a metadata Excel [file](https://sourceforge.net/projects/ice-nigeria/files/) that describes the background (`age`, `gender`, `ethnicity`, `profession`, type of `speech style`) of the participants. Only `broadcast news` and `broadcast talks` are sampled for the data wrangling and analysis because of the time frame. 
+Specifically, attention will be paid to different realizations for NURSE vowels across different `profession`, `gender`, `age`, and `ethnicity` in the sampled files.
+
+
 # loading raw files
+
 The first file (as nurse_vowel) includes **nurse_vowel** that contains **file_name**, **formant trajectories**, **formant bindwidth**, **pitch**, **intensity** and **harmonity**
 The second file (as nurse_segment_info) includes *segment information** 
 
+The second file estimates the aggregate formant means for the winning acoustic features in the predictions at every 2ms for 20 times per NURSE vowel realization.
+
+The third file provide segment info such as `context`, `segment duration`...
 ```{r}
 #load raw file
 nurse_vowel <- read_excel("nurse_vowel.xlsx",
@@ -71,7 +81,7 @@ head(nurse_segment_info)
 ```
 
 
-**NURSE vowel production by audio files**
+**Check different NURSE vowel production by audio files**
 
 ```{r}
 nurse_segment_info %>%
@@ -82,6 +92,7 @@ nurse_segment_info %>%
 
 
 # remove uninformative columns in `nurse_segment_info`.
+
 The following columns(`previous_sound`, `next_sound` and `omit`) are dropped in the `nurse_segment_info` because they add no value to the `dataframe`.
 
 
@@ -90,7 +101,10 @@ nurse_segment_info <- nurse_segment_info %>%
   select(-c("previous_sound", "next_sound", "omit"))
 ```
 
-#the data `nurse_segment_info` is now tidy removing uninformative columns 
+**Hurray** `nurse_segment_info` is now tidy
+
+# NURSE vowel realizations in NE
+
 ```{r NURSE vowels in NE}
 nurse_segment_info%>%
   select(vowel)%>%
@@ -98,7 +112,7 @@ nurse_segment_info%>%
 ```
 
 # Combine files
-combine both files as a single `csv` file before `data wrangling`
+combine both files as a single `csv` file before `data analysis`
 
 ```{r}
 #combined_data <- merge(nurse_segment_info, nurse_raw_aggregated, by = "file_name")
@@ -108,10 +122,12 @@ combine both files as a single `csv` file before `data wrangling`
 
 
 
-# Social variable
+# Social variables
+
 `Social variable` dataset was extracted from the participants [ICE-Nigeria]( http://ice-corpora.net/ice/index.html) to account for how social variables (e.g., `age`, `profession`, `gender`) 
 
 ## Step 1
+
 Read the data
 ```{r load social variable dataset}
 nurse_social_var <- read_excel("nurse_social_var.xlsx",
@@ -120,6 +136,7 @@ head(nurse_social_var)
 ```
 
 ## Step 2
+
 **Re-categorize** the `profession` column into `broadcaster` and `politician` rather than the original column that has `Radio presenter`, `TV presenter`, `TV journalist`, and `Politician`
 
 ```{r}
@@ -130,6 +147,7 @@ head(nurse_social_var)
 ```
 
 ## Step 3
+
 **Re-categorize** the `age` column into `younger` and `older` rather than the original column that has `numerical values`. The original column has between 20 and 75 years. The new category groups ages between 20 and 45 as younger, 46 and above as older
 ```{r}
 nurse_social_var <- nurse_social_var %>%
