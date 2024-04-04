@@ -1,9 +1,0 @@
-þÿinputfile,outputfile,vowel,interval,duration,start,end,previous_sound,next_sound,omit,word,word_interval,word_start,word_end,previous_word,next_word
-bnew_04,bnew_04_0001,R,2,0.084157767,11.05964357,11.14380134,-,-,0,courtesy,26,10.99,11.42,-,of
-bnew_04,bnew_04_0002,T,4,0.133990765,54.00750993,54.14150069,-,-,0,work,108,54,54.25,correspondent,-
-bnew_04,bnew_04_0003,æ,6,0.085344436,87.76505823,87.85040266,-,-,0,personnel,182,87.73,88.28,villages,-
-bnew_04,bnew_04_0004,R,8,0.082868125,104.4426604,104.5255285,-,-,0,person,216,104.17,104.85,headcount,will
-bnew_04,bnew_04_0005,[,10,0.29,387.49,387.78,-,-,0,erm,815,387.49,387.81,about,-
-bnew_04,bnew_04_0006,æ,12,0.072727365,577.6403683,577.7130957,-,-,0,personnel,1120,577.5,577.83,insufficient,and
-bnew_04,bnew_04_0007,[,14,0.066723836,634.2387702,634.305494,-,-,0,erm,1234,634.22,634.44,-,-
-bnew_04,bnew_04_0008,R,16,0.127989705,891.7987134,891.9267031,-,-,0,return,1683,891.66,892,-,their
