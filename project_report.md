@@ -33,7 +33,8 @@ README.md includes the project title, my name, and a project summary.
 # Progress Report 3: 4/2/2024
 
 **Accomplishment and RE-consideration**
-Following the forced-aligned segmentation, I have annotated six audio files. These files are **broadcast news** (10) and **broadcast talk** (6). Though I initially planned to annotate three different speech styles, audio annotations took longer than anticipated [read more](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-NE/blob/main/Method.md). Second, the forced-aligned segmentation required manual adjustment as the algorithm does not perfectly segment NURSE phonemes in Nigerian English. The manual adjustment was time-consuming, though faster than manual annotation. For now, I would restrict the annotation to broadcast news and talks. If time permits, I will continue annotating other files. Otherwise, I would analyze the annotated files. This serves as a starting point for future studies. Also, I will restrict the inquiry of social variables to broadcast talks because the broadcast news does not have representativeness of different ethnicities, genders, and ages, which are the primary cues for socio-variables. Meanwhile, broadcast talks have these features. In the future, I will carefully annotate audio files with social variables that interest me.
+
+Following the forced-aligned segmentation, I have annotated six audio files. These files are **broadcast news** (10) and **broadcast talk** (6) [raw_data](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-NE/tree/main/raw_Data). Though I initially planned to annotate three different speech styles, audio annotations took longer than anticipated [read more](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-NE/blob/main/Method.md). Second, the forced-aligned segmentation required manual adjustment as the algorithm does not perfectly segment NURSE phonemes in Nigerian English. The manual adjustment was time-consuming, though faster than manual annotation. For now, I would restrict the annotation to broadcast news and talks. If time permits, I will continue annotating other files. Otherwise, I would analyze the annotated files. This serves as a starting point for future studies. Also, I will restrict the inquiry of social variables to broadcast talks because the broadcast news does not have representativeness of different ethnicities, genders, and ages, which are the primary cues for socio-variables. Meanwhile, broadcast talks have these features. In the future, I will carefully annotate audio files with social variables that interest me.
 
 In general, three `csv` files are ready for analysis
 1. `nurse_aggregated.csv`[read](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-NE/blob/main/nurse_raw_aggregated.csv)
@@ -63,6 +64,7 @@ A. **Phonetic features**
 4. Do the cutoff for winning formants vary by vowel, gender, ethnicity, or profession? This may further reveal variables that trigger complex in NE NURSE vowels?
 
 B. **Context**
+
 Does context determine NURSE vowel production in NE?
     I expect to see something interesting. 
     duration ~ 1 + (1+vowel|word) (1|speaker)
@@ -71,6 +73,7 @@ Does context determine NURSE vowel production in NE?
     *To what extent* does `f3` describe NURSE vowel production in different phonological contexts? (is rhoticization a cue for NURSE vowel in NE)
     
 C. **Soical variable (Mixed Effects)**
+
 model 1 = (duration ~ 1 + Age_category + Gender + Ethnicity + Profession_category) (1|Word) + (1|file_name)
 model 2 = (duration ~ 1 + Age_category + Gender + Ethnicity + Profession_category) (1|Word) + (1|file_name)
 model 3 = (f0 ~ 1 + Age_category + Gender + Ethnicity + Profession_category) (1|Word) + (1|file_name))
