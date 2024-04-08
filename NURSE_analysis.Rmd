@@ -1,0 +1,327 @@
+
+---
+title: "Data Pipeline"
+author: "Oluwasegun Amoniyan"
+date: "03/27/2024"
+output: 
+  github_document: 
+    toc: TRUE
+---
+
+```{r setup}
+##Set knitr options (show both code and output, show output w/o leading #)
+knitr::opts_chunk$set(echo = TRUE, include = TRUE, comment=NA)
+
+#load tidyverse
+library(tidyverse)
+library(ggplot2)
+library(GGally)
+library(reshape2)
+library(lme4)
+library(compiler)
+library(parallel)
+library(boot)
+library(lattice)
+library(dplyr)
+library(lmerTest) 
+library(performance)
+```
+
+```{r}
+nurse_segment <- read_csv("tidy_csv_files/segment_info.csv",
+                                     na=c("", "Na", "NA", "N/A", "n/a", "na", "-", "undefined"))
+
+nurse_social <- read_csv("tidy_csv_files/nurse_social_var.csv",
+                                     na=c("", "Na", "NA", "N/A", "n/a", "na", "-", "undefined"))
+
+nurse_aggregate <- read_csv("tidy_csv_files/nurse_raw_aggregated.csv",
+                                     na=c("", "Na", "NA", "N/A", "n/a", "na", "-", "undefined"))
+head(nurse_segment)
+head(nurse_social)
+head(nurse_aggregate)
+```
+
+# NURSE vowel variation in NE
+
+### NURSE vowel variation without length contrast
+
+1a. What are the NURSE vowel production (any variation) in NE? (**which** variant is the most frequent in NE variety?) (This identifies how NURSE vowels in NE differs from other English varieties (such as British or American English?)
+
+Before analyzing the variation in NURSE vowel in NE, let's create a column (`vowel_variation`) that does not different NURSE vowel phonemes by length.
+
+```{r}
+# merge the NURSE vowel by length to account for the general variation of the NURSE vowel in NE
+nurse_segment <- nurse_segment %>% #to remove the `previous_sound` and `next_sound` from the df, they are uninformative.
+  select(-c("previous_sound", "next_sound", "omit"))
+
+nurse_segment <- nurse_segment %>% 
+  mutate(vowel_variation = case_when(
+    vowel %in% c("ɒ", "ɔ") ~ "mid_back",
+    vowel %in% c("æ", "ɑ") ~ "low_front_back",
+    vowel %in% "ɛ" ~ "mid_front",
+    vowel %in% "ɪ" ~ "high_front",
+    vowel %in% "ɜ" ~ "Mid-central",
+    TRUE ~ "Other"
+  ))
+head(nurse_segment)
+```
+
+### Analyze_NURSE vowel variation without length contrast
+
+Here, we identify variant phonemes that are produced as NURSE vowel in the variety. This variation does not first consider the difference in phoneme by length to get the general overview.
+```{r}
+nurse_segment%>%
+  select(vowel_variation)%>%
+  table()
+```
+The results show that `[ɜ]` in NURSE for BrE, AmE, CanE and New Zealand English is often realization as `[a]` with 99 (40%), `[ɔ]` with 81 (32%), `[ɜ]` with 16 (6.5%), and `[ɛ]` with 49 (19%). This shows that similar variant with the inner circle English is 6.5% possible in NE variety; however, it's more produced as [nas], [nɔs] and [nɛs]. The frequent production of [nɜs] as [nas], [nɔs] and [nɛs] in NE reveals that the variation of NURSE vowel is beyond presence or absence of rhoticization. If we shift our focus rhotics of NURSE vowel in NE, we will eventually be discussing variant form that is 10% present in NE. 
+
+### Analyze_NURSE vowel variation with length contrast
+
+Here, we identify variant phonemes that are produced as NURSE vowel in the variety. This variation identifies the difference in phoneme by length to get specific NURSE vowel production.
+```{r NURSE vowels in NE}
+nurse_segment%>%
+  select(vowel)%>%
+  table()
+#freq/overall sum*100 to estimate the percentages
+```
+Furthermore, [ɜ] is realized as [nɜs] by 6.4%, as [na:s] by 13%, as [nas] by 27%, as [nɔs] by 17%,  as [nɔ:s] by 16%, as [nɛs] by 20%, and as [ɪ] by 0.4%. The overall results show that the variants with shorter duration are more favored than the longer ones in NE variety.
+
+
+### What information does the variation explain?
+First, the production of NURSE vowel varies by speech community. The more diverse a speech community (e.g., bilingual, multilingual) is, the more variation in NURSE vowel production. Previous studies on NURSE that discussed categorical or gradient rhoticization were conducted in monolingual (English dominated speech community) and their participants were speaker of English. The production of NURSE vowel in NE (a multi-lingual speech community) has revealed variation inherent in the production of NURSE vowel. Researchers on inner circle English may have to restrict their generalization that NURSE vowels have categorical or gradient rhoticization. The multi-lingual speech communities have variant forms to mean the same phoneme (as nurse vowel) without misunderstanding.     
+
+#### Triggers of the NURSE vowel variation (tentatively)
+```{r}
+#table(nurse_segment$vowel_variation, nurse_segment$word)
+#chisq.test(nurse_segment$vowel, nurse_segment$word, correct = FALSE)
+```
+This result further reveals that the production of NURSE vowel in NE varies by the preceding segment in a word.
+
+
+```{r}
+nurse_segment <- 
+  nurse_segment %>%
+ rename(
+    file_name = contains("outputfile"),
+    files = contains("inputfile"))
+head(nurse_segment)
+```
+
+
+### Another data frame
+
+2. What are the formant trajectories of NURSE vowels in NE? (*What* insight does multiple selection of *formants* across time reveal?)
+
+
+```{r}
+#combined_data <- merge(nurse_social, nurse_aggregate, by = "files")
+#head(combined_data)
+```
+
+
+1b.
+```{r NURSE vowels in NE}
+nurse_segment_info%>%
+  select(vowel)%>%
+  table()
+```
+
+
+
+```{r}
+#joined <- left_join(nurse_aggregate, nurse_segment, by = 'file_name')
+joined1 <- merge(nurse_aggregate, nurse_segment, by = 'file_name')
+```
+
+
+```{r}
+#joined2 <- 
+ # select(joined2, !c("f0", "cutoff", "file_y", "file_x", "interval", "duration_ms", #"duration":"vowel_variation"))
+
+
+
+joined1 <- 
+  select(joined1, !c("interval":"end"))
+head(joined1)
+
+joined1 <- 
+  select(joined1, !c("word_interval":"next_word"))
+head(joined1)
+
+joined1 <- 
+  select(joined1, !c("files.x":"files.y"))
+head(joined1)
+
+joined1 <- 
+  select(joined1, !c("f0":"cutoff"))
+head(joined1)
+
+#joined1 <- 
+ # select(joined1, !c("f0", "cutoff", "file.y", "file.x", "interval", "vowel_variation"))
+
+joined1 <- 
+  joined1 %>%
+ rename(
+    id = contains("file_name"))
+head(joined1)
+```
+# Create a longer dataframe
+
+`Pivot_longer` dataframe helps to check the formant trajectories for the NURSE vowels. I am storing the `joined1` dataframe into the `formant_trajectories` file in case of necessity.
+
+```{r}
+formant_trajectories <- joined1 %>%
+  pivot_longer(cols = starts_with("f"), names_to = "formant_percent", values_to = "hz") %>%
+  arrange('file_name')
+head(formant_trajectories)
+```
+```{r}
+ggplot(formant_trajectories, aes(x = formant_percent, y = hz, group = id, color = vowel)) +
+  geom_line() +
+  geom_point() +
+  facet_wrap(~ vowel_variation, nrow = 2) +
+  labs(x = "Formant Percent", y = "Hz", title = "Formant Trajectories for NURSE vowel in NE") +
+  theme_minimal()
+```
+
+```{r}
+mid_central <- formant_trajectories %>%
+  filter(vowel == "ɜ")
+
+
+ggplot(mid_central, aes(x = formant_percent, y = hz, group = id, color = vowel)) +
+  geom_line() +
+  geom_point() +
+  labs(x = "Formant Percent", y = "Hz", title = "Formant Trajectories for NURSE vowel as mid-central vowel") +
+  theme_minimal()
+```
+```{r}
+front_mid <- formant_trajectories %>%
+  filter(vowel == "ɛ")
+
+ggplot(front_mid, aes(x = formant_percent, y = hz, group = id, color = vowel)) +
+  geom_line() +
+  geom_point() +
+  labs(x = "Formant Percent", y = "Hz", title = "Formant Trajectories for NURSE vowel as front_mid vowel") +
+  theme_minimal()
+```
+
+
+```{r}
+front_low <- formant_trajectories %>%
+  filter(vowel == "æ") %>%
+  print()
+
+ggplot(front_low, aes(x = formant_percent, y = hz, group = id, color = vowel)) +
+  geom_line() +
+  geom_point() +
+  labs(x = "Formant Percent", y = "Hz", title = "Formant Trajectories for NURSE vowel as front_low vowel") +
+  theme_minimal()
+```
+```{r}
+back_low <- formant_trajectories %>%
+  filter(vowel == "ɑ") %>%
+  print()
+
+ggplot(back_low, aes(x = formant_percent, y = hz, group = id, color = vowel)) +
+  geom_line() +
+  geom_point() +
+  labs(x = "Formant Percent", y = "Hz", title = "Formant Trajectories for NURSE vowel as back_low vowel") +
+  theme_minimal()
+```
+
+```{r}
+front_high <- formant_trajectories %>%
+  filter(vowel== "ɪ")%>%
+  print()
+
+ggplot(front_high, aes(x = formant_percent, y = hz, group = id, color = vowel)) +
+  geom_line() +
+  geom_point() +
+  labs(x = "Formant Percent", y = "Hz", title = "Formant Trajectories for NURSE vowel as front high vowel") +
+  theme_minimal()
+```
+
+
+```{r}
+back_mid <- formant_trajectories %>%
+  filter(vowel=="ɔ")%>%
+  print()
+
+ggplot(back_mid, aes(x = formant_percent, y = hz, group = id, color = vowel)) +
+  geom_line() +
+  geom_point() +
+  labs(x = "Formant Percent", y = "Hz", title = "Formant Trajectories for NURSE vowel as back_mid vowel") +
+  theme_minimal()
+```
+
+```{r}
+back_mid_low <- formant_trajectories %>%
+  filter(vowel=="ɒ")%>%
+  print()
+
+ggplot(back_mid_low, aes(x = formant_percent, y = hz, group = id, color = vowel)) +
+  geom_line() +
+  geom_point() +
+  labs(x = "Formant Percent", y = "Hz", title = "Formant Trajectories for NURSE vowel as back_mid_low vowel") +
+  theme_minimal()
+```
+# Duration
+
+Duration does not seem to determine the variance among the NURSE vowel production in NE.
+
+```{r}
+duration_model1a <- lmer(duration_ms ~ 1 + vowel + (1|word), data = joined1)
+duration_model1a %>% summary()
+```
+
+```{r}
+duration_model1b <- lmer(duration_ms ~ 1 + vowel_variation + (1|word), data = joined1)
+duration_model1b %>% summary()
+```
+I fitted a mixed model to predict effect of **duration** with NURSE vowel_variation. The model included
+**word** as random effect and the explanatory power was substantial
+(conditional R2 = 0.56) and the part related to the fixed effects alone (marginal R2) is of 0.03.
+The intercept (as `high_front`) is at 0.04 (95% CI [-0.07, 0.15], t(239) = 0.71, p = 0.478). Similarly, other **vowel_variations** do not have any correlation effect as p-values was consistently p>0.05.
+
+Meanwhile, when I modeled vowel production by length as a fixed effect model, the results show that `[ɑ]` is significantly longer than other NURSE vowel production (intercept = 0.13, 95%, t(237) = 12.54, p < .001). Meanwhile, the average duration for `[æ]` was 7ms longer than [a:], though the relationship was not statistcally significant (p>0.05). This may insights that duration is not reliable to differentiate NURSE vowel production in NE. Rather, vowel height may help to differentiate NURSE vowel phoneme.
+
+# model comparison
+
+```{r}
+library(r2glmm)
+r2beta(duration_model1b)
+r2beta(duration_model1a)
+r2dt(duration_model1a, duration_model1b)
+```
+The effect size for model1b revealed that the variance between one NURSE vowel production (without length difference) and another was 0.28 (2.5%) and the effect for the front high vowel was larger (as 0.01) than other NURSE vowel production. Meanwhile, the model1a was similar to the fixed effect size of model 1b, but the effect size of the low front [æ] and back [a] was 0.01 (1.0%) larger than other NURSE vowel variation in NE.
+
+
+```{r}
+formant_model <- lmer(hz ~ 1 + vowel + (1|formant_percent), data = formant_trajectories)
+formant_model %>% summary()
+print(formant_model, correlation = TRUE)
+```
+```{r}
+report::report(formant_model)
+```
+We fitted a model that predicts formant trajectories at across. The model included word as random effect
+(formula: ~1 | word). The model's total explanatory power is substantial (conditional R2 = 0.94)
+and the part related to the fixed effects alone (marginal R2) is of 0.92. The intercept corresponds
+f11, is at 577.64 (95% CI [534.35, 620.94], t(4898) = 26.16, p
+< .001). 
+
+```{r}
+#left_join (x, y %>% select(-c()))
+```
+
+```{r}
+write_csv(joined1, "joined1.csv")
+view(joined1)
+```
+
+# Session info
+```{r}
+sessionInfo()
+```

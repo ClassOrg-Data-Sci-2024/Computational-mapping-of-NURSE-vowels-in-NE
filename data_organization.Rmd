@@ -34,14 +34,11 @@ The second file estimates the aggregate formant means for the winning acoustic f
 The third file provide segment info such as `context`, `segment duration`...
 ```{r}
 #load raw file
-nurse_vowel <- read_excel("nurse_vowel.xlsx",
-                                     na=c("", "Na", "NA", "N/A", "n/a", "na", "-", "undefined"))
+nurse_vowel <- read_excel("C:/Users/oamon/Oluwasegun DS Project/Sociophonetic-study-of-NURSE-vowels-in-NE/untidy_excel/nurse_vowel.xlsx")
 
-nurse_raw_aggregated <- read_excel("nurse_raw_aggregated.xlsx",
-                                     na=c("", "Na", "NA", "N/A", "n/a", "na", "-", "undefined"))
+nurse_raw_aggregated <- read_excel("C:/Users/oamon/Oluwasegun DS Project/Sociophonetic-study-of-NURSE-vowels-in-NE/untidy_excel/nurse_raw_aggregated.xlsx")
 
-unstructured_seg_info <- read_csv("unstructured_seg_info.csv",
-                                     na=c("", "Na", "NA", "N/A", "n/a", "na", "-", "undefined"))
+unstructured_seg_info <- read_csv("C:/Users/oamon/Oluwasegun DS Project/Sociophonetic-study-of-NURSE-vowels-in-NE/untidy_excel/unstructured_seg_info.csv")
 ```
 
 
@@ -57,14 +54,16 @@ nurse_raw_aggregated <-
  rename(
     file_name = contains("þÿfile"))
 head(nurse_raw_aggregated)
+
+nurse_raw_aggregated <- nurse_raw_aggregated%>%
+mutate(files = map_chr(file_name, ~ str_sub(.x, 1, 7)))
+head(nurse_aggregate)
 ```
 
 # Tidy unstructed_seg_info
 
 `unstructed_seg_info` has segment features for NURSE vowels.  
 ```{r}
-unstructured_seg_info <- read.csv("unstructured_seg_info.csv")
-
 nurse_segment_info <- separate(unstructured_seg_info, inputfile.outputfile.vowel.interval.duration.start.end.previous_sound.next_sound.omit.word.word_interval.word_start.word_end.previous_word.next_word, 
                 into = c("inputfile", "outputfile", "vowel", "interval", "duration", "start", "end", "previous_sound", "next_sound", "omit", "word", "word_interval", "word_start", "word_end", "previous_word", "next_word"), 
                 sep = ",")
