@@ -1,8 +1,8 @@
 
 ---
-title: "Data Pipeline"
+title: "Data Analysis"
 author: "Oluwasegun Amoniyan"
-date: "03/27/2024"
+date: "04/06/2024"
 output: 
   github_document: 
     toc: TRUE
@@ -176,6 +176,7 @@ formant_trajectories <- joined1 %>%
   arrange('file_name')
 head(formant_trajectories)
 ```
+
 ```{r}
 ggplot(formant_trajectories, aes(x = formant_percent, y = hz, group = id, color = vowel)) +
   geom_line() +
@@ -196,6 +197,7 @@ ggplot(mid_central, aes(x = formant_percent, y = hz, group = id, color = vowel))
   labs(x = "Formant Percent", y = "Hz", title = "Formant Trajectories for NURSE vowel as mid-central vowel") +
   theme_minimal()
 ```
+
 ```{r}
 front_mid <- formant_trajectories %>%
   filter(vowel == "ɛ")
@@ -219,6 +221,7 @@ ggplot(front_low, aes(x = formant_percent, y = hz, group = id, color = vowel)) +
   labs(x = "Formant Percent", y = "Hz", title = "Formant Trajectories for NURSE vowel as front_low vowel") +
   theme_minimal()
 ```
+
 ```{r}
 back_low <- formant_trajectories %>%
   filter(vowel == "ɑ") %>%
