@@ -38,7 +38,9 @@ nurse_vowel <- read_excel("C:/Users/oamon/Oluwasegun DS Project/Sociophonetic-st
 
 nurse_raw_aggregated <- read_excel("C:/Users/oamon/Oluwasegun DS Project/Sociophonetic-study-of-NURSE-vowels-in-NE/untidy_excel/nurse_raw_aggregated.xlsx")
 
-unstructured_seg_info <- read_csv("C:/Users/oamon/Oluwasegun DS Project/Sociophonetic-study-of-NURSE-vowels-in-NE/untidy_excel/unstructured_seg_info.csv")
+#unstructured_seg_info <- read_csv("C:/Users/oamon/Oluwasegun DS #Project/Sociophonetic-study-of-NURSE-vowels-in-NE/untidy_excel/unstructured_seg_info.csv")
+
+nurse_segment_info <- read_csv("C:/Users/oamon/Oluwasegun DS Project/Sociophonetic-study-of-NURSE-vowels-in-NE/tidy_csv_files/segment_info.csv")
 ```
 
 
@@ -63,13 +65,6 @@ head(nurse_aggregate)
 # Tidy unstructed_seg_info
 
 `unstructed_seg_info` has segment features for NURSE vowels.  
-```{r}
-nurse_segment_info <- separate(unstructured_seg_info, inputfile.outputfile.vowel.interval.duration.start.end.previous_sound.next_sound.omit.word.word_interval.word_start.word_end.previous_word.next_word, 
-                into = c("inputfile", "outputfile", "vowel", "interval", "duration", "start", "end", "previous_sound", "next_sound", "omit", "word", "word_interval", "word_start", "word_end", "previous_word", "next_word"), 
-                sep = ",")
-```
-
-
 ```{r}
 #before joining nurse_segment_info with the aggregate by outputfile, there must be a similar name between the two dataframes 
 nurse_segment_info <- 
@@ -190,9 +185,9 @@ Does context determine NURSE vowel production in NE?
     *To what extent* does `f3` describe NURSE vowel production in different phonological contexts? (is rhoticization a cue for NURSE vowel in NE)
     
 C. **Soical variable (Mixed Effects)**
-model 1 = (duration ~ 1 + Age_category + Gender + Ethnicity + Profession_category) (1|Word) + (1|file_name)
-model 2 = (duration ~ 1 + Age_category + Gender + Ethnicity + Profession_category) (1|Word) + (1|file_name)
-model 3 = (f0 ~ 1 + Age_category + Gender + Ethnicity + Profession_category) (1|Word) + (1|file_name))
+model 1 = (duration ~ 1 + Age_category + Gender + Ethnicity + Profession_category) (1|Word) + (1|vowel) + (1|file_name)
+model 2 = (f0 ~ 1 + Age_category + Gender + Ethnicity + Profession_category) (1|Word) + (1|vowel) + (1|file_name))
+model 3 =
 (aggregate)
 model 3(formant) = f3 (previous studies show *f3* as a cue for *categorical* or *gradient* rhoticization) What does *f3* reveal in this study?  
  (f3 ~ 1 + Vowels)
