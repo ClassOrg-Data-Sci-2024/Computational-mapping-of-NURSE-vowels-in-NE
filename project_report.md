@@ -59,7 +59,6 @@ A. **Phonetic features**
  
 3. Aside the *formant* which other acoustic cues explain NURSE peculiarities in NE?
   - duration ~ 1 + vowel (1|word) 
-  - intensity ~ 1 + vowel (1|word)
 
 4. Do the cutoff for winning formants vary by vowel, gender, ethnicity, or profession? This may further reveal variables that trigger complex in NE NURSE vowels?
 
