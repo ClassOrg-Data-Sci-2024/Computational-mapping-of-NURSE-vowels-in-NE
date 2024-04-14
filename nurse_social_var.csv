@@ -1,0 +1,9 @@
+files,Gender,Age,Ethnicity,Profession,Profession_category,Age_category
+bnew_01,female,23,Igbo,Radio presenter,Broadcaster,younger
+bnew_02,female,47,Yoruba,Radio presenter,Broadcaster,older
+bnew_06,female,37,Yoruba,TV journalist,Broadcaster,younger
+btal_22,male,76,Hausa,Politician,Politician,older
+btal_21,male,54,Hausa,Politician,Politician,older
+btal_04,male,53,Igbo,Politician,Politician,older
+btal_01,male,42,Yoruba,Radio presenter,Broadcaster,younger
+btal_33,male,46,Igbo,Politician,Politician,older
