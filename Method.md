@@ -1,7 +1,6 @@
 
 # Methodology
 
-
 ## Data [ICE-Nigeria]( http://ice-corpora.net/ice/index.html)
 
 The data for this study were drawn from the International Corpus of English Nigeria (ICE-Nig). The corpus contains 1,010,382 collections, with 609,586 spoken words and 400,796 written words (Wunder et al., 2010).  The sound and text files were downloaded and uploaded to WebMAUS for forced alignment. Meanwhile, before the alignment, text files with repetition of ‘Transcription 1, Transcription 2…’ encode participants’ turns were removed because Web MAUS forced aligner did not prefer repetition of (same) text with no sound representation. I hope to sample 10 sound files and 150,000+ data points that capture different productions of NURSE vowels. The data points will be elicited through the Fast Track module. This pilot study includes samples from scripted speeches (broadcast news). The method of this single speech style will be deployed to the remaining broadcast news files and other speech styles.
@@ -33,6 +32,6 @@ Fast Track is an automated formant estimation in vowel analysis. The estimation 
 
 ## Statistical Analysis
 
-The raw files will be analyzed using Mixed effects regression with **tidyverse** and **lme4** to account for social variables that determine (or may contribute to) variation in Nigerian English NURSE vowels.  
+The [raw files](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-Nigerian-English/tree/main/raw_Data) were analyzed using Mixed effects regression with **tidyverse** and **lme4** to account for linguistic, ethnic and social variables that determine (or may contribute to) variation in Nigerian English NURSE vowels.  
 
 

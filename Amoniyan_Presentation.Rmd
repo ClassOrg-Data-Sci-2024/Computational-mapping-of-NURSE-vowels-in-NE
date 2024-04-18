@@ -1,0 +1,351 @@
+
+---
+title: "Socio-phonetic study of NURSE vowels in Nigerian English"
+author: "Oluwasegun Amoniyan"
+course: LING 2020 - Data Science Research in Linguistics
+date: "04/018/2024"
+output: 
+  github_document: 
+    toc: TRUE
+---
+
+# Motivation for the study
+ 
+`NURSE vowel` means `vowels that are produced` in similarity or variation to the mid-central vowel `[ɜ]` as `[nɜs]`
+
+The existing literature contains information about NURSE vowel production, particularly in the inner circle of English. However, their findings often overgeneralize other Englishes without providing supporting evidence. This study will investigate the phenomenon in the outer circle of English and provide a balanced description of the variation that characterizes the NURSE vowel.
+
+
+# Background/Review
+
+**NURSE vowels** have received scholarly attention in different *varieties* (especially in the inner circle) of English (e.g., *American English*, *British English*, *New Zealand English*). Their results were similar.   
+
+Studies of NURSE vowel variation across several English varieties in monolingual or bilingual contexts show merging (as a **centralized vowel**) or maintaining a **three-way contrast** realized as [ɪ], [ɛ], and [ʌ], with varied presence of rhotics. These realizations are influenced by social (e.g. **gender**, **age**) and linguistic factors (e.g., **speech style**) (Li et. al., 2021; Maclagan et. al., 2017; Mayr, 2010; Mesthrie & Chevalier, 2014; Watson & Clark, 2013).  
+
+## Research gap
+
+However, very little is known about NURSE vowel variation in New Englishes like Nigerian English (NE), which exists in a rich multilingual context with regional varieties (i.e., Hausa, Igbo, Yoruba) and over 250 ethnic groups. This study bridges the  gap in the knowledge of NURSE vowel production in Englishes.
+
+- What are NURSE vowel production in NE?
+- What possible factors determine variation in NURSE vowel production in NE?
+- To what extent do phonetic features describe vowel identity of NURSE vowels?
+
+## Research Hypothesis
+
+The production of NURSE vowels in Nigerian English may vary across **linguistic** (vowel production and phonological context), **ethnicity** (Hausa, Igbo, and Yoruba), and **sociolinguistic** (age, gender, profession) factors. This hypothesis explains the effect of multilingual and diverse sociocultural spaces on NURSE vowel production in Nigerian English. Specifically:
+
+-	NURSE vowel may have variant production in NE
+-	Phonological context may affect NURSE vowel production in NE
+-	Nigeria has over 200 ethnic groups and three major (Hausa, Igbo, and Yoruba); I hypothesize that ethnicity may determine NURSE vowel production in NE
+-	Sociolinguistic factors may determine how NURSE vowels are produced in NE
+These factors may contribute to the variation in the production of NURSE vowels than in monolingual speech context.
+
+
+# Methods and procedure
+
+## Data [ICE-Nigeria]( http://ice-corpora.net/ice/index.html)
+
+The data were drawn from the International Corpus of English Nigeria (ICE-Nig). The corpus contains 1,010,382 collections, with 609,586 spoken words and 400,796 written words (Wunder et al., 2010).  The sound and text files were downloaded and uploaded to WebMAUS for forced alignment. The forced-aligned speech samples were manually adjusted on the fourth tier on [Praat](https://www.fon.hum.uva.nl/praat/download_mac.html). 
+
+- I planned to sample and extract bunch of data but I discovered that alignment wasn't 100% accurate. I manually adjusted the forced aligned tokens and it was time consuming. Because of these setbacks, I decided to annotate 16 sound files. 
+- 16 sound files
+- two speech styles (*broadcast talk* and *broadcast news*)
+```{r}
+nurse_segment <- read_csv("C:/Users/oamon/Oluwasegun DS Project/Sociophonetic-study-of-NURSE-vowels-in-NE/tidy_csv_files/nurse_segment_info.csv",
+                                     na=c("", "Na", "NA", "N/A", "n/a", "na", "-", "undefined", ","))
+
+nurse_segment%>%
+  select(inputfile)%>%
+  table()
+```
+- All speakers in this study were NE users [participants](https://sourceforge.net/projects/ice-nigeria/files/latest/download)
+- Vary by gender (`male` vs `female`), `ethnicity`, `speech style`, `Profession`, and `age`
+
+`Note` not many people have worked on the website before... 
+
+
+## Fast Track
+
+[Fast Track](https://github.com/santiagobarreda/FastTrack/tree/master/Fast%20Track) reports 5 formant levels (f1, f2, f3, f4, f5), with the lowest as 4700Hz and the highest as 7550Hz. The algorithm generates 20 formant for undistorted formants and selects a winner after comparison with other possible formant outputs. Unlike previous studies of NURSE vowels that implemented midpoint and three-point vowel measurement, Fast Track would enable me account for formant trajectories. This algorithm has better formant representation than midpoint and three-point vowel measurement. [Samples](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-Nigerian-English/blob/main/file_images/images_file_comparisons/bnew_01_images_comparison/bnew_01_0001_comparison.png)
+
+[segment info](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-Nigerian-English/blob/main/tidy_csv_files/nurse_segment_info.csv)
+[nurse aggregate](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-Nigerian-English/blob/main/tidy_csv_files/nurse_raw_aggregated.csv)
+[nurse social](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-Nigerian-English/blob/main/tidy_csv_files/nurse_social_var.csv)
+
+### Data Wrangling
+- remove uninformative columns
+- adding and renaming some columns
+- categorization of age group, profession
+- joining data frames
+
+## Vowel normalization
+***Bark difference metrics***
+
+- to eliminate physiological differences among speakers
+- to preserve socio-linguistic/dialectal/cross-linguistic differences in vowel quality
+- to preserve phonological distinctions among vowels
+[navigate](http://lingtools.uoregon.edu/norm/norm1_methods.php)
+
+## Statistical Analysis
+
+The [raw files](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-Nigerian-English/tree/main/raw_Data) were analyzed using Mixed effects regression with **tidyverse** and **lme4** to account for linguistic, ethnic and social variables that determine (or may contribute to) variation in Nigerian English NURSE vowels.  
+
+
+# Analysis
+##  NURSE vowel production in NE
+
+```{r NURSE vowels in NE}
+NURSE_vowel <- nurse_segment%>%
+  select(vowel)%>%
+  table()/246*100
+#freq/overall sum*100 to estimate the percentages
+head(NURSE_vowel)
+```
+`[ɜ]` is realized as `[nɜs]` by 6.4% (similar to British & American English), as `[na:s]` by 13%, as `[nas]` by 27%, as `[nɔs]` by 17%,  as `[nɔ:s]` by 16%, as `[nɛs]` by 20%, and as `[ɪ]` by 0.4%. The overall results show that the variants with shorter duration are more favored than the longer ones in NE variety. Each of these production has segment info [here](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-Nigerian-English/blob/main/tidy_csv_files/segment_info.csv) and each segment has predicted and winning formants [here](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-Nigerian-English/tree/main/file_images/images_file_comparisons). Hooray, if we're interested in comparison with other Englishes, NE is only 6.4% closer to British/American English in the production of NURSE vowel as central mid vowel (as `[ɜ]`). 
+
+### NURSE vowel variation without length contrast 
+
+```{r}
+nurse_segment <- nurse_segment %>% 
+  mutate(vowel_variation = case_when(
+    vowel %in% c("ɒ", "ɔ") ~ "mid_back",
+    vowel %in% c("æ", "ɑ") ~ "low_front_back",
+    vowel %in% "ɛ" ~ "mid_front",
+    vowel %in% "ɪ" ~ "high_front",
+    vowel %in% "ɜ" ~ "mid-central",
+    TRUE ~ "Other"
+  ))
+
+vowel_variation <- nurse_segment%>%
+  select(vowel_variation)%>%
+  table()/246*100
+head(vowel_variation)
+
+
+ggplot(nurse_segment, aes(x = vowel_variation, fill = vowel)) +
+  geom_bar() +
+  labs(x = "vowel", y = "Frequency", color = "Vowel") +
+  ggtitle("Frequencies of NE vowel variation without length contrast in NE") +
+  theme_minimal()
+```
+The results show that `[ɜ]` in NURSE for BrE, AmE, CanE and New Zealand English is often realization as `[a]` with 99 (40%), `[ɔ]` with 81 (32%), `[ɜ]` with 16 (6.5%), and `[ɛ]` with 49 (19%). This shows that similar variant with the inner circle English is 6.5% possible in NE variety; however, it's more produced as [nas], [nɔs] and [nɛs]. The frequent production of [nɜs] as [nas], [nɔs] and [nɛs] in NE reveals that the variation of NURSE vowel is beyond presence or absence of rhoticity. If we shift our focus to rhoticity in NE, we will only be discussing variant that is 10% present in the variety.
+
+The results show the distribution of vowel production in Nigerian English across front, central and back vowel space. Back vowels are frequent, accounting for 45.93% of overall vowel production, whereas front vowels were 47.56%, while the central vowel were the least common,  6.50% in NE. This distribution implies that Nigerian English has a somewhat equal proportion of back and front vowels, with back vowels being less common.
+
+## Duration patterns for NURSE vowels in NE  
+
+```{r}
+NURSE_vowel_dur <- nurse_segment%>%
+  group_by(vowel)%>%
+  summarize(mean_dur_vowel = mean(duration))
+#head(NURSE_vowel_dur)
+
+ggplot(nurse_segment, aes(x=vowel, y = duration)) +
+         geom_point() +
+  labs(x = "vowel", y = "duration") +
+  ggtitle("Duration patterns of NE vowel in NE") +
+  theme_minimal()
+```
+
+### NURSE vowel duration by length
+
+The duration distinguishes tense from lax vowels. The average duration of vowel production in a NURSE context in Nigerian English is 13ms (0.126) for `[æ]` and 14ms (0.14) for `[ɑ]`.  Similarly, the mean duration of the vowels `[ɒ]`, `[ɔ]`, `[ɛ]`, and [ɜ] range from 11ms (0.113) to 13ms (0.130). [Segment info](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-Nigerian-English/blob/main/tidy_csv_files/segment_info.csv) (Is duration significant?)
+
+### Regression analysis of duration
+
+Duration **does not seem** to significantly determine the variance in NURSE vowel production in this variety. The model, the results show that the realization of NURSE vowel as low back vowel (`[ɑ]`) was statistically significantly differ in `duration` from other other NURSE vowels (intercept = 0.13, 95%, t(237) = 12.54, p < .001). Meanwhile, the average duration for `[æ]` was 8ms longer than [a:], though the relationship was not statistically significant (p>0.05). This may insights that duration is not reliable to differentiate vowels for NURSE production in NE. Rather, vowel height may help to differentiate NURSE vowel phoneme.
+
+```{r}
+#normalization duration around the mean before checking for the effect of duration
+nurse_segment <- nurse_segment %>%
+  mutate(duration.cen = center(duration, value=min(duration)))
+
+#regression model for duration
+duration_model <- lmer(duration.cen ~ 1 + vowel + (1|word), data = nurse_segment)
+#duration_model %>% summary()
+
+#let's the coeffiecient of NURSE vowels across words
+NURSE_context_dur <- coef(duration_model)%>%
+  pluck('word')%>%
+  rownames_to_column('NURSE_tokens')
+
+#load the coefplot package
+library(coefplot)
+
+# Create the coefficient plot
+coefplot(duration_model)
+```
+
+Similarly, I fitted the second level with **vowel_variation** (as level 2) and model did not reveal any significant relationship therefore I dropped it. The residual revealed that duration of NURSE vowel in the variety is more variant across ``word` than `NURSE vowel`.
+
+## Phonological effect on NURSE vowel
+
+One of the [hypotheses](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-Nigerian-English/blob/main/research%20hypothesis.md) for the study identifies the effect of phonological environment on NURSE vowel production in NE. To attempt this task, we need to create a column `nurse_determinant` where we assign numeric to each level of the `nurse_vowel_space` for `poisson analysis`. The column has three levels: NURSE vowels realized as `front_vowel`, `back_vowel` and `central_vowel`. The numeric [`front_vowel = 0`; `back_vowel = 1`, `central_vowel = 2`]. This model will reveal whether there is any relationship between `vowel space` and `words` in NE.
+
+```{r}
+nurse_segment <- nurse_segment %>% 
+  mutate(nurse_determinant = case_when(
+    nurse_vowel_space %in% "front_vowel" ~ "0",
+    nurse_vowel_space %in% "back_vowel" ~ "1",
+    nurse_vowel_space %in% "central_vowel" ~ "2",
+      TRUE ~ "Other"
+  ))
+#make the categorical column numeric to satisfy poisson assumption
+nurse_segment <- nurse_segment %>%
+  mutate(nurse_determinant = as.numeric(nurse_determinant))
+
+#regression analysis for the `phonological effect` on NURSE vowel production
+model_nurse_determinant1 <- glmer(nurse_determinant ~ 1 + (1|word), data = nurse_segment, family = poisson)
+#summary(model_nurse_determinant1)
+```
+`Phonological environment` determines NURSE vowel production in NE. The random effect for `word` indicates that the influence of `word` on vowel production varies. The SD `(0.28)` estimates the degree of variability among words. Furthermore, the fixed effect estimate for the intercept (-0.5792) indicates the NURSE vowel productions when no word-specific factor is present. This support the evidence that the production of vowels in NE is determined by the `phonological environment` that NE speakers utter, with various words having variable impacts on vowel identity. This is novel.
+
+```{r}
+ggplot(nurse_segment, aes(x = vowel, fill = word)) +
+  geom_bar() +
+  labs(x = "NURSE vowels", y = "Freq of NURSE vowels")+
+   ggtitle("Frequencies of NURSE vowel production by word")
+```
+##Formant trajectory
+```{r}
+#`nurse_aggregate.csv` has phonetic features of NURSE vowel production 
+nurse_aggregate <- read_csv("tidy_csv_files/nurse_raw_aggregated.csv",
+                                     na=c("", "Na", "NA", "N/A", "n/a", "na", "-", "undefined"))
+#head(nurse_aggregate)
+
+#Another data frame
+nurse_segment <- 
+  nurse_segment %>%
+ rename(
+    file_name = contains("outputfile"),
+    files = contains("inputfile"))
+#head(nurse_segment)
+
+#combined the dataframe by `file_name`
+segment_aggregate <- merge(nurse_aggregate, nurse_segment %>% select(c("vowel", "word", "file_name", by = "file_name")))
+
+#remove columns that are not needed
+segment_aggregate <- segment_aggregate %>%
+  select(-c("files", "label", "group", "number", "f0"))
+
+#rename `file_name` as `id` as a concise name for vowel grouping
+segment_aggregate <- 
+  segment_aggregate %>%
+ rename(
+    id = contains("file_name"))
+
+
+my_nurse_vowel_formant <- segment_aggregate %>%
+    # Take the median of each vowel at each timepoint
+  summarize(across(starts_with("f"), median, na.rm = TRUE), .by = vowel) %>%
+  
+  # Convert it into a "very tall" format
+  pivot_longer(cols = starts_with("f"), names_to = "formant_percent", values_to = "hz") %>%
+ separate_wider_position(formant_percent, 
+                          widths=c(formant = 2, timepoint = 1))%>%
+  
+  # unite the columns and view
+  unite(id, formant, vowel, remove = FALSE)
+
+
+# Define the formula as a function
+bark_norm <- function(fi) {
+  zi <- 26.81 / (1 + 1960 / fi) - 0.53
+  return(zi)
+}
+
+my_nurse_vowel_formant <- my_nurse_vowel_formant %>%
+  mutate(formant_bark_norms = sapply(hz, bark_norm))
+#head(my_nurse_vowel_formant)
+
+#visualization
+ggplot(my_nurse_vowel_formant, aes(x = timepoint, y = formant_bark_norms, group = id, color = formant)) +
+  geom_line() + 
+  facet_wrap(~vowel, nrow=3)+
+  ggtitle("Formanttrajectories for NURSE vowels in NE")+
+  theme_classic()
+```
+The [trajectories](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-Nigerian-English/tree/main/file_images) showed differences across `timepoint`.
+
+
+### Regression analysis of formant features and trajectories
+
+```{r}
+#formant.log.cen is a centered around grand mean
+formant_model <- lmer(formant_bark_norms ~ 1 + formant + (1|timepoint), data = my_nurse_vowel_formant)
+formant_model %>% summary()
+library(sjPlot)
+#Estimate table that explains the independent and the dependent variables.
+formant_model %>% tab_model()
+plot_model(formant_model, type = "pred", terms = c("formant", "timepoint"))
+```
+## Do social factors determine production of NURSE vowels in NE?
+### NURSE vowel production in NE by age and gender
+
+The table (r code below) showed the production of NURSE vowels by age groups (`older` and `younger`). 17 `older` participants produced the vowel low back vowel while only 6 younger participants produced the same vowel. 8 older and 10 younger participants produced NURSE vowel as [ɒ]. Notably, older participants produced the vowel "æ" more frequently than younger participants, with 41 occurrences versus only three. These findings shed light on differences in the production of NURSE vowels across age groups, indicating that age may influence the production of NURSE vowel in Nigerian English.
+
+```{r}
+#frequency count of the NURSE vowel production by age
+nurse_freq_age <- table(nurse_social_segment$vowel, nurse_social_segment$Age_category)
+#head(nurse_freq_age)
+#percentage
+nurse_age_vowel <- nurse_social_segment %>%
+  select(Age_category, Gender, vowel)%>%
+  table()/246*100
+#head(nurse_age_vowel)
+
+ggplot(nurse_social_segment, aes(x = vowel, fill = Gender)) +
+  geom_bar() +
+  facet_wrap(vars(Age_category), ncol = 3) +
+  labs(x = "NURSE vowels", y = "Freq of NURSE vowels")+
+   ggtitle("Frequencies of NURSE vowel production by social group")
+```
+
+### NURSE vowel determinant by age and gender
+Age(sign), gender(not sig, no conv)
+```{r}
+model_nurse_age_det <- glmer(nurse_determinant ~ 1 + Age_category + (1|word), data = nurse_social_segment, family = poisson)
+#summary(model_nurse_age_det)
+model_nurse_age_det %>% tab_model()
+
+plot_model(model_nurse_age_det, type = "pred", terms = c("Age_category"))
+```
+### Duration patterns of NURSE vowel production in NE by age and gender
+
+Sig by `gender` (alone) 
+```{r}
+nurse_social_segment %>%
+  group_by(Age_category) %>%
+  summarize(age_vdur = mean(duration.cen))
+
+age_nurse_vowel <- lmer(duration.cen ~ 1 + Age_category + Gender + (1|vowel),  nurse_social_segment) 
+#age_nurse_vowel %>% summary()
+age_nurse_vowel %>% tab_model()
+
+plot(age_nurse_vowel, Gender ~ resid(.), abline = 0 )
+plot(age_nurse_vowel, Age_category ~ resid(.), abline = 0 )
+plot(age_nurse_vowel, vowel ~ resid(.), abline = 0 )
+plot_model(age_nurse_vowel, type = "pred", terms = c("Age_category", "Gender", "vowel"))
+```
+### NURSE vowel production by `ethnicity` (Geographical location of the speakers)
+```{r}
+ggplot(nurse_social_segment, aes(x = vowel, y = duration.cen), fill = Gender) +
+  geom_point() +
+  facet_wrap(vars(Ethnicity), ncol = 3) +
+  labs(x = "NURSE vowels", y = "Duration of NURSE vowels")+
+   ggtitle("Duration patterns NURSE vowel production by social group")
+```
+### NURSE vowel determinant by `ethnicity`
+
+```{r}
+nurse_ethn_det <- glmer(nurse_determinant ~ 1 + Ethnicity + (1|word), data = nurse_social_segment, family = poisson)
+summary(nurse_ethn_det)
+plot_model(nurse_ethn_det, type = "pred", terms = c("Ethnicity"))
+plot_model(nurse_ethn_det, type = "pred", terms = c("Ethnicity", "word"))
+```
+
+
+# Session info
+```{r}
+sessionInfo()
+```

@@ -24,7 +24,7 @@ International Corpus of English (ICE) Nigeria (ICE-Nig) corpus comprises 609,581
 Specifically, attention will be paid to different realizations for NURSE vowels across different `profession`, `gender`, `age`, and `ethnicity` in the sampled files.
 
 
-# loading raw files
+## loading raw files
 
 The first file (as nurse_vowel) includes **nurse_vowel** that contains **file_name**, **formant trajectories**, **formant bindwidth**, **pitch**, **intensity** and **harmonity**
 The second file (as nurse_segment_info) includes *segment information** 
@@ -32,21 +32,20 @@ The second file (as nurse_segment_info) includes *segment information**
 The second file estimates the aggregate formant means for the winning acoustic features in the predictions at every 2ms for 20 times per NURSE vowel realization.
 
 The third file provide segment info such as `context`, `segment duration`...
+
 ```{r}
 #load raw file
 nurse_vowel <- read_excel("C:/Users/oamon/Oluwasegun DS Project/Sociophonetic-study-of-NURSE-vowels-in-NE/untidy_excel/nurse_vowel.xlsx")
 
 nurse_raw_aggregated <- read_excel("C:/Users/oamon/Oluwasegun DS Project/Sociophonetic-study-of-NURSE-vowels-in-NE/untidy_excel/nurse_raw_aggregated.xlsx")
 
-#unstructured_seg_info <- read_csv("C:/Users/oamon/Oluwasegun DS #Project/Sociophonetic-study-of-NURSE-vowels-in-NE/untidy_excel/unstructured_seg_info.csv")
-
-nurse_segment_info <- read_csv("C:/Users/oamon/Oluwasegun DS Project/Sociophonetic-study-of-NURSE-vowels-in-NE/tidy_csv_files/segment_info.csv")
+nurse_segment_info <- read_csv("C:/Users/oamon/Oluwasegun DS Project/Sociophonetic-study-of-NURSE-vowels-in-NE/tidy_csv_files/nurse_segment_info.csv")
 ```
 
 
-#rename the first column in `nurse_raw_aggregated`before joining the dataframes together.
+## rename the first column in `nurse_raw_aggregated`before joining the dataframes together.
 
-# Working on `nurse_segment_info`
+### Working on `nurse_segment_info`
 Data cleaning
   **remove** uninformative columns including `omit`, `previous_sound` and `next_sound`
 
@@ -59,7 +58,7 @@ head(nurse_raw_aggregated)
 
 nurse_raw_aggregated <- nurse_raw_aggregated%>%
 mutate(files = map_chr(file_name, ~ str_sub(.x, 1, 7)))
-head(nurse_aggregate)
+head(nurse_raw_aggregated)
 ```
 
 # Tidy unstructed_seg_info
@@ -75,7 +74,7 @@ head(nurse_segment_info)
 ```
 
 
-**Check different NURSE vowel production by audio files**
+## Check different NURSE vowel production by audio files
 
 ```{r}
 nurse_segment_info %>%
@@ -83,16 +82,14 @@ nurse_segment_info %>%
   table()
 ```
 
-
-
-# remove uninformative columns in `nurse_segment_info`.
+### remove uninformative columns in `nurse_segment_info`.
 
 The following columns(`previous_sound`, `next_sound` and `omit`) are dropped in the `nurse_segment_info` because they add no value to the `dataframe`.
 
 
 ```{r}
-nurse_segment_info <- nurse_segment_info %>%
-  select(-c("previous_sound", "next_sound", "omit"))
+#nurse_segment_info <- nurse_segment_info %>%
+ # select(-c("previous_sound", "next_sound", "omit"))
 ```
 
 **Hurray** `nurse_segment_info` is now tidy
@@ -124,7 +121,7 @@ combine both files as a single `csv` file before `data analysis`
 
 Read the data
 ```{r load social variable dataset}
-nurse_social_var <- read_excel("nurse_social_var.xlsx",
+nurse_social_var <- read_excel("C:/Users/oamon/Oluwasegun DS Project/Sociophonetic-study-of-NURSE-vowels-in-NE/untidy_excel/nurse_social_var.xlsx",
                                      na=c("", "Na", "NA", "N/A", "n/a", "na", "-"))
 head(nurse_social_var)
 ```
@@ -150,7 +147,7 @@ nurse_social_var <- nurse_social_var %>%
 head(nurse_social_var)
 ```
 
-# What are the effects of social variables on NURSE vowel?
+### What are the effects of social variables on NURSE vowel?
 
 To calculate the effect of social variables on NURSE vowel, `nurse_social_var` and `nurse_segment_info` data frames are joined by files.
 ```{r}
@@ -194,7 +191,7 @@ model 3(formant) = f3 (previous studies show *f3* as a cue for *categorical* or 
 
 
 
-# Model comparison
+### Model comparison
 
 # tidy_csv files for analysis
 ```{r}

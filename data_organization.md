@@ -3,21 +3,28 @@ Data Pipeline
 Oluwasegun Amoniyan
 03/27/2024
 
-- [loading raw files](#loading-raw-files)
-- [Working on `nurse_segment_info`](#working-on-nurse_segment_info)
+- [Data summary](#data-summary)
+  - [loading raw files](#loading-raw-files)
+  - [rename the first column in `nurse_raw_aggregated`before joining the
+    dataframes
+    together.](#rename-the-first-column-in-nurse_raw_aggregatedbefore-joining-the-dataframes-together)
+    - [Working on `nurse_segment_info`](#working-on-nurse_segment_info)
 - [Tidy unstructed_seg_info](#tidy-unstructed_seg_info)
-- [remove uninformative columns in
-  `nurse_segment_info`.](#remove-uninformative-columns-in-nurse_segment_info)
+  - [Check different NURSE vowel production by audio
+    files](#check-different-nurse-vowel-production-by-audio-files)
+    - [remove uninformative columns in
+      `nurse_segment_info`.](#remove-uninformative-columns-in-nurse_segment_info)
+- [NURSE vowel realizations in NE](#nurse-vowel-realizations-in-ne)
 - [Combine files](#combine-files)
-- [Social variable](#social-variable)
+- [Social variables](#social-variables)
   - [Step 1](#step-1)
   - [Step 2](#step-2)
   - [Step 3](#step-3)
-- [What are the effects of social variables on NURSE
-  vowel?](#what-are-the-effects-of-social-variables-on-nurse-vowel)
+    - [What are the effects of social variables on NURSE
+      vowel?](#what-are-the-effects-of-social-variables-on-nurse-vowel)
 - [Specific questions to answer in the analysis(Proposed
   analysis)](#specific-questions-to-answer-in-the-analysisproposed-analysis)
-- [Model comparison](#model-comparison)
+  - [Model comparison](#model-comparison)
 - [tidy_csv files for analysis](#tidy_csv-files-for-analysis)
 - [Session info](#session-info)
 
@@ -45,37 +52,57 @@ library(tidyverse)
 library(readxl)
 ```
 
-# loading raw files
+# Data summary
+
+International Corpus of English (ICE) Nigeria (ICE-Nig) corpus comprises
+609,581 spoken words and 400,796 written words. The corpus hosts
+`text files` and `audio files` for different discourse, including
+`broadcast news`, `broadcat talks`, `classroom conversations`,
+`non-broadcast` shows, `interviews`, `phone calls`, `conversations`, and
+`demonstrations`. The website has a metadata Excel
+[file](https://sourceforge.net/projects/ice-nigeria/files/) that
+describes the background (`age`, `gender`, `ethnicity`, `profession`,
+type of `speech style`) of the participants. Only `broadcast news` and
+`broadcast talks` are sampled for the data wrangling and analysis
+because of the time frame. Specifically, attention will be paid to
+different realizations for NURSE vowels across different `profession`,
+`gender`, `age`, and `ethnicity` in the sampled files.
+
+## loading raw files
 
 The first file (as nurse_vowel) includes **nurse_vowel** that contains
 **file_name**, **formant trajectories**, **formant bindwidth**,
 **pitch**, **intensity** and **harmonity** The second file (as
 nurse_segment_info) includes \*segment information\*\*
 
+The second file estimates the aggregate formant means for the winning
+acoustic features in the predictions at every 2ms for 20 times per NURSE
+vowel realization.
+
+The third file provide segment info such as `context`,
+`segment duration`…
+
 ``` r
 #load raw file
-nurse_vowel <- read_excel("nurse_vowel.xlsx",
-                                     na=c("", "Na", "NA", "N/A", "n/a", "na", "-", "undefined"))
+nurse_vowel <- read_excel("C:/Users/oamon/Oluwasegun DS Project/Sociophonetic-study-of-NURSE-vowels-in-NE/untidy_excel/nurse_vowel.xlsx")
 
-nurse_raw_aggregated <- read_excel("nurse_raw_aggregated.xlsx",
-                                     na=c("", "Na", "NA", "N/A", "n/a", "na", "-", "undefined"))
+nurse_raw_aggregated <- read_excel("C:/Users/oamon/Oluwasegun DS Project/Sociophonetic-study-of-NURSE-vowels-in-NE/untidy_excel/nurse_raw_aggregated.xlsx")
 
-unstructured_seg_info <- read_csv("unstructured_seg_info.csv",
-                                     na=c("", "Na", "NA", "N/A", "n/a", "na", "-", "undefined"))
+nurse_segment_info <- read_csv("C:/Users/oamon/Oluwasegun DS Project/Sociophonetic-study-of-NURSE-vowels-in-NE/tidy_csv_files/nurse_segment_info.csv")
 ```
 
-    Rows: 246 Columns: 1
+    Rows: 246 Columns: 14
     ── Column specification ────────────────────────────────────────────────────────
     Delimiter: ","
-    chr (1): inputfile,outputfile,vowel,interval,duration,start,end,previous_sou...
+    chr (6): inputfile, file_name, vowel, word, previous_word, next_word
+    dbl (8): ...1, interval, duration, start, end, word_interval, word_start, wo...
 
     ℹ Use `spec()` to retrieve the full column specification for this data.
     ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
 
-\#rename the first column in `nurse_raw_aggregated`before joining the
-dataframes together.
+## rename the first column in `nurse_raw_aggregated`before joining the dataframes together.
 
-# Working on `nurse_segment_info`
+### Working on `nurse_segment_info`
 
 Data cleaning **remove** uninformative columns including `omit`,
 `previous_sound` and `next_sound`
@@ -101,17 +128,29 @@ head(nurse_raw_aggregated)
     #   f13 <dbl>, f23 <dbl>, f33 <dbl>, f43 <dbl>, f14 <dbl>, f24 <dbl>,
     #   f34 <dbl>, f44 <dbl>, f15 <dbl>, f25 <dbl>, f35 <dbl>, f45 <dbl>
 
+``` r
+nurse_raw_aggregated <- nurse_raw_aggregated%>%
+mutate(files = map_chr(file_name, ~ str_sub(.x, 1, 7)))
+head(nurse_raw_aggregated)
+```
+
+    # A tibble: 6 × 29
+      file_name     f0 duration_ms label group color number cutoff   f11   f21   f31
+      <chr>      <dbl>       <dbl> <chr> <dbl> <chr>  <dbl>  <dbl> <dbl> <dbl> <dbl>
+    1 bnew_01_0…  192.       0.078 "\u0…    30 Navy       1   6058   514   973  2516
+    2 bnew_01_0…  233.       0.098 "\u0…    30 Navy       2   4992   653  1108  2242
+    3 bnew_01_0…  295.       0.084 "\u0…    26 Black      3   6484   942  1749  2678
+    4 bnew_01_0…  304.       0.078 "\u0…    26 Black      4   5632   670  1523  2671
+    5 bnew_01_0…  284.       0.108 "\u0…    25 Mage…      5   4992   851  1421  2424
+    6 bnew_01_0…  252.       0.096 "\u0…    26 Black      6   4779   550  1022  2207
+    # ℹ 18 more variables: f41 <dbl>, f12 <dbl>, f22 <dbl>, f32 <dbl>, f42 <dbl>,
+    #   f13 <dbl>, f23 <dbl>, f33 <dbl>, f43 <dbl>, f14 <dbl>, f24 <dbl>,
+    #   f34 <dbl>, f44 <dbl>, f15 <dbl>, f25 <dbl>, f35 <dbl>, f45 <dbl>,
+    #   files <chr>
+
 # Tidy unstructed_seg_info
 
 `unstructed_seg_info` has segment features for NURSE vowels.
-
-``` r
-unstructured_seg_info <- read.csv("unstructured_seg_info.csv")
-
-nurse_segment_info <- separate(unstructured_seg_info, inputfile.outputfile.vowel.interval.duration.start.end.previous_sound.next_sound.omit.word.word_interval.word_start.word_end.previous_word.next_word, 
-                into = c("inputfile", "outputfile", "vowel", "interval", "duration", "start", "end", "previous_sound", "next_sound", "omit", "word", "word_interval", "word_start", "word_end", "previous_word", "next_word"), 
-                sep = ",")
-```
 
 ``` r
 #before joining nurse_segment_info with the aggregate by outputfile, there must be a similar name between the two dataframes 
@@ -122,29 +161,19 @@ nurse_segment_info <-
 head(nurse_segment_info)
 ```
 
-      inputfile    file_name vowel interval            duration              start
-    1   bnew_01 bnew_01_0001     ɔ        2 0.07815562229751549  37.12740474644154
-    2   bnew_01 bnew_01_0002     ɔ        4 0.09937295362939835  91.41508740409519
-    3   bnew_01 bnew_01_0003     ɒ        6 0.08547874237785891 159.16367944101123
-    4   bnew_01 bnew_01_0004     ɒ        8 0.07999999999998408             161.33
-    5   bnew_01 bnew_01_0005     ɑ       10 0.10857548829096686             182.96
-    6   bnew_01 bnew_01_0006     ɒ       12 0.09639157422424205 219.53360842577575
-                     end previous_sound next_sound omit     word word_interval
-    1  37.20556036873906              -          -    0    worse            92
-    2  91.51446035772459              -          -    0     urge           216
-    3 159.24915818338908              -          -    0 thursday           353
-    4             161.41              -          -    0 occurred           363
-    5 183.06857548829097              -          -    0  swerved           417
-    6             219.63              -          -    0  working           491
-      word_start          word_end previous_word next_word
-    1      37.07             38.28             - according
-    2      91.43 91.47384046764383             -       the
-    3      158.9            159.29             -        on
-    4     161.11            161.48             -     close
-    5     182.83            183.24      mechanic         -
-    6      219.4            219.91       already         -
+    # A tibble: 6 × 14
+       ...1 inputfile file_name    vowel interval duration start   end word    
+      <dbl> <chr>     <chr>        <chr>    <dbl>    <dbl> <dbl> <dbl> <chr>   
+    1     1 bnew_01   bnew_01_0001 ɔ            2   0.0782  37.1  37.2 worse   
+    2     2 bnew_01   bnew_01_0002 ɔ            4   0.0994  91.4  91.5 urge    
+    3     3 bnew_01   bnew_01_0003 ɒ            6   0.0855 159.  159.  thursday
+    4     4 bnew_01   bnew_01_0004 ɒ            8   0.0800 161.  161.  occurred
+    5     5 bnew_01   bnew_01_0005 ɑ           10   0.109  183.  183.  swerved 
+    6     6 bnew_01   bnew_01_0006 ɒ           12   0.0964 220.  220.  working 
+    # ℹ 5 more variables: word_interval <dbl>, word_start <dbl>, word_end <dbl>,
+    #   previous_word <chr>, next_word <chr>
 
-**NURSE vowel production by audio files**
+## Check different NURSE vowel production by audio files
 
 ``` r
 nurse_segment_info %>%
@@ -158,19 +187,20 @@ nurse_segment_info %>%
     btal_01 btal_04 btal_21 btal_22 btal_33 btal_36 
          16      14      35      22      15      19 
 
-# remove uninformative columns in `nurse_segment_info`.
+### remove uninformative columns in `nurse_segment_info`.
 
 The following columns(`previous_sound`, `next_sound` and `omit`) are
 dropped in the `nurse_segment_info` because they add no value to the
 `dataframe`.
 
 ``` r
-nurse_segment_info <- nurse_segment_info %>%
-  select(-c("previous_sound", "next_sound", "omit"))
+#nurse_segment_info <- nurse_segment_info %>%
+ # select(-c("previous_sound", "next_sound", "omit"))
 ```
 
-\#the data `nurse_segment_info` is now tidy removing uninformative
-columns
+**Hurray** `nurse_segment_info` is now tidy
+
+# NURSE vowel realizations in NE
 
 ``` r
 nurse_segment_info%>%
@@ -184,14 +214,14 @@ nurse_segment_info%>%
 
 # Combine files
 
-combine both files as a single `csv` file before `data wrangling`
+combine both files as a single `csv` file before `data analysis`
 
 ``` r
 #combined_data <- merge(nurse_segment_info, nurse_raw_aggregated, by = "file_name")
 #view(combined_data)
 ```
 
-# Social variable
+# Social variables
 
 `Social variable` dataset was extracted from the participants
 [ICE-Nigeria](http://ice-corpora.net/ice/index.html) to account for how
@@ -202,7 +232,7 @@ social variables (e.g., `age`, `profession`, `gender`)
 Read the data
 
 ``` r
-nurse_social_var <- read_excel("nurse_social_var.xlsx",
+nurse_social_var <- read_excel("C:/Users/oamon/Oluwasegun DS Project/Sociophonetic-study-of-NURSE-vowels-in-NE/untidy_excel/nurse_social_var.xlsx",
                                      na=c("", "Na", "NA", "N/A", "n/a", "na", "-"))
 head(nurse_social_var)
 ```
@@ -221,7 +251,7 @@ head(nurse_social_var)
 
 **Re-categorize** the `profession` column into `broadcaster` and
 `politician` rather than the original column that has `Radio presenter`,
-`TV presenter`, `TV journalist`, `Politician`
+`TV presenter`, `TV journalist`, and `Politician`
 
 ``` r
 nurse_social_var <- nurse_social_var %>%
@@ -264,7 +294,7 @@ head(nurse_social_var)
     5 btal_21 male      54 Hausa     Politician     Politician          older       
     6 btal_04 male      53 Igbo      Politician     Politician          older       
 
-# What are the effects of social variables on NURSE vowel?
+### What are the effects of social variables on NURSE vowel?
 
 To calculate the effect of social variables on NURSE vowel,
 `nurse_social_var` and `nurse_segment_info` data frames are joined by
@@ -278,39 +308,14 @@ The dataframe **nurse_soc_segment** has segment info such as `vowel`,
 `duration_ms`,
 start_dur_sec`,`end_dur_sec`,`word`,`word_interval`,`dur_word_start`,`dur_word_end`,`previous_word`,`next_word`,`gender`,`Age_category`,`Profession_category\`.
 
-``` r
-# Read the CSV file
-nurse_segment_info <- read.csv("unstructured_seg_info.csv")
-
-
-nurse_segment_info <- separate(nurse_segment_info, inputfile.outputfile.vowel.interval.duration.start.end.previous_sound.next_sound.omit.word.word_interval.word_start.word_end.previous_word.next_word, 
-                into = c("inputfile", "outputfile", "vowel", "interval", "duration", "start", "end", "previous_sound", "next_sound", "omit", "word", "word_interval", "word_start", "word_end", "previous_word", "next_word"), 
-                sep = ",")
-
-nurse_segment_info %>%
-  select(inputfile)%>%
-  table()
-```
-
-    inputfile
-    bnew_01 bnew_02 bnew_03 bnew_04 bnew_05 bnew_06 bnew_07 bnew_08 bnew_09 bnew_10 
-          9      10       6       8      11      24       9      16      13      19 
-    btal_01 btal_04 btal_21 btal_22 btal_33 btal_36 
-         16      14      35      22      15      19 
-
-``` r
-# Write the reshaped data to a new CSV file
-write.csv(nurse_segment_info, "segment_info.csv")
-```
-
 # Specific questions to answer in the analysis(Proposed analysis)
 
 A. **Phonetic features**
 
 1.  What are the NURSE vowel production (any variation) in NE?
-    (**which** is the over winner in NE variety?) (This identifies how
-    NURSE vowels in NE differs from other English varieties (such as
-    British or American English?)
+    (**which** form is the most frequent in NE variety?) (This
+    identifies how NURSE vowels in NE differs from other English
+    varieties (such as British or American English?)
 
 - What information does this study reveal on the production of NURSE
   vowel that differs from the previous studies?
@@ -338,15 +343,14 @@ vowel in NE)
 
 C. **Soical variable (Mixed Effects)** model 1 = (duration ~ 1 +
 Age_category + Gender + Ethnicity + Profession_category) (1\|Word) +
-(1\|file_name) model 2 = (duration ~ 1 + Age_category + Gender +
-Ethnicity + Profession_category) (1\|Word) + (1\|file_name) model 3 =
-(f0 ~ 1 + Age_category + Gender + Ethnicity + Profession_category)
-(1\|Word) + (1\|file_name)) (aggregate) model 3(formant) = f3 (previous
+(1\|vowel) + (1\|file_name) model 2 = (f0 ~ 1 + Age_category + Gender +
+Ethnicity + Profession_category) (1\|Word) + (1\|vowel) +
+(1\|file_name)) model 3 = (aggregate) model 3(formant) = f3 (previous
 studies show *f3* as a cue for *categorical* or *gradient*
 rhoticization) What does *f3* reveal in this study?  
 (f3 ~ 1 + Vowels)
 
-# Model comparison
+### Model comparison
 
 # tidy_csv files for analysis
 
