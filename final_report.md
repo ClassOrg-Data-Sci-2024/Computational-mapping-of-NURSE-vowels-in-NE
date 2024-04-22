@@ -55,26 +55,26 @@ The step-by-step data transformations prior to the analysis are detailed in (dat
 
 In this section, I reported on the NURSE vowel variation by phonetic features, social variable and ethnicity. 
 
-## Analysis of NURSE vowel production
+## Analysis of NURSE vowel production (phonetics)
 
-The production of NURSE vowel varied from [nɜs], [na:s], [nas], [nɔs], [nɔ:s], [nɛs] to [ɪ]with different frequency. The most variant form was [nɜs] as [nas] or [nɛs]. These findings revealed that there is a variation in the  production of NURSE vowel in NE. 
+In an attempt to answer RQ1, I accounted for the variant production of NURSE vowel in NE,first with length contrast and second without length contrast to identify frequent phoneme for NURSE vowel in NE because vowel length is not sufficient to distinguish vowel in NE. The results that the production of NURSE vowel varied from [nɜs], [na:s], [nas], [nɔs], [nɔ:s], [nɛs] to [ɪ]with different frequency. The most variant form was [nɜs] as [nas] or [nɛs]. These findings revealed that there is a variation in the  production of NURSE vowel in NE. Second, the findings revealed that the variation was not about categorical and gradient production of rhotics in central-mid-vowel, but the phoneme (central-mid-vowel) was realized differently. Also, overall results showed that the NURSE vowel productions are often produced with shorter duration than the longer ones in NE variety.  
 
-`[ɜ]` is realized as `[nɜs]` by 6.4%, as `[na:s]` by 13%, as `[nas]` by 27%, as `[nɔs]` by 17%,  as `[nɔ:s]` by 16%, as `[nɛs]` by 20%, and as `[ɪ]` by 0.4%. The overall results show that the variants with shorter duration are more favored than the longer ones in NE variety.
-
-
-![](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-Nigerian-English/blob/main/NURSE_analysis_files/figure-gfm/unnamed-chunk-2-1.png)
+![](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-Nigerian-English/blob/main/Analysis/NURSE_analysis_files/figure-gfm/unnamed-chunk-2-1.png)
 
 **Figure 1**
 
-![](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-Nigerian-English/blob/main/file_images/images_file_winners/bnew_01_winners/bnew_01_0001_winner_.png)
+If we are curious about the NURSE vowel space in NE, the results showed that the NURSE vowels are more frequently produced as front vowels (47.56%) than back (45.93%) and central (6.5%). This distribution implied that NE has a somewhat equal proportion of back and front vowels, with back vowels being less common.
+
+However, duration does not seem to significantly determine the variance in NURSE vowel production in NE. The model, the results show that the realization of NURSE vowel as low back vowel ([ɑ]) was statistically significantly differ in duration from other other NURSE vowels (intercept = 0.13, 95%, t(237) = 12.54, p < .001). Meanwhile, among the other variant for NURSE vowels, there was no significant difference (p>0.05). This might reveal that duration was not reliable to differentiate vowels for NURSE production in NE. Rather, vowel height might help to differentiate NURSE vowel variant.
+
+![](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-Nigerian-English/blob/main/Analysis/NURSE_analysis_files/figure-gfm/unnamed-chunk-5-1.png)
 
 **Figure 2**
 
+Similarly, I fitted the second level with `word` (as level 2) and model did not reveal any significant relationship therefore I dropped it from the model. The residual revealed variation across `word` and `vowel` production as 4ms (for `word`) and 3ms (for `vowel`). It means that duration of NURSE vowel in the variety is more variant across `word` than `NURSE vowel`.
 
-## NURSE vowel variation (phonetics)
-
-
-
+One of the hypotheses in the file [method and hypothesis](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-Nigerian-English/blob/main/method%20and%20hypothesis/research%20hypothesis.md). 
+for the study identifies the effect of phonological environment on NURSE vowel production in NE. To attempt this task, we need to create a column `nurse_determinant` where we assign numeric to each level of the `nurse_vowel_space` for `poisson analysis`. The column has three levels: NURSE vowels realized as `front_vowel`, `back_vowel` and `central_vowel`. The numeric [`front_vowel = 0`; `back_vowel = 1`, `central_vowel = 2`]. This model will reveal whether there is any relationship between `vowel space` and `words` in NE. 
 
 ## NURSE vowel variation (social variables)
 
