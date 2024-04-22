@@ -47,7 +47,7 @@ The International Corpus of English (ICE) Nigeria corpus has 609,581 spoken word
 
 Fast Track is an automatic formant estimate tool for vowel analysis. The estimator maps vowel production every 2 milliseconds in order to capture the most consistent formant realization. The script returns 5 formant timepoints and four formant levels (f1 - f4) for each millisecond captured, with the lowest at 4700Hz and the maximum at 7550Hz, respectively. The estimate creates 20 formant samples and picks a winner by comparing it to other formant outputs. Unlike prior studies on NURSE vowels, which used midpoint and three-point vowel measurement, Fast Track measures 20 formant points for each vowel production. This technique provides better formant representation than midpoint and three-point vowel measurements.
 
-The step-by-step data transformations prior to the analysis are detailed in [analysis folder] (https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-Nigerian-English/blob/main/Analysis/data_organization.md)
+The step-by-step data transformations prior to the analysis are detailed in [analysis folder](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-Nigerian-English/blob/main/Analysis/data_organization.md)
 
 # Results and Discussion
 
