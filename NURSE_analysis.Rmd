@@ -26,7 +26,7 @@ library(performance)
 
 ```{r}
 #load `csv` that has segment information
-nurse_segment <- read_csv("C:/Users/oamon/Oluwasegun DS Project/Sociophonetic-study-of-NURSE-vowels-in-NE/tidy_csv_files/nurse_segment_info.csv",
+nurse_segment <- read_csv("C:/Users/oamon/Oluwasegun DS Project/Sociophonetic-study-of-NURSE-vowels-in-NE/Analysis/tidy_csv_files/nurse_segment_info.csv",
                                      na=c("", "Na", "NA", "N/A", "n/a", "na", "-", "undefined"))
 
 #rename `outputfile` and `inputfile` as `file_name` and `id` respectively
@@ -87,7 +87,7 @@ head(vowel_variation)
 ggplot(nurse_segment, aes(x = vowel_variation, fill = vowel)) +
   geom_bar() +
   labs(x = "vowel", y = "Frequency", color = "Vowel") +
-  ggtitle("Frequencies of NE vowel variation without length contrast in NE") +
+  ggtitle("Frequencies of NE vowel variation (with)out length contrast in NE") +
   theme_minimal()
 ```
 The results show that `[ɜ]` in NURSE for BrE, AmE, CanE and New Zealand English is often realization as `[a]` with 99 (40%), `[ɔ]` with 81 (32%), `[ɜ]` with 16 (6.5%), and `[ɛ]` with 49 (19%). This shows that similar variant with the inner circle English is 6.5% possible in NE variety; however, it's more produced as [nas], [nɔs] and [nɛs]. The frequent production of [nɜs] as [nas], [nɔs] and [nɛs] in NE reveals that the variation of NURSE vowel is beyond presence or absence of rhotics. If we shift our focus rhotics of NURSE vowel in NE, we will eventually be discussing variant form that is 10% present in NE. 
@@ -159,13 +159,8 @@ library(coefplot)
 # Create the coefficient plot
 coefplot(duration_model)
 ```
-Similarly, I fitted the second level with `vowel_variation` (as level 2) and model did not reveal any significant relationship therefore I dropped it from the model. The residual revealed variation across `word` and `vowel` production as 4ms (for `word`) and 3ms (for `vowel`). It means that duration of NURSE vowel in the variety is more variant across `word` than `NURSE vowel`
+Similarly, I fitted the second level with `word` (as level 2) and model did not reveal any significant relationship therefore I dropped it from the model. The residual revealed variation across `word` and `vowel` production as 4ms (for `word`) and 3ms (for `vowel`). It means that duration of NURSE vowel in the variety is more variant across `word` than `NURSE vowel`
 
-
-----
-and the explanatory power was substantial
-(conditional R2 = 0.56) and the fixed effects alone (marginal R2) is of 0.03. The intercept (as `high_front`) is at 0.04 (95% CI [-0.07, 0.15], t(239) = 0.71, p = 0.401). Similarly, other **vowel_variations** do not have any correlation effect as p-values was consistentlywas greater than 0.05 (p>0.05).
----
 
 ## Effect of phonological environment on the production of NURSE vowels in NE
 
@@ -187,6 +182,12 @@ nurse_segment <- nurse_segment %>%
 #regression analysis for the `phonological effect` on NURSE vowel production
 model_nurse_determinant <- glmer(nurse_determinant ~ 1 + (1|word), data = nurse_segment, family = poisson)
 summary(model_nurse_determinant)
+
+
+ggplot(nurse_segment, aes(x = nurse_determinant, fill = word)) +
+  geom_bar() +
+  labs(x = "NURSE vowels", y = "Freq of NURSE vowels")+
+   ggtitle("Frequencies of NURSE vowel determinant by word")
 ```
 The model determines if `NURSE vowels` are affected by `phonological environment` and the intercept returned significant. The random effect for `word` indicates that the influence of `word` on vowel production varies. The standard deviation (`SD`) for the random effect (0.2752) estimates the degree of variability among words. Furthermore, the fixed effect estimate for the intercept (-0.5792) indicates the log of vowel productions when no word-specific factor is present. This support the evidence that the production of vowels in Nigerian English is determined by the `phonological environment` that NE speakers utter, with various words having variable impacts on vowel formation.
 
@@ -204,8 +205,9 @@ First, the production of NURSE vowel varies in Nigerian English. Unlike previous
 
 ```{r}
 #`nurse_aggregate.csv` has phonetic features of NURSE vowel production 
-nurse_aggregate <- read_csv("tidy_csv_files/nurse_raw_aggregated.csv",
+nurse_aggregate <- read_csv("C:/Users/oamon/Oluwasegun DS Project/Sociophonetic-study-of-NURSE-vowels-in-NE/Analysis/tidy_csv_files/nurse_raw_aggregated.csv",
                                      na=c("", "Na", "NA", "N/A", "n/a", "na", "-", "undefined"))
+
 #head(nurse_aggregate)
 
 #Another data frame
@@ -266,7 +268,7 @@ head(my_nurse_vowel_formant)
 ggplot(my_nurse_vowel_formant, aes(x = timepoint, y = formant_bark_norms, group = id, color = formant)) +
   geom_line() + 
   facet_wrap(~vowel, nrow=3)+
-  ggtitle("Formanttrajectories for NURSE vowels in NE")+
+  ggtitle("Formant trajectories for NURSE vowels in NE at five points")+
   theme_classic()
 ```
 
@@ -283,12 +285,13 @@ ggplot(my_nurse_vowel_formant, aes(x = timepoint, y = formant_bark_norms, group 
 
 ```{r}
 #formant.log.cen is a centered around grand mean
-formant_model <- lmer(formant_bark_norms ~ 1 + formant + (1|timepoint), data = my_nurse_vowel_formant)
+formant_model <- lmer(formant_bark_norms ~ 1 + timepoint + (1|formant), data = my_nurse_vowel_formant)
 formant_model %>% summary()
 library(sjPlot)
 #Estimate table that explains the independent and the dependent variables.
 #formant_model %>% tab_model()
 formant_model %>% plot_model()
+plot_model(formant_model, type = "pred", terms = c("timepoint", "formant"))
 ```
 This analysis shows the estimates, confidence intervals (CI), and p-values for `formant` with log-transformation. The intercept `formant 1` is estimated to be -0.97 with a 95% confidence interval between -0.99 and -0.96, and the p-value is <0.001, indicating high statistical significance. The other estimates (f2, f3, and f4) are 0.82, 1.37, and 1.70, respectively, with very narrow confidence intervals and highly significant p-values (<0.001). This indicates a strong positive association between each formant and the formant levels. 
 
@@ -302,7 +305,7 @@ Apart from the phonetic properties [as stated in the hypothesis](https://github.
 
 ```{r}
 #load csv with social variables
-nurse_social <- read_csv("tidy_csv_files/nurse_social_var.csv",
+nurse_social <- read_csv("C:/Users/oamon/Oluwasegun DS Project/Sociophonetic-study-of-NURSE-vowels-in-NE/Analysis/tidy_csv_files/nurse_social_var.csv",
                                      na=c("", "Na", "NA", "N/A", "n/a", "na", "-", "undefined"))
 #nurse_social dataframe has only social variables and need to join `nurse_segment` to account for the effect of social variables on NURSE vowels.
 
@@ -370,6 +373,8 @@ nurse_social_segment %>%
 age_nurse_vowel <- lmer(duration.cen ~ 1 + Age_category + Gender + (1|vowel),  nurse_social_segment) 
 age_nurse_vowel %>% summary()
 age_nurse_vowel %>% tab_model()
+
+plot_model(age_nurse_vowel, type = "pred", terms = c("Age_category", "Gender", "vowel"))
 ```
 Hooray! Younger Nigerian English speakers have short duration for NURSE vowel than the adult, however, the model
 This analysis provides estimates, confidence intervals (CI), and p-values for predictors in a model that investigates the relationship between duration and other variables. The intercept, which serves as the baseline level, is estimated at 0.01 with a 95% confidence interval of -0.02 to 0.03, and a p-value of 0.564, indicating a lack of statistical significance. Similarly, the estimates for age category (younger) and duration have p-values of 0.304 and 0.564, indicating that they are not significant predictors of duration. Gender (male) has a significant positive correlation with duration, with an estimated coefficient of 0.05, a 95% CI between 0.03 and 0.08, and a p-value of <0.001. This suggests that being male leads to longer duration.
@@ -378,24 +383,12 @@ In terms of random effects, both within-vowel variance (σ^2) and variance betwe
 
 #### Visualization
 ```{r}
-ggplot(nurse_social_segment, aes(x = vowel, y = duration.cen), fill = Gender) +
+ggplot(nurse_social_segment, aes(x = vowel, y = duration.cen, color = Gender)) +
   geom_point() +
   facet_wrap(vars(Age_category), ncol = 3) +
   labs(x = "NURSE vowels", y = "Duration of NURSE vowels")+
    ggtitle("Duration patterns NURSE vowel production by social group")
 ```
-
-
-### Pitch
-
-model 1 = (duration ~ 1 + Age_category + Gender + Ethnicity + Profession_category) (1|Word) + (1|vowel) + (1|file_name)
-model 2 = (f0 ~ 1 + Age_category + Gender + Ethnicity + Profession_category) (1|Word) + (1|vowel) + (1|file_name))
-model 3 =
-(aggregate)
-model 3(formant) = f3 (previous studies show *f3* as a cue for *categorical* or *gradient* rhoticization) What does *f3* reveal in this study?  
- (f3 ~ 1 + Vowels)
-
-
 
 
 
@@ -425,61 +418,22 @@ age_nurse_ethnicity %>% summary()
 age_nurse_ethnicity %>% tab_model()
 ```
 ```{r}
-ggplot(nurse_social_segment, aes(x = vowel, y = duration.cen), fill = Gender) +
-  geom_point() +
+ggplot(nurse_social_segment, aes(x = vowel, y = duration.cen, color = Gender)) +
+  geom_boxplot() +
   facet_wrap(vars(Ethnicity), ncol = 3) +
   labs(x = "NURSE vowels", y = "Duration of NURSE vowels")+
-   ggtitle("Duration patterns NURSE vowel production by social group")
+   ggtitle("Duration patterns NURSE vowel production by Ethnicity")
+
+
 ```
 
-
+## NURSE vowel determinant by ethinicity
 
 ```{r}
 nurse_ethn_det <- glmer(nurse_determinant ~ 1 + Ethnicity + (1|word), data = nurse_social_segment, family = poisson)
 summary(nurse_ethn_det)
+plot_model(nurse_ethn_det, type = "pred", terms = c("Ethnicity", "word"))
 ```
-
-```{r}
-ggplot(nurse_social_segment, aes(x = vowel, fill = Ethnicity)) +
-  geom_bar() +
-  labs(x = "vowel", y = "Frequency", color = "Vowel") +
-  ggtitle("Frequencies of NE vowels in NE") +
-  theme_minimal()
-#`0`= `front_vowel`, `1` = `back_vowel`, `2`=`central vowel` 
-
-
-#nurse_ethn_det <- glmer(nurse_determinant ~ 1 + Ethnicity + (1|word), data = nurse_social_segment, family = poisson)
-#summary(nurse_ethn_det)
-```
-
-
-
-
-
-
-
-
-# Social factors new attempt
-```{r}
-#formant_trajectories <-
- # formant_trajectories %>%
-  #mutate(id_1 = map_chr(id, ~ str_sub(.x, 1, 7)))
-#
-#nurse_social <- nurse_social %>%
- # rename(
-  #  id_1 = contains("files"))
-#
-#social_effect1 <- merge(nurse_social, formant_trajectories, by  = "id_1")
-#social_effect1 <- social_effect1%>%
- # select(-c('id', 'by'))
-#
-#social_effect %>%
- # rename(
-  #  Pitch = contains('f0'),
-   # id_1 = contains("file_name"),
-    #speech = contains("files"))
-```
-
 
 
 # Session info
