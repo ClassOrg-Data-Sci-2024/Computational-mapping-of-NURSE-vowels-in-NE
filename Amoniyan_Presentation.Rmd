@@ -51,12 +51,16 @@ The data were drawn from the International Corpus of English Nigeria (ICE-Nig). 
 - 16 sound files
 - two speech styles (*broadcast talk* and *broadcast news*)
 ```{r}
-nurse_segment <- read_csv("C:/Users/oamon/Oluwasegun DS Project/Sociophonetic-study-of-NURSE-vowels-in-NE/tidy_csv_files/nurse_segment_info.csv",
+library(tidyverse)
+library(ggplot2)
+library(lme4)
+
+nurse_segment <- read_csv("C:/Users/oamon/Oluwasegun DS Project/Sociophonetic-study-of-NURSE-vowels-in-NE/Analysis/tidy_csv_files/nurse_segment_info.csv",
                                      na=c("", "Na", "NA", "N/A", "n/a", "na", "-", "undefined", ","))
 
-nurse_segment%>%
-  select(inputfile)%>%
-  table()
+#nurse_segment%>%
+ # select(inputfile)%>%
+  #table()
 ```
 - All speakers in this study were NE users [participants](https://sourceforge.net/projects/ice-nigeria/files/latest/download)
 - Vary by gender (`male` vs `female`), `ethnicity`, `speech style`, `Profession`, and `age`

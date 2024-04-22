@@ -183,7 +183,6 @@ nurse_segment <- nurse_segment %>%
 model_nurse_determinant <- glmer(nurse_determinant ~ 1 + (1|word), data = nurse_segment, family = poisson)
 summary(model_nurse_determinant)
 
-
 ggplot(nurse_segment, aes(x = nurse_determinant, color = word)) +
   geom_bar() +
   labs(x = "NURSE vowels", y = "Freq of NURSE vowels")+
