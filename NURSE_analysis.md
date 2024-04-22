@@ -467,7 +467,7 @@ summary(model_nurse_determinant)
     Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 ``` r
-ggplot(nurse_segment, aes(x = nurse_determinant, fill = word)) +
+ggplot(nurse_segment, aes(x = nurse_determinant, color = word)) +
   geom_bar() +
   labs(x = "NURSE vowels", y = "Freq of NURSE vowels")+
    ggtitle("Frequencies of NURSE vowel determinant by word")

@@ -184,7 +184,7 @@ model_nurse_determinant <- glmer(nurse_determinant ~ 1 + (1|word), data = nurse_
 summary(model_nurse_determinant)
 
 
-ggplot(nurse_segment, aes(x = nurse_determinant, fill = word)) +
+ggplot(nurse_segment, aes(x = nurse_determinant, color = word)) +
   geom_bar() +
   labs(x = "NURSE vowels", y = "Freq of NURSE vowels")+
    ggtitle("Frequencies of NURSE vowel determinant by word")
