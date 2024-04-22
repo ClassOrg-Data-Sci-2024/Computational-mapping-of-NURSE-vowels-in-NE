@@ -2,31 +2,32 @@
 
 # Progress Report 1: 02/20/2024
 
-I created the GitHub repository for my final project on sociophonetic study of NURSEvowels in Nigerian English. Similarly, I created files including `README.md` , `gitignore`, `project_plan`, and `progress_report.md`, `method.md.
-README.md includes the project title, my name, and a project summary.
- 
- - `.gitignore` includes `.raw`, `Rhistory`, `RData`, `.wav`, `.RDataTmp`, `.ice`
+I created the GitHub repository for my final project on sociophonetic study of NURSE vowels in Nigerian English. Other files created in the repo include: README.md , gitignore, project_plan, and progress_report.md, method.md.
 
- - `project_plan.md` has been created and contains information on the project's scope, as well as plans     for data manipulation and analysis.
+- **README.md** included the project title, my name, and a project summary.
  
-  - `progress_report.md` has been created with the information that you are now reading
+- **.gitignore** included .raw, Rhistory, RData, .wav, .RDataTmp, .ice, .OS, .template, .RData   .Ruserdata, .tar.gz, .Rcheck, .Rproj.user, .Rproj, Private/, .raw
+
+- **project_plan.md** contained project ideas, and plans for data manipulation and analysis.
+ 
+- **progress_report.md** this file will be updated from time to time as I progress in this        project.
 
 
 # Progress Report 2: 3/11/2024
 
--	I have updated the `method.md` file with the proposed method of data selection, elicitation, and analysis procedure. The document was created after reading a chapter on vowel annotation in the Sociophonetic Student’s Guide [read more](https://www.routledge.com/Sociophonetics-A-Students-Guide/Paolo-Yaeger-Dror/p/book/9780415498791). Since there is insufficient information on vowel boundaries and annotation on NE, the chapter is equipped with rationales for my decision. 
+-	I have updated the **method.md** file with the proposed method of data selection, elicitation, and analysis procedure. This document was drafted after reading a chapter on vowel annotation in the Sociophonetic Student’s Guide [read more](https://www.routledge.com/Sociophonetics-A-Students-Guide/Paolo-Yaeger-Dror/p/book/9780415498791). Since there is insufficient information on vowel boundaries and annotations on NE, the chapter is equipped with rationales for my decision.
 
 
 -	I have downloaded the audio and the text files. These files were forced aligned in the Web MAUS [Maus](https://clarin.phonetik.uni-muenchen.de/BASWebServices/interface/WebMAUSBasic) 
 
 
--	The first phase of the data elicitation were limited to one speech style (broadcast news), and five     files had been annotated. I restricted the annotation to the news casters and news correspondences, the speeches that the correspondents interviewed during the news collection were not annotated. **Rationale** there are no documentation **meta data** of these categories of people on the ICE-Nig website. It is difficult to say about their ethnic affiliation, levels of education, age and gender which are the focus of the project.   
+-	The first phase of the data elicitation was limited to one speech style (broadcast news), and five files had been annotated. I restricted the annotation to the broadcast news and news correspondences; the speeches that the correspondents interviewed during the news collection were not annotated. Rationale: there is no documentation about the metadata of these categories of people on the ICE-Nig website. It is difficult to say their ethnic affiliation, levels of education, age, and gender, which are the focus of the project.  
 
 
-- It's herculean task to treat **(long)audio files** and track where **NURSE vowels** are produced by multilingual speakers. It's time consuming. Bit by bit progress is better than no progress at all.
+- It's a herculean task to treat **long audio files** and track where **NURSE vowels** are produced by multilingual speakers. It's time-consuming. Bit-by-bit progress is better than no progress at all.
 
 
--	I am test-running FAST TRACK [read more](https://www.degruyter.com/document/doi/10.1515/lingvan-2020-0051/html) to understand how formants are automatically extracted and calculated. After understanding of the algorithm, I will extract two or three files to present the preliminary results. With these results, I will be aware of the data structure for the next thinking about data wrangling. Thereafter, I will annotate other files for `broadcast news` before adding other speech styles.
+-	I am test-running FAST TRACK [read more](https://www.degruyter.com/document/doi/10.1515/lingvan-2020-0051/html) to understand how formants are automatically extracted and calculated. After understanding the algorithm, I will extract two or three files to identify the preliminary results. With these results, I will be aware of the data structure and data wrangling. Thereafter, I will annotate other files for `broadcast news` before adding other speech styles (if things go well and fast as thought).
 
 
 
@@ -34,16 +35,19 @@ README.md includes the project title, my name, and a project summary.
 
 **Accomplishment and RE-consideration**
 
-Following the forced-aligned segmentation, I have annotated six audio files. These files are **broadcast news** (10) and **broadcast talk** (6) [raw_data](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-NE/tree/main/raw_Data). Though I initially planned to annotate three different speech styles, audio annotations took longer than anticipated [read more](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-NE/blob/main/Method.md). Second, the forced-aligned segmentation required manual adjustment as the algorithm does not perfectly segment NURSE phonemes in Nigerian English. The manual adjustment was time-consuming, though faster than manual annotation. For now, I would restrict the annotation to broadcast news and talks. If time permits, I will continue annotating other files. Otherwise, I would analyze the annotated files. This serves as a starting point for future studies. Also, I will restrict the inquiry of social variables to broadcast talks because the broadcast news does not have representativeness of different ethnicities, genders, and ages, which are the primary cues for socio-variables. Meanwhile, broadcast talks have these features. In the future, I will carefully annotate audio files with social variables that interest me.
+Following the forced-aligned segmentation, I have annotated six audio files. These files are **broadcast news** (10) and **broadcast talk** (6) [raw_data](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-Nigerian-English/blob/main/Analysis/tidy_csv_files/nurse_social_var.csv). Though I initially planned to annotate three different speech styles, audio annotations took longer than anticipated [read more](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-Nigerian-English/blob/main/method%20and%20hypothesis/Method.md). 
 
+
+Second, because the algorithm did not perfectly segment NURSE vowel production in Nigerian English, the forced-aligned segmentation required manual adjustment. The manual adjustment was time-consuming, though faster than manual annotation (from scratch). For now, I would restrict the annotation to _broadcast news_ and _talks_. If time permits, I would continue annotating other files. Otherwise, I would analyze the annotated files. This serves as a starting point for future studies.
+
+In addition, I will restrict the inquiry of social variables to broadcast talks because the broadcast news does not have representativeness of different ethnicities, genders, and ages, which are the primary cues for socio-variables. Meanwhile, broadcast talks have these features. In the future, I will carefully annotate audio files with social variables that interest me.
 In general, three `csv` files are ready for analysis
-1. `nurse_aggregated.csv`[read](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-NE/blob/main/nurse_raw_aggregated.csv)
-2. `nurse_seg_info`[read](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-NE/blob/main/nurse_segment_info.csv)
-3. `nurse_vowel.csv`[formant at 2ms for multiple times](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-NE/blob/main/nurse_vowel.csv)
+1. `nurse_aggregated.csv`[read](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-Nigerian-English/blob/main/Analysis/tidy_csv_files/nurse_raw_aggregated.csv)
+2. `nurse_seg_info`[read](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-Nigerian-English/blob/main/Analysis/tidy_csv_files/nurse_segment_info.csv)
 
 Each of the files will be used for different levels of analyses.
 
-The overall findings reveal variations in the NURSE vowel of NE, which is significantly different from how other varieties of English (British and American) produce the phenomenon. Also, each variant has a predicted and winning formant for the explanation of phonetic representations of NURSE vowels in NE [realizations](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-NE/tree/main/file_images).
+The overall findings reveal variations in the NURSE vowel of NE, which is significantly different from how other varieties of English (British and American) produce the phenomenon. Also, each variant has a predicted and winning formant for the explanation of phonetic representations of NURSE vowels in NE.
 
 
 # Proposed analysis
@@ -53,6 +57,7 @@ The overall findings reveal variations in the NURSE vowel of NE, which is signif
 A. **Phonetic features**
 
 1. What are the NURSE vowel production (any variation) in NE? (**which** is the over winner in NE variety?) (This identifies how NURSE vowels in NE differs from other English varieties (such as British or American English?)
+
 - What information does this study reveal on the production of NURSE vowel that differs from the previous studies?
 
 2. What are the formant trajectories of NURSE vowels in NE? (*What* insight does multiple selection of *formants* across time reveal?)
@@ -69,7 +74,7 @@ Does context determine NURSE vowel production in NE?
     duration ~ 1 + (1+vowel|word) (1|speaker)
     *does* the context(`phonological environment`) determine phoneme production for NURSE vowel in NE?
     f3 ~ 1 + (1+vowel|word) (1|speaker)
-    *To what extent* does `f3` describe NURSE vowel production in different phonological contexts? (is rhoticization a cue for NURSE vowel in NE)
+    *To what extent* does `f3` describe NURSE vowel production in different phonological contexts? (is rhoticity a cue for NURSE vowel in NE?)
     
 C. **Soical variable (Mixed Effects)**
 
