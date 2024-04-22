@@ -43,17 +43,24 @@ These factors may contribute to the variation in the production of NURSE vowels 
 
 ## Data [ICE-Nigeria]( http://ice-corpora.net/ice/index.html)
 
-International Corpus of English (ICE) Nigeria (ICE-Nig) corpus comprises 609,581 spoken words and 400,796 written words. The corpus hosts `text files` and `audio files` for different discourse, including `broadcast news`, `broadcat talks`, `classroom conversations`, `non-broadcast` shows, `interviews`, `phone calls`, `conversations`, and `demonstrations` (Wunder et al., 2010). The website has a metadata Excel [file](https://sourceforge.net/projects/ice-nigeria/files/) that describes the background (`age`, `gender`, `ethnicity`, `profession`, type of `speech style`) of the participants. Only `broadcast news` and `broadcast talks` were sampled for this study because of the time frame. Specifically, attentions were be paid to different realizations of NURSE vowels across different `profession`, `gender`, `age`, and `ethnicity` in the sampled files. The sound and text files were downloaded and uploaded to [WebMAUS](https://clarin.phonetik.uni-muenchen.de/BASWebServices/interface/WebMAUSBasic) for forced alignment. The textgrids were manually adjusted before the analysis. A total of [16 sound files] (https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-Nigerian-English/blob/main/tidy_csv_files/nurse_social_var.csv) (broadcast news and broadcast talk) were analyzed.  
+International Corpus of English (ICE) Nigeria (ICE-Nig) corpus comprises 609,581 spoken words and 400,796 written words. The corpus hosts `text files` and `audio files` for different discourse, including `broadcast news`, `broadcat talks`, `classroom conversations`, `non-broadcast` shows, `interviews`, `phone calls`, `conversations`, and `demonstrations` (Wunder et al., 2010). The website has a metadata Excel [file](https://sourceforge.net/projects/ice-nigeria/files/) that describes the background (`age`, `gender`, `ethnicity`, `profession`, type of `speech style`) of the participants. Only `broadcast news` and `broadcast talks` were sampled for this study because of the time frame. Specifically, attentions were be paid to different realizations of NURSE vowels across different `profession`, `gender`, `age`, and `ethnicity` in the sampled files. The sound and text files were downloaded and uploaded to [WebMAUS](https://clarin.phonetik.uni-muenchen.de/BASWebServices/interface/WebMAUSBasic) for forced alignment. The textgrids were manually adjusted before the analysis. A total of 246 tokens was extracted from 16 files.
 
 ## Fast Track
 
-Fast Track is an automated formant estimation in vowel analysis. The estimation maps vowel production every 2 milliseconds to capture the most continuous formant realization. In each millisecond that the script captures, it reports 5 formant levels, with the lowest as 4700Hz and the highest as 7550Hz. The estimate generates 20 formant samples and selects a winner after comparison with other possible formant outputs. Unlike previous studies of NURSE vowels that implemented midpoint and three-point vowel measurement, Fast Track captures 20 formant points for each vowel production. This algorithm has better formant representation than midpoint and three-point vowel measurement. [Samples](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-Nigerian-English/tree/main/file_images/images_file_comparisons)
+Fast Track is an automated formant estimation in vowel analysis. The estimation maps vowel production every 2 milliseconds to capture the most continuous formant realization. In each millisecond that the script captures, it reports 5 formant levels, with the lowest as 4700Hz and the highest as 7550Hz. The estimate generates 20 formant samples and selects a winner after comparison with other possible formant outputs. Unlike previous studies of NURSE vowels that implemented midpoint and three-point vowel measurement, Fast Track captures 20 formant points for each vowel production. This algorithm has better formant representation than midpoint and three-point vowel measurement. 
+
+The step-by-step data transformations prior to the analysis are detailed in (data_organization.md)
 
 # Results and Discussion
 
 In this section, I reported on the NURSE vowel variation by phonetic features, social variable and ethnicity. 
 
 ## Analysis of NURSE vowel production
+
+The production of NURSE vowel varied from [nɜs], [na:s], [nas], [nɔs], [nɔ:s], [nɛs] to [ɪ]with different frequency. The most variant form was [nɜs] as [nas] or [nɛs]. These findings revealed that there is a variation in the  production of NURSE vowel in NE. 
+
+`[ɜ]` is realized as `[nɜs]` by 6.4%, as `[na:s]` by 13%, as `[nas]` by 27%, as `[nɔs]` by 17%,  as `[nɔ:s]` by 16%, as `[nɛs]` by 20%, and as `[ɪ]` by 0.4%. The overall results show that the variants with shorter duration are more favored than the longer ones in NE variety.
+
 
 ![](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-Nigerian-English/blob/main/NURSE_analysis_files/figure-gfm/unnamed-chunk-2-1.png)
 
