@@ -125,7 +125,7 @@ head(vowel_variation)
 ggplot(nurse_segment, aes(x = vowel_variation, fill = vowel)) +
   geom_bar() +
   labs(x = "vowel", y = "Frequency", color = "Vowel") +
-  ggtitle("Frequencies of NE vowel variation without length contrast in NE") +
+  ggtitle("Frequencies of NE vowel variation (with)out length contrast in NE") +
   theme_minimal()
 ```
 The results show that `[ɜ]` in NURSE for BrE, AmE, CanE and New Zealand English is often realization as `[a]` with 99 (40%), `[ɔ]` with 81 (32%), `[ɜ]` with 16 (6.5%), and `[ɛ]` with 49 (19%). This shows that similar variant with the inner circle English is 6.5% possible in NE variety; however, it's more produced as [nas], [nɔs] and [nɛs]. The frequent production of [nɜs] as [nas], [nɔs] and [nɛs] in NE reveals that the variation of NURSE vowel is beyond presence or absence of rhoticity. If we shift our focus to rhoticity in NE, we will only be discussing variant that is 10% present in the variety.
@@ -272,11 +272,12 @@ The [trajectories](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study
 
 ```{r}
 #formant.log.cen is a centered around grand mean
-formant_model <- lmer(formant_bark_norms ~ 1 + formant + (1|timepoint), data = my_nurse_vowel_formant)
+formant_model <- lmer(formant_bark_norms ~ 1 + timepoint + (1|formant), data = my_nurse_vowel_formant)
 formant_model %>% summary()
 library(sjPlot)
 #Estimate table that explains the independent and the dependent variables.
 formant_model %>% tab_model()
+formant_model %>% plot_model()
 plot_model(formant_model, type = "pred", terms = c("formant", "timepoint"))
 ```
 ## Do social factors determine production of NURSE vowels in NE?
