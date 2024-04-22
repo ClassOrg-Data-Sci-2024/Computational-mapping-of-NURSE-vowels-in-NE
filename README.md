@@ -37,6 +37,6 @@ The data for this study are hosted in the International Corpus of English [ICE-N
 
 * [Project presentation pdf](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-Nigerian-English/blob/main/Project%20Presentation/Project%20Presentation.pdf): this PowerPoint was presented in the Data Science Research in Linguistics.
 
-* [README](README.md): this document with the generalities of the project.
+* [README](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-Nigerian-English/blob/main/README.md): this document provides the overview of the project.
 
-* [LICENSE](LICENSE.md)
+* [LICENSE](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-Nigerian-English/blob/main/License.md): this page contains information about the data copyright.
