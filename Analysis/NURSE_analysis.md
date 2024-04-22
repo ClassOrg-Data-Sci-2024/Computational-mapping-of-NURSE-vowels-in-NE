@@ -21,8 +21,6 @@ Oluwasegun Amoniyan
   - [Effect of phonological environment on the production of NURSE
     vowels in
     NE](#effect-of-phonological-environment-on-the-production-of-nurse-vowels-in-ne)
-    - [Model Comparison for NURSE vowel
-      determinants](#model-comparison-for-nurse-vowel-determinants)
   - [What information does the variation in NE NURSE vowel
     explain?](#what-information-does-the-variation-in-ne-nurse-vowel-explain)
   - [Formant description of NURSE vowels in
@@ -35,10 +33,10 @@ Oluwasegun Amoniyan
       gender](#nurse-vowel-production-in-ne-by-age-and-gender)
     - [Duration patterns of NURSE vowel production in NE by age and
       gender](#duration-patterns-of-nurse-vowel-production-in-ne-by-age-and-gender)
-    - [Pitch](#pitch)
   - [NURSE vowel production by `ethnicity` (Geographical location of the
     speakers)](#nurse-vowel-production-by-ethnicity-geographical-location-of-the-speakers)
-- [Social factors new attempt](#social-factors-new-attempt)
+  - [NURSE vowel determinant by
+    ethinicity](#nurse-vowel-determinant-by-ethinicity)
 - [Session info](#session-info)
 
 ``` r
@@ -106,7 +104,7 @@ library(performance)
 
 ``` r
 #load `csv` that has segment information
-nurse_segment <- read_csv("C:/Users/oamon/Oluwasegun DS Project/Sociophonetic-study-of-NURSE-vowels-in-NE/tidy_csv_files/nurse_segment_info.csv",
+nurse_segment <- read_csv("C:/Users/oamon/Oluwasegun DS Project/Sociophonetic-study-of-NURSE-vowels-in-NE/Analysis/tidy_csv_files/nurse_segment_info.csv",
                                      na=c("", "Na", "NA", "N/A", "n/a", "na", "-", "undefined"))
 ```
 
@@ -213,7 +211,7 @@ head(vowel_variation)
 ggplot(nurse_segment, aes(x = vowel_variation, fill = vowel)) +
   geom_bar() +
   labs(x = "vowel", y = "Frequency", color = "Vowel") +
-  ggtitle("Frequencies of NE vowel variation without length contrast in NE") +
+  ggtitle("Frequencies of NE vowel variation (with)out length contrast in NE") +
   theme_minimal()
 ```
 
@@ -392,6 +390,7 @@ duration_model %>% summary()
 NURSE_context_dur <- coef(duration_model)%>%
   pluck('word')%>%
   rownames_to_column('NURSE_tokens')
+  
 
 #load the coefplot package
 library(coefplot)
@@ -405,17 +404,12 @@ coefplot(duration_model)
 ```
 
 ![](NURSE_analysis_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
-Similarly, I fitted the second level with `vowel_variation` (as level 2)
-and model did not reveal any significant relationship therefore I
-dropped it from the model. The residual revealed variation across `word`
-and `vowel` production as 4ms (for `word`) and 3ms (for `vowel`). It
-means that duration of NURSE vowel in the variety is more variant across
-`word` than `NURSE vowel`
-
-|                                                                                                                                                                                                                                                                                                                    |
-|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| and the explanatory power was substantial                                                                                                                                                                                                                                                                          |
-| (conditional R2 = 0.56) and the fixed effects alone (marginal R2) is of 0.03. The intercept (as `high_front`) is at 0.04 (95% CI \[-0.07, 0.15\], t(239) = 0.71, p = 0.401). Similarly, other **vowel_variations** do not have any correlation effect as p-values was consistentlywas greater than 0.05 (p\>0.05). |
+Similarly, I fitted the second level with `word` (as level 2) and model
+did not reveal any significant relationship therefore I dropped it from
+the model. The residual revealed variation across `word` and `vowel`
+production as 4ms (for `word`) and 3ms (for `vowel`). It means that
+duration of NURSE vowel in the variety is more variant across `word`
+than `NURSE vowel`
 
 ## Effect of phonological environment on the production of NURSE vowels in NE
 
@@ -444,8 +438,8 @@ nurse_segment <- nurse_segment %>%
   mutate(nurse_determinant = as.numeric(nurse_determinant))
 
 #regression analysis for the `phonological effect` on NURSE vowel production
-model_nurse_determinant1 <- glmer(nurse_determinant ~ 1 + (1|word), data = nurse_segment, family = poisson)
-summary(model_nurse_determinant1)
+model_nurse_determinant <- glmer(nurse_determinant ~ 1 + (1|word), data = nurse_segment, family = poisson)
+summary(model_nurse_determinant)
 ```
 
     Generalized linear mixed model fit by maximum likelihood (Laplace
@@ -473,64 +467,14 @@ summary(model_nurse_determinant1)
     Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 ``` r
-#`model_nurse_determinant1b` includes `id(as speech type)` to check if has contribute any effect
-model_nurse_determinant1b <- glmer(nurse_determinant ~ 1 + (1|word) + (1|file_name), data = nurse_segment, family = poisson)
+ggplot(nurse_segment, aes(x = nurse_determinant, color = word)) +
+  geom_bar() +
+  labs(x = "NURSE vowels", y = "Freq of NURSE vowels")+
+   ggtitle("Frequencies of NURSE vowel determinant by word")
 ```
 
-    boundary (singular) fit: see help('isSingular')
-
-``` r
-summary(model_nurse_determinant1b)
-```
-
-    Generalized linear mixed model fit by maximum likelihood (Laplace
-      Approximation) [glmerMod]
-     Family: poisson  ( log )
-    Formula: nurse_determinant ~ 1 + (1 | word) + (1 | file_name)
-       Data: nurse_segment
-
-         AIC      BIC   logLik deviance df.resid 
-       470.5    481.0   -232.2    464.5      243 
-
-    Scaled residuals: 
-        Min      1Q  Median      3Q     Max 
-    -0.7719 -0.7198  0.2817  0.5291  2.0775 
-
-    Random effects:
-     Groups    Name        Variance  Std.Dev. 
-     file_name (Intercept) 6.609e-10 2.571e-05
-     word      (Intercept) 7.576e-02 2.752e-01
-    Number of obs: 246, groups:  file_name, 246; word, 109
-
-    Fixed effects:
-                Estimate Std. Error z value Pr(>|z|)    
-    (Intercept)  -0.5792     0.1065  -5.438 5.39e-08 ***
-    ---
-    Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-    optimizer (Nelder_Mead) convergence code: 0 (OK)
-    boundary (singular) fit: see help('isSingular')
-
-``` r
-#anova compares the models
-anova(model_nurse_determinant1, model_nurse_determinant1b)
-```
-
-    Data: nurse_segment
-    Models:
-    model_nurse_determinant1: nurse_determinant ~ 1 + (1 | word)
-    model_nurse_determinant1b: nurse_determinant ~ 1 + (1 | word) + (1 | file_name)
-                              npar    AIC    BIC  logLik deviance Chisq Df
-    model_nurse_determinant1     2 468.47 475.48 -232.24   464.47         
-    model_nurse_determinant1b    3 470.47 480.99 -232.24   464.47     0  1
-                              Pr(>Chisq)
-    model_nurse_determinant1            
-    model_nurse_determinant1b          1
-
-``` r
-#remove model_nurse_determinant1b
-```
-
-The model determines if `NURSE vowels` are affected by
+![](NURSE_analysis_files/figure-gfm/unnamed-chunk-6-1.png)<!-- --> The
+model determines if `NURSE vowels` are affected by
 `phonological environment` and the intercept returned significant. The
 random effect for `word` indicates that the influence of `word` on vowel
 production varies. The standard deviation (`SD`) for the random effect
@@ -545,31 +489,8 @@ The model was extended to investigate whether vowel production in
 Nigerian English is influenced by the specific `word` and the
 `speaker's speech style` \[`broadcast interview` vs `broadcast talk`\].
 The model adds speaker identification `(id)`, indicating that the
-effects on vowel production vary between words and speakers. The
-standard deviation estimates for these random effects (0.26 for word and
-0.15 for speaker ID) quantify the variability between `words` and
-`speakers` in their effects on NURSE vowel production (p\<0.05). The
-intercept (as -0.58) represents the log expected count of vowel
-productions when no word or speaker-specific factors are taken into
-consideration. Thus, according to this extended model, both word and
-speech styles appear to influence vowel production in Nigerian English,
-with different words and speakers having varying effects.
-
-### Model Comparison for NURSE vowel determinants
-
-Anova determined the better model for the determinant of NURSE vowel in
-NE. The first model (`model_nurse_determinant1`) contains a random
-effect for each word, revealing that the influence of words on vowel
-production varies. The second model (`model_nurse_determinant1b`) builds
-on this by including a random effect for speech style (broadcast news
-vs. broadcast talk), which captures more variability between speakers.
-The AIC and BIC values indicate that model 1 is marginally superior due
-to its lower AIC (468.47) and BIC (475.48). However, the likelihood
-ratio test (Chisq) shows that including the random effect for speaker ID
-in model1b does not substantially enhance the fit over
-`model_nurse_determinant1` (p = 0.5445). These findings indicate that
-word and speech significantly influence the production of NURSE vowels
-in NE.
+effects on vowel production vary between words and speakers. The model
+did not converge and I dropped `id` from the model.
 
 ## What information does the variation in NE NURSE vowel explain?
 
@@ -599,7 +520,7 @@ implicature.
 
 ``` r
 #`nurse_aggregate.csv` has phonetic features of NURSE vowel production 
-nurse_aggregate <- read_csv("tidy_csv_files/nurse_raw_aggregated.csv",
+nurse_aggregate <- read_csv("C:/Users/oamon/Oluwasegun DS Project/Sociophonetic-study-of-NURSE-vowels-in-NE/Analysis/tidy_csv_files/nurse_raw_aggregated.csv",
                                      na=c("", "Na", "NA", "N/A", "n/a", "na", "-", "undefined"))
 ```
 
@@ -664,8 +585,7 @@ my_nurse_vowel_formant <- segment_aggregate %>%
                           widths=c(formant = 2, timepoint = 1))%>%
   
   # unite the columns and view
-  unite(id, formant, vowel, remove = FALSE) %>%
-  print()
+  unite(id, formant, vowel, remove = FALSE)
 ```
 
     Warning: There was 1 warning in `summarize()`.
@@ -681,26 +601,7 @@ my_nurse_vowel_formant <- segment_aggregate %>%
       # Now
       across(a:b, \(x) mean(x, na.rm = TRUE))
 
-    # A tibble: 140 × 5
-       id    vowel formant timepoint    hz
-       <chr> <chr> <chr>   <chr>     <dbl>
-     1 f1_ɔ  ɔ     f1      1          577 
-     2 f2_ɔ  ɔ     f2      1         1367 
-     3 f3_ɔ  ɔ     f3      1         2427 
-     4 f4_ɔ  ɔ     f4      1         3422.
-     5 f1_ɔ  ɔ     f1      2          642.
-     6 f2_ɔ  ɔ     f2      2         1384 
-     7 f3_ɔ  ɔ     f3      2         2429 
-     8 f4_ɔ  ɔ     f4      2         3368.
-     9 f1_ɔ  ɔ     f1      3          654 
-    10 f2_ɔ  ɔ     f2      3         1434.
-    # ℹ 130 more rows
-
 ``` r
-#mutate and normalize vowel formant with logarithmic transformation and store it in the df
-#my_nurse_vowel_formant <- my_nurse_vowel_formant %>% 
-#  mutate(formant.log = log(hz))
-
 # Define the formula as a function
 bark_norm <- function(fi) {
   zi <- 26.81 / (1 + 1960 / fi) - 0.53
@@ -729,15 +630,11 @@ head(my_nurse_vowel_formant)
     6 f2_ɔ  ɔ     f2      2         1384               10.6 
 
 ``` r
-#center the mean of the formant log around the mean (centering and transformations)
-#my_nurse_vowel_formant <- my_nurse_vowel_formant %>%
-#  mutate(formant.log.cen=center(formant.log))
-
 #visualization
 ggplot(my_nurse_vowel_formant, aes(x = timepoint, y = formant_bark_norms, group = id, color = formant)) +
   geom_line() + 
   facet_wrap(~vowel, nrow=3)+
-  ggtitle("Formanttrajectories for NURSE vowels in NE")+
+  ggtitle("Formant trajectories for NURSE vowels in NE at five points")+
   theme_classic()
 ```
 
@@ -753,189 +650,58 @@ ggplot(my_nurse_vowel_formant, aes(x = timepoint, y = formant_bark_norms, group 
 
 ``` r
 #formant.log.cen is a centered around grand mean
-formant_model <- lmer(formant_bark_norms ~ 1 + formant + (1|timepoint), data = my_nurse_vowel_formant)
+formant_model <- lmer(formant_bark_norms ~ 1 + timepoint + (1|formant), data = my_nurse_vowel_formant)
 formant_model %>% summary()
 ```
 
     Linear mixed model fit by REML. t-tests use Satterthwaite's method [
     lmerModLmerTest]
-    Formula: formant_bark_norms ~ 1 + formant + (1 | timepoint)
+    Formula: formant_bark_norms ~ 1 + timepoint + (1 | formant)
        Data: my_nurse_vowel_formant
 
-    REML criterion at convergence: -173.2
+    REML criterion at convergence: -148.6
 
     Scaled residuals: 
          Min       1Q   Median       3Q      Max 
-    -1.86345 -0.70409 -0.04958  0.87282  1.52876 
+    -1.79801 -0.68481 -0.06046  0.87111  1.54022 
 
     Random effects:
-     Groups    Name        Variance Std.Dev.
-     timepoint (Intercept) 0.009171 0.09576 
-     Residual              0.013509 0.11623 
-    Number of obs: 140, groups:  timepoint, 5
+     Groups   Name        Variance Std.Dev.
+     formant  (Intercept) 21.36682 4.6224  
+     Residual              0.01351 0.1162  
+    Number of obs: 140, groups:  formant, 4
 
     Fixed effects:
                  Estimate Std. Error        df t value Pr(>|t|)    
-    (Intercept)   5.93070    0.04712   5.28584   125.9 2.14e-10 ***
-    formantf2     4.78717    0.02778 132.00000   172.3  < 2e-16 ***
-    formantf3     8.41711    0.02778 132.00000   303.0  < 2e-16 ***
-    formantf4    10.56092    0.02778 132.00000   380.1  < 2e-16 ***
+    (Intercept)  11.71768    2.31132   3.00041   5.070   0.0148 *  
+    timepoint2    0.12554    0.03106 132.00000   4.041 8.97e-05 ***
+    timepoint3    0.23416    0.03106 132.00000   7.538 6.80e-12 ***
+    timepoint4    0.23958    0.03106 132.00000   7.713 2.66e-12 ***
+    timepoint5    0.17235    0.03106 132.00000   5.548 1.52e-07 ***
     ---
     Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
     Correlation of Fixed Effects:
-              (Intr) frmnt2 frmnt3
-    formantf2 -0.295              
-    formantf3 -0.295  0.500       
-    formantf4 -0.295  0.500  0.500
+               (Intr) tmpnt2 tmpnt3 tmpnt4
+    timepoint2 -0.007                     
+    timepoint3 -0.007  0.500              
+    timepoint4 -0.007  0.500  0.500       
+    timepoint5 -0.007  0.500  0.500  0.500
 
 ``` r
 library(sjPlot)
-```
-
-    Learn more about sjPlot with 'browseVignettes("sjPlot")'.
-
-``` r
 #Estimate table that explains the independent and the dependent variables.
-formant_model %>% tab_model()
-```
-
-<table style="border-collapse:collapse; border:none;">
-<tr>
-<th style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm;  text-align:left; ">
- 
-</th>
-<th colspan="3" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; ">
-formant bark norms
-</th>
-</tr>
-<tr>
-<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  text-align:left; ">
-Predictors
-</td>
-<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
-Estimates
-</td>
-<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
-CI
-</td>
-<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">
-p
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
-(Intercept)
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-5.93
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-5.84 – 6.02
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-<strong>\<0.001</strong>
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
-formant \[f2\]
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-4.79
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-4.73 – 4.84
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-<strong>\<0.001</strong>
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
-formant \[f3\]
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-8.42
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-8.36 – 8.47
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-<strong>\<0.001</strong>
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
-formant \[f4\]
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-10.56
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-10.51 – 10.62
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-<strong>\<0.001</strong>
-</td>
-</tr>
-<tr>
-<td colspan="4" style="font-weight:bold; text-align:left; padding-top:.8em;">
-Random Effects
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
-σ<sup>2</sup>
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
-0.01
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
-τ<sub>00</sub> <sub>timepoint</sub>
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
-0.01
-</td>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
-ICC
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
-0.40
-</td>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
-N <sub>timepoint</sub>
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
-5
-</td>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm; border-top:1px solid;">
-Observations
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3">
-140
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
-Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
-0.999 / 0.999
-</td>
-</tr>
-</table>
-
-``` r
+#formant_model %>% tab_model()
 formant_model %>% plot_model()
 ```
 
-![](NURSE_analysis_files/figure-gfm/unnamed-chunk-10-1.png)<!-- --> This
+![](NURSE_analysis_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+
+``` r
+plot_model(formant_model, type = "pred", terms = c("timepoint", "formant"))
+```
+
+![](NURSE_analysis_files/figure-gfm/unnamed-chunk-10-2.png)<!-- --> This
 analysis shows the estimates, confidence intervals (CI), and p-values
 for `formant` with log-transformation. The intercept `formant 1` is
 estimated to be -0.97 with a 95% confidence interval between -0.99 and
@@ -966,11 +732,11 @@ variation in NURSE vowel production.
 
 ``` r
 #load csv with social variables
-nurse_social <- read_csv("tidy_csv_files/nurse_social_var.csv",
+nurse_social <- read_csv("C:/Users/oamon/Oluwasegun DS Project/Sociophonetic-study-of-NURSE-vowels-in-NE/Analysis/tidy_csv_files/nurse_social_var.csv",
                                      na=c("", "Na", "NA", "N/A", "n/a", "na", "-", "undefined"))
 ```
 
-    Rows: 8 Columns: 7
+    Rows: 16 Columns: 7
     ── Column specification ────────────────────────────────────────────────────────
     Delimiter: ","
     chr (6): files, Gender, Ethnicity, Profession, Profession_category, Age_cate...
@@ -993,27 +759,27 @@ nurse_social_segment <- merge(nurse_segment, nurse_social, by = "id")
 head(nurse_social_segment)
 ```
 
-           id ...1    file_name vowel interval   duration    start       end
-    1 bnew_01    4 bnew_01_0004     ɒ        8 0.08000000 161.3300 161.41000
-    2 bnew_01    7 bnew_01_0007     ɛ       14 0.13991211 286.6415 286.78142
-    3 bnew_01    9 bnew_01_0009     ɑ       18 0.29116197 300.3112 300.60241
-    4 bnew_01    1 bnew_01_0001     ɔ        2 0.07815562  37.1274  37.20556
-    5 bnew_01    5 bnew_01_0005     ɑ       10 0.10857549 182.9600 183.06858
-    6 bnew_01    8 bnew_01_0008     ɛ       16 0.09303889 294.7300 294.82304
-             word word_interval word_start word_end previous_word next_word
-    1    occurred           363     161.11 161.4800          <NA>     close
-    2      person           607     286.67 286.8000        twenty     three
-    3 transferred           641     299.77 300.6197     illegally      into
-    4       worse            92      37.07  38.2800          <NA> according
-    5     swerved           417     182.83 183.2400      mechanic      <NA>
-    6     earlier           627     294.73 295.0800           had     taken
+           id ...1    file_name vowel interval   duration     start       end
+    1 bnew_01    1 bnew_01_0001     ɔ        2 0.07815562  37.12740  37.20556
+    2 bnew_01    2 bnew_01_0002     ɔ        4 0.09937295  91.41509  91.51446
+    3 bnew_01    3 bnew_01_0003     ɒ        6 0.08547874 159.16368 159.24916
+    4 bnew_01    4 bnew_01_0004     ɒ        8 0.08000000 161.33000 161.41000
+    5 bnew_01    5 bnew_01_0005     ɑ       10 0.10857549 182.96000 183.06858
+    6 bnew_01    6 bnew_01_0006     ɒ       12 0.09639157 219.53361 219.63000
+          word word_interval word_start  word_end previous_word next_word
+    1    worse            92      37.07  38.28000          <NA> according
+    2     urge           216      91.43  91.47384          <NA>       the
+    3 thursday           353     158.90 159.29000          <NA>        on
+    4 occurred           363     161.11 161.48000          <NA>     close
+    5  swerved           417     182.83 183.24000      mechanic      <NA>
+    6  working           491     219.40 219.91000       already      <NA>
       vowel_variation nurse_vowel_space duration.cen nurse_determinant Gender Age
-    1        mid_back        back_vowel -0.007258719                 1 female  23
-    2       mid_front       front_vowel  0.052653393                 0 female  23
-    3  low_front_back        back_vowel  0.203903248                 1 female  23
-    4        mid_back        back_vowel -0.009103096                 1 female  23
+    1        mid_back        back_vowel -0.009103096                 1 female  23
+    2        mid_back        back_vowel  0.012114235                 1 female  23
+    3        mid_back        back_vowel -0.001779976                 1 female  23
+    4        mid_back        back_vowel -0.007258719                 1 female  23
     5  low_front_back        back_vowel  0.021316770                 1 female  23
-    6       mid_front       front_vowel  0.005780170                 0 female  23
+    6        mid_back        back_vowel  0.009132856                 1 female  23
       Ethnicity      Profession Profession_category Age_category
     1      Igbo Radio presenter         Broadcaster      younger
     2      Igbo Radio presenter         Broadcaster      younger
@@ -1042,12 +808,12 @@ head(nurse_freq_age)
 
        
         older younger
-      ɑ    17       6
-      ɒ     8      10
-      æ    41       3
-      ɔ    14      10
-      ɛ    14      15
-      ɜ     1       5
+      ɑ    23       9
+      ɒ    28      11
+      æ    58       9
+      ɔ    27      15
+      ɛ    30      19
+      ɜ    11       5
 
 ``` r
 #percentage
@@ -1061,42 +827,42 @@ head(nurse_age_vowel)
 
                 Gender
     Age_category     female       male
-         older    0.8130081  6.0975610
-         younger  2.4390244  0.0000000
+         older    1.2195122  8.1300813
+         younger  2.4390244  1.2195122
 
     , , vowel = ɒ
 
                 Gender
     Age_category     female       male
-         older    0.4065041  2.8455285
-         younger  2.4390244  1.6260163
+         older    1.6260163  9.7560976
+         younger  2.4390244  2.0325203
 
     , , vowel = æ
 
                 Gender
     Age_category     female       male
-         older    1.6260163 15.0406504
-         younger  0.8130081  0.4065041
+         older    2.0325203 21.5447154
+         younger  0.8130081  2.8455285
 
     , , vowel = ɔ
 
                 Gender
     Age_category     female       male
-         older    0.4065041  5.2845528
-         younger  1.6260163  2.4390244
+         older    0.4065041 10.5691057
+         younger  1.6260163  4.4715447
 
     , , vowel = ɛ
 
                 Gender
     Age_category     female       male
-         older    0.4065041  5.2845528
-         younger  4.0650407  2.0325203
+         older    0.8130081 11.3821138
+         younger  4.0650407  3.6585366
 
     , , vowel = ɜ
 
                 Gender
     Age_category     female       male
-         older    0.0000000  0.4065041
+         older    0.0000000  4.4715447
          younger  2.0325203  0.0000000
 
     , , vowel = ɪ
@@ -1136,27 +902,27 @@ summary(model_nurse_age_det)
        Data: nurse_social_segment
 
          AIC      BIC   logLik deviance df.resid 
-       262.7    271.7   -128.4    256.7      142 
+       469.1    479.6   -231.5    463.1      243 
 
     Scaled residuals: 
         Min      1Q  Median      3Q     Max 
-    -0.8437 -0.6710 -0.6559  0.7757  2.1441 
+    -0.8467 -0.7116  0.3020  0.5654  2.2050 
 
     Random effects:
      Groups Name        Variance Std.Dev.
-     word   (Intercept) 0.02049  0.1431  
-    Number of obs: 145, groups:  word, 83
+     word   (Intercept) 0.08572  0.2928  
+    Number of obs: 246, groups:  word, 109
 
     Fixed effects:
                 Estimate Std. Error z value Pr(>|z|)  
-    (Intercept)  -0.3713     0.1982  -1.873   0.0610 .
-    Gendermale   -0.4174     0.2362  -1.768   0.0771 .
+    (Intercept)  -0.3946     0.1833  -2.153   0.0314 *
+    Gendermale   -0.2425     0.2030  -1.195   0.2323  
     ---
     Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
     Correlation of Fixed Effects:
                (Intr)
-    Gendermale -0.702
+    Gendermale -0.813
 
 ``` r
 model_nurse_age_det %>% tab_model()
@@ -1190,13 +956,13 @@ p
 (Intercept)
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.69
+0.67
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.47 – 1.02
+0.47 – 0.97
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.061
+<strong>0.031</strong>
 </td>
 </tr>
 <tr>
@@ -1204,13 +970,13 @@ p
 Gender \[male\]
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.66
+0.78
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.41 – 1.05
+0.53 – 1.17
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.077
+0.232
 </td>
 </tr>
 <tr>
@@ -1223,7 +989,7 @@ Random Effects
 σ<sup>2</sup>
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
-1.07
+1.02
 </td>
 </tr>
 <tr>
@@ -1231,28 +997,28 @@ Random Effects
 τ<sub>00</sub> <sub>word</sub>
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
-0.02
+0.09
 </td>
 <tr>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
 ICC
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
-0.02
+0.08
 </td>
 <tr>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
 N <sub>word</sub>
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
-83
+109
 </td>
 <tr>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm; border-top:1px solid;">
 Observations
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3">
-145
+246
 </td>
 </tr>
 <tr>
@@ -1260,13 +1026,17 @@ Observations
 Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
-0.032 / 0.051
+0.008 / 0.085
 </td>
 </tr>
 </table>
 
 ``` r
 #model_nurse_age_det %>% plot_model()
+
+#cat_plot(poisson.model2, pred = tension, modx = wool, geom = "line", plot.points = TRUE)
+#library(jtools)
+#cat_plot(model_nurse_age_det, pred = word, modx = nurse_determinant)
 ```
 
 ``` r
@@ -1290,8 +1060,8 @@ nurse_social_segment %>%
     # A tibble: 2 × 2
       Age_category age_vdur
       <chr>           <dbl>
-    1 older          0.0565
-    2 younger        0.0389
+    1 older          0.0416
+    2 younger        0.0315
 
 ``` r
 age_nurse_vowel <- lmer(duration.cen ~ 1 + Age_category + Gender + (1|vowel),  nurse_social_segment) 
@@ -1303,30 +1073,30 @@ age_nurse_vowel %>% summary()
     Formula: duration.cen ~ 1 + Age_category + Gender + (1 | vowel)
        Data: nurse_social_segment
 
-    REML criterion at convergence: -392.7
+    REML criterion at convergence: -706.7
 
     Scaled residuals: 
         Min      1Q  Median      3Q     Max 
-    -1.8879 -0.6375 -0.1409  0.4729  4.9697 
+    -1.6692 -0.7082 -0.1908  0.5298  5.6012 
 
     Random effects:
      Groups   Name        Variance  Std.Dev.
-     vowel    (Intercept) 5.188e-05 0.007203
-     Residual             3.367e-03 0.058025
-    Number of obs: 145, groups:  vowel, 7
+     vowel    (Intercept) 2.849e-05 0.005338
+     Residual             3.011e-03 0.054874
+    Number of obs: 246, groups:  vowel, 7
 
     Fixed effects:
-                         Estimate Std. Error        df t value Pr(>|t|)    
-    (Intercept)         7.847e-03  1.358e-02 5.936e+01   0.578    0.566    
-    Age_categoryyounger 1.334e-02  1.292e-02 1.076e+02   1.032    0.304    
-    Gendermale          5.423e-02  1.314e-02 1.420e+02   4.128 6.21e-05 ***
+                          Estimate Std. Error         df t value Pr(>|t|)  
+    (Intercept)           0.019072   0.010060  95.448663   1.896    0.061 .
+    Age_categoryyounger  -0.000236   0.008786 239.961635  -0.027    0.979  
+    Gendermale            0.024855   0.009817 242.444748   2.532    0.012 *
     ---
     Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
     Correlation of Fixed Effects:
                 (Intr) Ag_ctg
-    Ag_ctgryyng -0.727       
-    Gendermale  -0.862  0.581
+    Ag_ctgryyng -0.587       
+    Gendermale  -0.883  0.441
 
 ``` r
 age_nurse_vowel %>% tab_model()
@@ -1360,13 +1130,13 @@ p
 (Intercept)
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.01
+0.02
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.02 – 0.03
+-0.00 – 0.04
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.564
+0.059
 </td>
 </tr>
 <tr>
@@ -1374,13 +1144,13 @@ p
 Age category \[younger\]
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.01
+-0.00
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.01 – 0.04
+-0.02 – 0.02
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.304
+0.979
 </td>
 </tr>
 <tr>
@@ -1388,13 +1158,13 @@ Age category \[younger\]
 Gender \[male\]
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.05
+0.02
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.03 – 0.08
+0.01 – 0.04
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-<strong>\<0.001</strong>
+<strong>0.012</strong>
 </td>
 </tr>
 <tr>
@@ -1422,7 +1192,7 @@ Random Effects
 ICC
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
-0.02
+0.01
 </td>
 <tr>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
@@ -1436,7 +1206,7 @@ N <sub>vowel</sub>
 Observations
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3">
-145
+246
 </td>
 </tr>
 <tr>
@@ -1444,11 +1214,16 @@ Observations
 Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
-0.121 / 0.135
+0.032 / 0.041
 </td>
 </tr>
 </table>
 
+``` r
+plot_model(age_nurse_vowel, type = "pred", terms = c("Age_category", "Gender", "vowel"))
+```
+
+![](NURSE_analysis_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
 Hooray! Younger Nigerian English speakers have short duration for NURSE
 vowel than the adult, however, the model This analysis provides
 estimates, confidence intervals (CI), and p-values for predictors in a
@@ -1477,7 +1252,7 @@ duration.
 #### Visualization
 
 ``` r
-ggplot(nurse_social_segment, aes(x = vowel, y = duration.cen), fill = Gender) +
+ggplot(nurse_social_segment, aes(x = vowel, y = duration.cen, color = Gender)) +
   geom_point() +
   facet_wrap(vars(Age_category), ncol = 3) +
   labs(x = "NURSE vowels", y = "Duration of NURSE vowels")+
@@ -1485,16 +1260,6 @@ ggplot(nurse_social_segment, aes(x = vowel, y = duration.cen), fill = Gender) +
 ```
 
 ![](NURSE_analysis_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
-
-### Pitch
-
-model 1 = (duration ~ 1 + Age_category + Gender + Ethnicity +
-Profession_category) (1\|Word) + (1\|vowel) + (1\|file_name) model 2 =
-(f0 ~ 1 + Age_category + Gender + Ethnicity + Profession_category)
-(1\|Word) + (1\|vowel) + (1\|file_name)) model 3 = (aggregate) model
-3(formant) = f3 (previous studies show *f3* as a cue for *categorical*
-or *gradient* rhoticization) What does *f3* reveal in this study?  
-(f3 ~ 1 + Vowels)
 
 ## NURSE vowel production by `ethnicity` (Geographical location of the speakers)
 
@@ -1506,12 +1271,12 @@ head(nurse_freq_ethnicity)
 
        
         Hausa Igbo Yoruba
-      ɑ    12    5      6
-      ɒ     5    5      8
-      æ    27   10      7
-      ɔ     8    7      9
-      ɛ     4   11     14
-      ɜ     1    0      5
+      ɑ    12    5     13
+      ɒ     5    5     29
+      æ    27   10     28
+      ɔ     8    7     26
+      ɛ     4   11     27
+      ɜ     1    0     14
 
 ``` r
 #percentage
@@ -1525,7 +1290,7 @@ head(nurse_vowel_ethnicity)
     Ethnicity          ɑ          ɒ          æ          ɔ          ɛ          ɜ
        Hausa   4.8780488  2.0325203 10.9756098  3.2520325  1.6260163  0.4065041
        Igbo    2.0325203  2.0325203  4.0650407  2.8455285  4.4715447  0.0000000
-       Yoruba  2.4390244  3.2520325  2.8455285  3.6585366  5.6910569  2.0325203
+       Yoruba  5.2845528 11.7886179 11.3821138 10.5691057 10.9756098  5.6910569
              vowel
     Ethnicity          ɪ
        Hausa   0.0000000
@@ -1552,42 +1317,42 @@ age_nurse_ethnicity %>% summary()
     Formula: duration.cen ~ 1 + Ethnicity + vowel + (1 | word)
        Data: nurse_social_segment
 
-    REML criterion at convergence: -376
+    REML criterion at convergence: -698
 
     Scaled residuals: 
         Min      1Q  Median      3Q     Max 
-    -1.7214 -0.5077 -0.1388  0.2986  4.0463 
+    -1.9788 -0.4874 -0.1888  0.3519  4.2741 
 
     Random effects:
      Groups   Name        Variance Std.Dev.
-     word     (Intercept) 0.002105 0.04588 
-     Residual             0.001735 0.04165 
-    Number of obs: 145, groups:  word, 83
+     word     (Intercept) 0.001633 0.04041 
+     Residual             0.001385 0.03722 
+    Number of obs: 233, groups:  word, 107
 
     Fixed effects:
                       Estimate Std. Error         df t value Pr(>|t|)    
-    (Intercept)      6.418e-02  1.526e-02  1.354e+02   4.206  4.7e-05 ***
-    EthnicityIgbo   -6.394e-03  1.404e-02  1.286e+02  -0.455   0.6496    
-    EthnicityYoruba -2.536e-02  1.204e-02  1.317e+02  -2.106   0.0371 *  
-    vowelɒ          -2.023e-02  1.996e-02  1.333e+02  -1.014   0.3125    
-    vowelæ          -8.216e-03  1.394e-02  1.151e+02  -0.589   0.5569    
-    vowelɔ          -1.249e-02  1.897e-02  1.324e+02  -0.658   0.5114    
-    vowelɛ          -1.647e-04  1.695e-02  1.310e+02  -0.010   0.9923    
-    vowelɜ          -1.704e-03  2.822e-02  1.332e+02  -0.060   0.9519    
-    vowelɪ          -8.607e-02  6.398e-02  1.050e+02  -1.345   0.1814    
+    (Intercept)      6.246e-02  1.217e-02  2.186e+02   5.132 6.32e-07 ***
+    EthnicityIgbo   -6.688e-03  1.147e-02  2.228e+02  -0.583 0.560510    
+    EthnicityYoruba -2.875e-02  8.296e-03  2.173e+02  -3.466 0.000637 ***
+    vowelɒ          -1.127e-02  1.427e-02  2.054e+02  -0.790 0.430517    
+    vowelæ          -4.568e-03  1.093e-02  2.187e+02  -0.418 0.676423    
+    vowelɔ          -2.181e-02  1.426e-02  2.097e+02  -1.529 0.127845    
+    vowelɛ           4.972e-04  1.269e-02  2.234e+02   0.039 0.968780    
+    vowelɜ          -9.131e-03  1.642e-02  2.143e+02  -0.556 0.578832    
+    vowelɪ          -8.097e-02  5.605e-02  1.484e+02  -1.445 0.150674    
     ---
     Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
     Correlation of Fixed Effects:
                 (Intr) EthncI EthncY vowelɒ vowelæ vowelɔ vowelɛ vowelɜ
-    EthnictyIgb -0.419                                                 
-    EthnictyYrb -0.336  0.432                                          
-    vowelɒ      -0.604  0.044 -0.068                                   
-    vowelæ      -0.705  0.084  0.105  0.501                            
-    vowelɔ      -0.627  0.047 -0.117  0.583  0.523                     
-    vowelɛ      -0.568 -0.119 -0.182  0.530  0.599  0.565              
-    vowelɜ      -0.434  0.111 -0.110  0.357  0.356  0.446  0.428       
-    vowelɪ      -0.175  0.018 -0.108  0.157  0.148  0.172  0.170  0.124
+    EthnictyIgb -0.432                                                 
+    EthnictyYrb -0.463  0.572                                          
+    vowelɒ      -0.611  0.046 -0.076                                   
+    vowelæ      -0.710  0.091  0.080  0.575                            
+    vowelɔ      -0.620  0.047 -0.049  0.679  0.577                     
+    vowelɛ      -0.595 -0.086 -0.096  0.595  0.680  0.591              
+    vowelɜ      -0.486  0.028 -0.091  0.482  0.544  0.521  0.567       
+    vowelɪ      -0.149  0.009 -0.047  0.144  0.142  0.142  0.143  0.119
 
 ``` r
 age_nurse_ethnicity %>% tab_model()
@@ -1624,7 +1389,7 @@ p
 0.06
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.03 – 0.09
+0.04 – 0.09
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
 <strong>\<0.001</strong>
@@ -1641,7 +1406,7 @@ Ethnicity \[Igbo\]
 -0.03 – 0.02
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.650
+0.561
 </td>
 </tr>
 <tr>
@@ -1652,29 +1417,15 @@ Ethnicity \[Yoruba\]
 -0.03
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.05 – -0.00
+-0.05 – -0.01
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-<strong>0.037</strong>
+<strong>0.001</strong>
 </td>
 </tr>
 <tr>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
 vowel \[ɒ\]
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.02
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.06 – 0.02
-</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.313
-</td>
-</tr>
-<tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
-vowel \[æ\]
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
 -0.01
@@ -1683,7 +1434,21 @@ vowel \[æ\]
 -0.04 – 0.02
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.557
+0.430
+</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">
+vowel \[æ\]
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.00
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+-0.03 – 0.02
+</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
+0.676
 </td>
 </tr>
 <tr>
@@ -1691,13 +1456,13 @@ vowel \[æ\]
 vowel \[ɔ\]
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.01
+-0.02
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.05 – 0.03
+-0.05 – 0.01
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.511
+0.128
 </td>
 </tr>
 <tr>
@@ -1705,13 +1470,13 @@ vowel \[ɔ\]
 vowel \[ɛ\]
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.00
+0.00
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.03 – 0.03
+-0.02 – 0.03
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.992
+0.969
 </td>
 </tr>
 <tr>
@@ -1719,13 +1484,13 @@ vowel \[ɛ\]
 vowel \[ɜ\]
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.00
+-0.01
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.06 – 0.05
+-0.04 – 0.02
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.952
+0.579
 </td>
 </tr>
 <tr>
@@ -1733,13 +1498,13 @@ vowel \[ɜ\]
 vowel \[ɪ\]
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.09
+-0.08
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
--0.21 – 0.04
+-0.19 – 0.03
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">
-0.181
+0.150
 </td>
 </tr>
 <tr>
@@ -1767,21 +1532,21 @@ Random Effects
 ICC
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
-0.55
+0.54
 </td>
 <tr>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">
 N <sub>word</sub>
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
-83
+107
 </td>
 <tr>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm; border-top:1px solid;">
 Observations
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3">
-145
+233
 </td>
 </tr>
 <tr>
@@ -1789,20 +1554,22 @@ Observations
 Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 </td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">
-0.055 / 0.573
+0.086 / 0.580
 </td>
 </tr>
 </table>
 
 ``` r
-ggplot(nurse_social_segment, aes(x = vowel, y = duration.cen), fill = Gender) +
-  geom_point() +
+ggplot(nurse_social_segment, aes(x = vowel, y = duration.cen, color = Gender)) +
+  geom_boxplot() +
   facet_wrap(vars(Ethnicity), ncol = 3) +
   labs(x = "NURSE vowels", y = "Duration of NURSE vowels")+
-   ggtitle("Duration patterns NURSE vowel production by social group")
+   ggtitle("Duration patterns NURSE vowel production by Ethnicity")
 ```
 
 ![](NURSE_analysis_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->
+
+## NURSE vowel determinant by ethinicity
 
 ``` r
 nurse_ethn_det <- glmer(nurse_determinant ~ 1 + Ethnicity + (1|word), data = nurse_social_segment, family = poisson)
@@ -1816,69 +1583,38 @@ summary(nurse_ethn_det)
        Data: nurse_social_segment
 
          AIC      BIC   logLik deviance df.resid 
-       265.4    277.3   -128.7    257.4      141 
+       446.1    459.9   -219.0    438.1      229 
 
     Scaled residuals: 
         Min      1Q  Median      3Q     Max 
-    -0.8209 -0.6805 -0.6546  0.7487  2.0770 
+    -0.8387 -0.6935  0.3214  0.3890  2.0179 
 
     Random effects:
      Groups Name        Variance Std.Dev.
-     word   (Intercept) 0.02254  0.1501  
-    Number of obs: 145, groups:  word, 83
+     word   (Intercept) 0.02449  0.1565  
+    Number of obs: 233, groups:  word, 107
 
     Fixed effects:
                     Estimate Std. Error z value Pr(>|z|)    
-    (Intercept)     -0.75931    0.20838  -3.644 0.000269 ***
-    EthnicityIgbo   -0.06421    0.31693  -0.203 0.839444    
-    EthnicityYoruba  0.33090    0.26246   1.261 0.207397    
+    (Intercept)     -0.76379    0.20235  -3.775  0.00016 ***
+    EthnicityIgbo   -0.06287    0.31408  -0.200  0.84133    
+    EthnicityYoruba  0.38008    0.22159   1.715  0.08630 .  
     ---
     Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
     Correlation of Fixed Effects:
                 (Intr) EthncI
-    EthnictyIgb -0.533       
-    EthnictyYrb -0.687  0.462
+    EthnictyIgb -0.593       
+    EthnictyYrb -0.838  0.555
 
 ``` r
-ggplot(nurse_social_segment, aes(x = vowel, fill = Ethnicity)) +
-  geom_bar() +
-  labs(x = "vowel", y = "Frequency", color = "Vowel") +
-  ggtitle("Frequencies of NE vowels in NE") +
-  theme_minimal()
+plot_model(nurse_ethn_det, type = "pred", terms = c("Ethnicity", "word"))
 ```
 
-![](NURSE_analysis_files/figure-gfm/unnamed-chunk-21-1.png)<!-- -->
+    Warning in RColorBrewer::brewer.pal(n, pal): n too large, allowed maximum for palette Set1 is 9
+    Returning the palette you asked for with that many colors
 
-``` r
-#`0`= `front_vowel`, `1` = `back_vowel`, `2`=`central vowel` 
-
-
-#nurse_ethn_det <- glmer(nurse_determinant ~ 1 + Ethnicity + (1|word), data = nurse_social_segment, family = poisson)
-#summary(nurse_ethn_det)
-```
-
-# Social factors new attempt
-
-``` r
-#formant_trajectories <-
- # formant_trajectories %>%
-  #mutate(id_1 = map_chr(id, ~ str_sub(.x, 1, 7)))
-#
-#nurse_social <- nurse_social %>%
- # rename(
-  #  id_1 = contains("files"))
-#
-#social_effect1 <- merge(nurse_social, formant_trajectories, by  = "id_1")
-#social_effect1 <- social_effect1%>%
- # select(-c('id', 'by'))
-#
-#social_effect %>%
- # rename(
-  #  Pitch = contains('f0'),
-   # id_1 = contains("file_name"),
-    #speech = contains("files"))
-```
+![](NURSE_analysis_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
 
 # Session info
 
@@ -1936,7 +1672,8 @@ sessionInfo()
     [58] codetools_0.2-19    stringi_1.8.3       gtable_0.3.4       
     [61] ggeffects_1.3.4     munsell_0.5.0       pillar_1.9.0       
     [64] htmltools_0.5.7     R6_2.5.1            vroom_1.6.5        
-    [67] evaluate_0.23       lattice_0.21-9      highr_0.10         
-    [70] backports_1.4.1     snakecase_0.11.1    broom_1.0.5        
-    [73] Rcpp_1.0.12         nlme_3.1-163        xfun_0.41          
-    [76] zoo_1.8-12          sjmisc_2.8.9        pkgconfig_2.0.3    
+    [67] evaluate_0.23       lattice_0.21-9      haven_2.5.4        
+    [70] highr_0.10          backports_1.4.1     snakecase_0.11.1   
+    [73] broom_1.0.5         Rcpp_1.0.12         nlme_3.1-163       
+    [76] xfun_0.41           zoo_1.8-12          sjmisc_2.8.9       
+    [79] pkgconfig_2.0.3    
