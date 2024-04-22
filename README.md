@@ -39,4 +39,4 @@ The data for this study are hosted in the International Corpus of English [ICE-N
 
 * [README](README.md): this document with the generalities of the project.
 
-* LICENSE:(LICENSE.md)
+* [LICENSE](LICENSE.md)
