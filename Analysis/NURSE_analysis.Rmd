@@ -147,6 +147,9 @@ nurse_segment <- nurse_segment %>%
 #regression model for duration
 duration_model <- lmer(duration.cen ~ 1 + vowel + (1|word), data = nurse_segment)
 duration_model %>% summary()
+library(sjPlot)
+duration_model %>% tab_model()
+duration_model %>% plot_model()
 
 NURSE_context_dur <- coef(duration_model)%>%
   pluck('word')%>%
@@ -158,6 +161,24 @@ library(coefplot)
 
 # Create the coefficient plot
 coefplot(duration_model)
+
+#alternative plotting
+duration_m <- data.frame(
+  vowel = c("[ɒ]", "[æ]", "[ɔ]", "[ɛ]", "[ɜ]", "[ɪ]"),
+  Estimates = c(-0.01, 0.00, -0.02, -0.00, -0.01, -0.09),
+  CI_Lower = c(-0.04, -0.02, -0.05, -0.02, -0.04, -0.20),
+  CI_Upper = c(0.02, 0.02, 0.01, 0.02, 0.02, 0.02),
+  p_value = c(0.372, 0.938, 0.161, 0.949, 0.603, 0.119)
+)
+
+ggplot(duration_m, aes(x = vowel, y = Estimates, ymin = CI_Lower, ymax = CI_Upper)) +
+  geom_point(size = 3, color = "blue") +
+  geom_errorbar(width = 0.2, color = "blue") +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
+  labs(title = "Effect of Vowels on Duration (cen)",
+       x = "Vowel",
+       y = "Estimates") +
+  theme_minimal()
 ```
 Similarly, I fitted the second level with `word` (as level 2) and model did not reveal any significant relationship therefore I dropped it from the model. The residual revealed variation across `word` and `vowel` production as 4ms (for `word`) and 3ms (for `vowel`). It means that duration of NURSE vowel in the variety is more variant across `word` than `NURSE vowel`
 
