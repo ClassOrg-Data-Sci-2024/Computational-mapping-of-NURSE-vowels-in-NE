@@ -35,7 +35,7 @@ Specifically:
 
 - Nigeria has around 200 ethnic groupings, including three main ones (Hausa, Igbo, and Yoruba). I predict that ethnicity influences NURSE vowel formation in NE.
 
-- Socio-linguistic variables may impact how NURSE vowels are produced in NE.These variables may lead to variations in the generation of NURSE vowels compared to monolingual speech contexts.
+- Socio-linguistic variables may impact how NURSE vowels are produced in NE.These variables may lead to variations in the production of NURSE vowels compared to monolingual speech contexts.
 
 # Methodology and Data
 
@@ -55,13 +55,13 @@ In this section, I reported on the NURSE vowel variation by phonetic features, s
 
 ## Analysis of NURSE vowel production (phonetics)
 
-To address RQ1, I accounted for the variation in production of the NURSE vowel in NE, first with length contrast and then without length contrast, to find the frequent phoneme for the NURSE vowel in NE, since vowel length is insufficient to differentiate vowels in NE. The findings showed that the production of NURSE vowel ranged from [nɜs], [na:s], [nas], [nɔs], [nɐ:s], [nɛs] to [ɪ] with variable frequency. The most common variant form was [nɜs] as [nas] or [nɛs]. These studies indicated that there is heterogeneity in the generation of the NURSE vowel in the Northeast. Second, the data demonstrated that the variance was not due to the categorical or gradient creation of rhotics in central-mid-vowel but rather to differences in phoneme realization. Overall, the data demonstrated that NURSE vowel sounds are generally shorter in length than the longer ones in the NE type.
+To address RQ1, I accounted for the variation in production of the NURSE vowel in NE, first with length contrast and then without length contrast, to find the frequent phoneme for the NURSE vowel in NE, since vowel length is insufficient to differentiate vowels in NE. The findings showed that the production of NURSE vowel ranged from [nɜs], [na:s], [nas], [nɔs], [nɐ:s], [nɛs] to [ɪ] with variable frequency. The most common variant form was [nɜs] as [nas] or [nɛs]. These studies indicated that there is heterogeneity in the realization of the NURSE vowel in the Northeast. Second, the data demonstrated that the variance was not due to the categorical or gradient creation of rhotics in central-mid-vowel but rather to differences in phoneme realization. Overall, the data demonstrated that NURSE vowel sounds are generally shorter in length than the longer ones in the NE type.
 
 ![](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-Nigerian-English/blob/main/NURSE_analysis_files/figure-gfm/unnamed-chunk-2-1.png)
 
 **Figure 1: Production of NURSE vowel in NE**
 
-Examining the NURSE vowel space in NE reveals a higher production rate of front vowels (47.56%) compared to back (45.93%) or middle (6.5%). This distribution suggests that NE had almost identical numbers of back and front vowels, with back vowels being less prevalent.However, length does not appear to be a major factor in the variation in NURSE vowel generation in Nebraska. The model findings suggest that the realization of the NURSE vowel as a low back vowel ([ɑ]) was statistically significantly different in duration than other NURSE vowels (intercept = 0.13, 95%, t(237) = 12.54, p <.001). Meanwhile, there was no significant difference between the other variants for NURSE vowels (p >0.05). This might indicate that duration was not accurate in distinguishing vowels for NURSE production in NE. Rather, vowel height may help distinguish the NURSE vowel variety.
+Examining the NURSE vowel space in NE reveals a higher production rate of front vowels (47.56%) compared to back (45.93%) or middle (6.5%). This distribution suggests that NE had almost identical numbers of back and front vowels, with back vowels being less prevalent.However, length does not appear to be a major factor in the variation in NURSE vowel production in Nigerian English. The model findings suggest that the realization of the NURSE vowel as a low back vowel ([ɑ]) was statistically significantly different in duration than other NURSE vowels (intercept = 0.13, 95%, t(237) = 12.54, p <.001). Meanwhile, there was no significant difference between the other variants for NURSE vowels (p >0.05). This might indicate that duration was not accurate in distinguishing vowels for NURSE production in NE. Rather, vowel height may help distinguish the NURSE vowel variety.
 
 ![](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-Nigerian-English/blob/main/NURSE_analysis_files/figure-gfm/unnamed-chunk-5-1.png)
 
