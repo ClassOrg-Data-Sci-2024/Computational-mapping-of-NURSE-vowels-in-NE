@@ -56,7 +56,7 @@ The first RQ was interested in NE's NURSE vowel distinction. The results showed 
 
 ![](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-Nigerian-English/blob/main/images/unnamed-chunk-2-1.png)
 
-**Figure 1: NURSE vowel distinction in NE **
+**Figure 1: NURSE vowel distinction in NE**
 
 As Collins & Mees (1990) projected that NURSE vowel production could vary by vowel space. The frequency distribution revealed the open vowel [e.g., a] as the most frequent variant. For example, the distribution in Figure 1 revealed that low-front and back are the most frequent variants of NURSE, followed by mid-back and mid-front. This result could inform us that NE speakers often produced NURSE vowels as low (front/back), mid-back, or mid-front vowels with different frequencies. However, when explaining NURSE vowel production in NE by position (without height), we discovered a preference for front vowels at 48%, back vowels at 46%, and central vowels at 7%.
 
@@ -109,7 +109,7 @@ In terms of social variables, I hypothesized that the phonological environment, 
 
 ![](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-Nigerian-English/blob/main/images/unnamed-chunk-15-1.png)
 
-**Figure 7: Effect of phonological environment on NURSE vowels**
+**Figure 7: Effect of phonological environment on NURSE vowels by social factors**
 
 ## Duration effect of NURSE vowels in NE
 
@@ -135,7 +135,7 @@ In terms of duration across geographical location/ethnicity, the linear mixed mo
 
 **Figure 9: NURSE vowel duration by ethnicity**
 
-The formant trajectories across the ethnicities were checked, and the models returned did not reveal any statistically significant relationships; however, the estimate values revealed some differences across the ethnicities (see Figure).
+We checked the formant trajectories across the ethnicities, and the models did not show any statistically significant relationships (see Figure 10).
 
 ![](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-Nigerian-English/blob/main/images/unnamed-chunk-25-1.png)
 

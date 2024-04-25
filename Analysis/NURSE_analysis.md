@@ -598,12 +598,8 @@ Marginal R<sup>2</sup> / Conditional R<sup>2</sup>
 </table>
 
 ``` r
-duration_model %>% plot_model()
-```
+#duration_model %>% plot_model()
 
-![](NURSE_analysis_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
-
-``` r
 NURSE_context_dur <- coef(duration_model)%>%
   pluck('word')%>%
   rownames_to_column('NURSE_tokens')
@@ -620,29 +616,28 @@ library(coefplot)
 coefplot(duration_model)
 ```
 
-![](NURSE_analysis_files/figure-gfm/unnamed-chunk-5-2.png)<!-- -->
+![](NURSE_analysis_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
 ``` r
 #alternative plotting
-duration_m <- data.frame(
-  vowel = c("[ɒ]", "[æ]", "[ɔ]", "[ɛ]", "[ɜ]", "[ɪ]"),
-  Estimates = c(-0.01, 0.00, -0.02, -0.00, -0.01, -0.09),
-  CI_Lower = c(-0.04, -0.02, -0.05, -0.02, -0.04, -0.20),
-  CI_Upper = c(0.02, 0.02, 0.01, 0.02, 0.02, 0.02),
-  p_value = c(0.372, 0.938, 0.161, 0.949, 0.603, 0.119)
-)
+#duration_m <- data.frame(
+ # vowel = c("[ɒ]", "[æ]", "[ɔ]", "[ɛ]", "[ɜ]", "[ɪ]"),
+  #Estimates = c(-0.01, 0.00, -0.02, -0.00, -0.01, -0.09),
+  #CI_Lower = c(-0.04, -0.02, -0.05, -0.02, -0.04, -0.20),
+  #CI_Upper = c(0.02, 0.02, 0.01, 0.02, 0.02, 0.02),
+  #p_value = c(0.372, 0.938, 0.161, 0.949, 0.603, 0.119)
+#)
 
-ggplot(duration_m, aes(x = vowel, y = Estimates, ymin = CI_Lower, ymax = CI_Upper)) +
-  geom_point(size = 3, color = "blue") +
-  geom_errorbar(width = 0.2, color = "blue") +
-  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
-  labs(title = "Effect of Vowels on Duration (cen)",
-       x = "Vowel",
-       y = "Estimates") +
-  theme_minimal()
+#ggplot(duration_m, aes(x = vowel, y = Estimates, ymin = CI_Lower, ymax = CI_Upper)) +
+ # geom_point(size = 3, color = "blue") +
+  #geom_errorbar(width = 0.2, color = "blue") +
+  #geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
+  #labs(title = "Effect of Vowels on Duration (cen)",
+   #    x = "Vowel",
+    #   y = "Estimates") +
+  #theme_minimal()
 ```
 
-![](NURSE_analysis_files/figure-gfm/unnamed-chunk-5-3.png)<!-- -->
 Similarly, I fitted the second level with `word` (as level 2) and model
 did not reveal any significant relationship therefore I dropped it from
 the model. The residual revealed variation across `word` and `vowel`
@@ -4124,7 +4119,7 @@ sessionInfo()
     [13] magrittr_2.0.3      compiler_4.3.2      rlang_1.1.3        
     [16] tools_4.3.2         useful_1.2.6.1      utf8_1.2.4         
     [19] yaml_2.3.8          knitr_1.45          labeling_0.4.3     
-    [22] bit_4.0.5           plyr_1.8.9          RColorBrewer_1.1-3 
+    [22] bit_4.0.5           RColorBrewer_1.1-3  plyr_1.8.9         
     [25] multcomp_1.4-25     withr_3.0.0         numDeriv_2016.8-1.1
     [28] datawizard_0.9.1    grid_4.3.2          fansi_1.0.6        
     [31] xtable_1.8-4        colorspace_2.1-0    emmeans_1.10.0     

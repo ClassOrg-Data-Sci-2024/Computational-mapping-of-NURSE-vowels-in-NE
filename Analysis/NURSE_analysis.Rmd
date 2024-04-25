@@ -142,6 +142,8 @@ head(NURSE_vowel_var)
 The duration distinguishes tense from lax vowels. The average duration of vowel production in a NURSE context in Nigerian English is 13ms (0.126) for `[æ]` and 14ms (0.14) for `[ɑ]`. Similarly, the mean duration of the vowels [ɒ]`, `[ɔ]`, `[ɛ]`, and [ɜ] range from 11ms (0.113) to 13ms (0.130). [Segment info](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-Nigerian-English/blob/main/tidy_csv_files/segment_info.csv) (Is duration therefore significant?)
 
 
+
+
 ### NURSE vowel duration by vowel space
 
 Each category of `vowel space` represents a unique articulatory position within the vowel space. For example, the **high_front** category has a relatively modest mean vowel duration of 0.04 (4ms), indicating a more limited articulatory range for high front vowels in Nigerian English. In contrast, categories such as `low_front_back`, `mid-central`, `mid_back`, and mid_front` have higher average duration ranging from 0.118 (12ms) to 0.131 (13ms), implying a wider range of articulatory positions for these vowels. Overall, the variability of vowel production in NURSE production in Nigerian English across various vowel categories, shedding light on the phonetic characteristics of this linguistic context and indicating variations not only in vowels but also in duration.
@@ -160,7 +162,7 @@ duration_model <- lmer(duration.cen ~ 1 + vowel + (1|word), data = nurse_segment
 duration_model %>% summary()
 library(sjPlot)
 duration_model %>% tab_model()
-duration_model %>% plot_model()
+#duration_model %>% plot_model()
 
 NURSE_context_dur <- coef(duration_model)%>%
   pluck('word')%>%
@@ -174,22 +176,22 @@ library(coefplot)
 coefplot(duration_model)
 
 #alternative plotting
-duration_m <- data.frame(
-  vowel = c("[ɒ]", "[æ]", "[ɔ]", "[ɛ]", "[ɜ]", "[ɪ]"),
-  Estimates = c(-0.01, 0.00, -0.02, -0.00, -0.01, -0.09),
-  CI_Lower = c(-0.04, -0.02, -0.05, -0.02, -0.04, -0.20),
-  CI_Upper = c(0.02, 0.02, 0.01, 0.02, 0.02, 0.02),
-  p_value = c(0.372, 0.938, 0.161, 0.949, 0.603, 0.119)
-)
+#duration_m <- data.frame(
+ # vowel = c("[ɒ]", "[æ]", "[ɔ]", "[ɛ]", "[ɜ]", "[ɪ]"),
+  #Estimates = c(-0.01, 0.00, -0.02, -0.00, -0.01, -0.09),
+  #CI_Lower = c(-0.04, -0.02, -0.05, -0.02, -0.04, -0.20),
+  #CI_Upper = c(0.02, 0.02, 0.01, 0.02, 0.02, 0.02),
+  #p_value = c(0.372, 0.938, 0.161, 0.949, 0.603, 0.119)
+#)
 
-ggplot(duration_m, aes(x = vowel, y = Estimates, ymin = CI_Lower, ymax = CI_Upper)) +
-  geom_point(size = 3, color = "blue") +
-  geom_errorbar(width = 0.2, color = "blue") +
-  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
-  labs(title = "Effect of Vowels on Duration (cen)",
-       x = "Vowel",
-       y = "Estimates") +
-  theme_minimal()
+#ggplot(duration_m, aes(x = vowel, y = Estimates, ymin = CI_Lower, ymax = CI_Upper)) +
+ # geom_point(size = 3, color = "blue") +
+  #geom_errorbar(width = 0.2, color = "blue") +
+  #geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
+  #labs(title = "Effect of Vowels on Duration (cen)",
+   #    x = "Vowel",
+    #   y = "Estimates") +
+  #theme_minimal()
 ```
 Similarly, I fitted the second level with `word` (as level 2) and model did not reveal any significant relationship therefore I dropped it from the model. The residual revealed variation across `word` and `vowel` production as 4ms (for `word`) and 3ms (for `vowel`). It means that duration of NURSE vowel in the variety is more variant across `word` than `NURSE vowel`
 
@@ -559,8 +561,6 @@ summary(formant_by_ethnicity)
 
 #the model did not converge
 ```
-
-
 
 # Session info
 ```{r}
