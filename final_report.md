@@ -36,12 +36,15 @@ The International Corpus of English (ICE) Nigeria corpus has 609,581 spoken word
 
 ### Data procedure
 
-NE is an under-researched variety of English, and this setback affects prior knowledge about the variety's formant description. The forced aligner was not ideal for the variety; as a result, there were many errors in the surface phoneme output. As a result, after the forced alignment, I perceptually listened to the vowel production and coded it. In the main study, another native speaker would verify the coding to ensure inter-rater reliability. As a native speaker of NE, I listened to the forced aligned segmentation, created a fourth tier, and annotated the NURSE vowel as it was produced. In total, there were seven (7) NE vowels produced as NURSE vowels ([ɒ], [æ], [ɑ], [ɔ], [ɛ], [ɜ], [ɪ]). The step-by-step data transformations prior to the analysis are detailed in the [analysis folder](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-Nigerian-English/blob/main/Analysis/data_organization.md).
+NE is an under-researched variety of English, and this setback affects prior knowledge about the variety's formant description. The forced aligner was not ideal for the variety; as a result, there were many errors in the surface phoneme output. As a result, after the forced alignment, I perceptually listened to the vowel production and coded it. In the main study, another native speaker would verify the coding to ensure inter-rater reliability. As a native speaker of NE, I listened to the forced aligned segmentation, created a fourth tier, and annotated the NURSE vowel as it was produced. In total, there were seven (7) NE vowels produced as NURSE vowels ([ɒ], [æ], [ɑ], [ɔ], [ɛ], [ɜ], [ɪ]). 
+
+The step-by-step data transformations prior to the analysis are detailed in the [analysis folder](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-Nigerian-English/blob/main/Analysis/data_organization.md).
+
 _NOTE_: There were some _NAs_ (missing values) in the data, and they were purposefully retained as _NAs_ because the ICE-Nig participant sheet was not completely filled out. Also, the term _geographical location_ and _ethnicity_ was used interchangeably because in Nigeria, these ethnic groups are by default differ in geographical location
 
 ## Fast Track
 
-Fast Track is a tool for automatic formant estimation for vowel analysis. The estimator maps vowel production every 2 milliseconds in order to capture the most consistent formant realization. The script returns five formant timepoints and four formant levels (f1–f4) for each millisecond captured, with the lowest at 4700 Hz and the maximum at 7550 Hz, respectively. The estimate creates 20 formant samples and picks a winner by comparing them to other formant outputs. Unlike prior studies on NURSE vowels, which used midpoint and three-point vowel measurement, Fast Track measures 20 formant points for each vowel production. This technique provides better formant representation than midpoint and three-point vowel measurements.
+Fast Track is a tool for automatic formant estimation for vowel analysis. The estimator maps vowel production every 2 milliseconds in order to capture the most consistent formant realization. The script returns five formant timepoints and four formant levels (f1–f4) for each millisecond captured, with the lowest at 4700 Hz and the maximum at 7550 Hz, respectively. The estimate creates 20 formant samples and picks a winner by comparing them to other formant [outputs](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-Nigerian-English/tree/main/Analysis/file_images/images_file_comparisons). Unlike prior studies on NURSE vowels, which used midpoint and three-point vowel measurement, Fast Track measures 20 formant points for each vowel production. This technique provides better formant representation than midpoint and three-point vowel measurements.
 
 # Results and Discussion
 
@@ -51,6 +54,8 @@ In this section, I reported on the NURSE vowel variation by phonetic features, s
 
 The first RQ was interested in NE's NURSE vowel distinction. The results showed different NURSE vowel production in NE. Unlike Li et al. (2021), who discovered a three-way distinction in the Scottish NURSE vowel, the study revealed that there were five (5) NURSE vowel distinctions in NE.
 
+![](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-Nigerian-English/blob/main/images/unnamed-chunk-2-1.png)
+
 **Figure 1: NURSE vowel distinction in NE **
 
 As Collins & Mees (1990) projected that NURSE vowel production could vary by vowel space. The frequency distribution revealed the open vowel [e.g., a] as the most frequent variant. For example, the distribution in Figure 1 revealed that low-front and back are the most frequent variants of NURSE, followed by mid-back and mid-front. This result could inform us that NE speakers often produced NURSE vowels as low (front/back), mid-back, or mid-front vowels with different frequencies. However, when explaining NURSE vowel production in NE by position (without height), we discovered a preference for front vowels at 48%, back vowels at 46%, and central vowels at 7%.
@@ -58,12 +63,9 @@ As Collins & Mees (1990) projected that NURSE vowel production could vary by vow
 
 Similarly, Penhallurick (2008) suggests that duration also plays a role in determining the degree of mouth openness and lip-rounding in NURSE vowel production. The findings showed that the production of NURSE vowel ranged from [nɒs], [næs], [nɑs], [nɔs], [nɛs], [nɜs] to [nɪs] with differences in duration ([ɑ] -lax, [æ] - tense). The most common variant form was [nɜs] (in British/American English) as [nas] or [nɛs]. These studies indicated that the variety's production of the NURSE vowel is heterogeneous.
 
-
-**Figure 1: Duration patterns in NE NURSE vowel**
-
 In examining the NURSE vowel duration, the mixed effect model revealed that the production of the NURSE vowel as a low back vowel ([ɑ]) was statistically significantly different in duration than other NURSE vowels (intercept = 0.13, 95%, t(237) = 12.54, p <.001). Meanwhile, there was no significant difference among the other variants for NURSE vowels (p > 0.05). This could indicate that duration was not statistically significant in distinguishing vowels for NURSE production in NE (except for NURSE vowel production as a low back vowel). Rather, vowel height may help distinguish the NURSE vowel variety. Length does not appear to be a major factor in the variation in NURSE vowel production in Nigerian English.
 
-![](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-Nigerian-English/blob/main/images/unnamed-chunk-5-1.png)
+![](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-Nigerian-English/blob/main/images/unnamed-chunk-5-2.png)
 
 **Figure 2: Regression analysis of NURSE vowel duration patterns**
 
@@ -74,7 +76,7 @@ One of the hypotheses in the file [method and hypothesis](https://github.com/Cla
 
 The model revealed that NURSE vowel productions in NE were impacted by the phonological environment, with a significant intercept (p<0.05). Similarly, the random effect for _word_ showed variance in vowel production with a standard deviation of 0.2752. Furthermore, when no word-specific factor is present, the calculated fixed effect for the intercept (-0.5792) represents the NURSE vowel prediction. These findings confirmed that the phonological context in which NE speakers articulate influences the production of vowels in Nigerian English, with different words having varying effects on vowel production (see Figure 3 below).
 
-![](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-Nigerian-English/blob/main/images/unnamed-chunk-6-1.png)
+![](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-Nigerian-English/blob/main/images/unnamed-chunk-8-1.png)
 
 **Figure 3: NURSE vowel determinant by phonological environment**
 
@@ -84,15 +86,20 @@ Recent studies (Sim et al., 2021; Williams et al., 2015) have emphasized the eff
 
 The mixed effect on formant trajectories revealed a positive and statistically significant relationship, indicating that as time points increase, so does formant. The formant trajectories for the five-point measurement showed that (1) there was variation in NURSE vowel production in the formant (levels of f1–f4) and (2) each NURSE vowel formant had a formant trajectory that changed over time, and these changes varied by formant levels and formant trajectories (see Figure 4). These findings were in accordance with previous studies showing that vowel spectral slice changes over time and helps us know about vowel behavior (Bekker, 2013; Nearey, 2012; Sim et al., 2021; William et al., 2015).
 
-**Figure 5: NURSE vowel formant by timepoint**
+![](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-Nigerian-English/blob/main/images/unnamed-chunk-11-1.png)
 
+**Figure 5a: NURSE vowel formant by timepoint**
+
+![](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-Nigerian-English/blob/main/images/unnamed-chunk-12-1.png)
+
+**Figure 5b: NURSE vowel formant by timepoint**
 
 ## NURSE vowel variation (social variables)
 
 Gender and age were major predictors of NURSE vowel production. Female speakers have more diversified vowel production than male speakers. Furthermore, the younger speakers used more varied forms than the older speakers. For example, older male speakers generally realized the vowel as [næs], but younger female and male speakers often generated [nɛs]. The results showed that the production of NURSE vowels was different for speakers of different ages and genders produced NURSE vowels differently (Figure 6).
 
 
-![](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-Nigerian-English/blob/main/images/unnamed-chunk-12-1.png)
+![](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-Nigerian-English/blob/main/images/unnamed-chunk-14-1.png)
 
 **Figure 6: NURSE vowel production by social factors**
 
@@ -100,15 +107,17 @@ Gender and age were major predictors of NURSE vowel production. Female speakers 
 
 In terms of social variables, I hypothesized that the phonological environment, gender, and age category would determine NURSE vowel production. The intercept, 0.61, represents the determinant's baseline occurrence rate. The phonological context, particularly when not coming after a consonant, has a coefficient of 0.28, indicating a minor increase in occurrence rate, albeit statistically insignificant (p = 0.254). Gender and age category (younger) have correlations of -0.08 and 0.14, showing no significant effect on the prediction (p > 0.05). The interaction factors between phonological environment and gender, as well as phonological environment and age category, are statistically insignificant (p > 0.05). The random effects study showed a moderate level of variability in the determinant between terms, with an intraclass correlation value (ICC) of 0.31. Overall, the model explained a small amount of the determinant's variation, with a marginal R-squared value of 0.027 and a conditional R-squared value of 0.324.
 
-**Figure : Effect of phonological environment on NURSE vowels**
+![](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-Nigerian-English/blob/main/images/unnamed-chunk-15-1.png)
+
+**Figure 7: Effect of phonological environment on NURSE vowels**
 
 ## Duration effect of NURSE vowels in NE
 
 The next mixed model examined duration as a factor. When every other factor is zero, the intercept of 0.02 represents the baseline duration for the NURSE vowel. Age group (younger) and gender (male) have negative correlations of -0.02, indicating shorter duration for younger speakers and male speakers compared to their counterparts. The interaction factors for duration and age group, as well as duration and gender, had coefficients of 0.56 and 0.93, respectively. This shows that duration has different effects on different age groups and genders, with younger speakers and male speakers experiencing bigger changes in NURSE vowel duration.
 
-![](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-Nigerian-English/blob/main/images/unnamed-chunk-15-1.png)
+![](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-Nigerian-English/blob/main/images/unnamed-chunk-19-1.png)
 
-**Figure 7a: NURSE vowel duration by social factors**
+**Figure 8: NURSE vowel duration by social factors**
 
 However, the random effects for _word_ show a minimal level of variation in duration between occurrences, with an intra-class correlation coefficient (ICC) of 0.04. This model also reveals the percentage of the variance in duration, with a marginal R-squared value of 0.905 and a conditional R-squared value of 0.909.
 
@@ -116,17 +125,21 @@ However, the random effects for _word_ show a minimal level of variation in dura
 
 The production of NURSE vowels depended on ethnicity. Each geographical variation of NE appears to have distinct vowel characteristics. Their characteristics explained the variation in NURSE vowels.
 
-![](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-Nigerian-English/blob/main/images/unnamed-chunk-17-1.png)
+![](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-Nigerian-English/blob/main/images/unnamed-chunk-20-1.png)
 
 **Figure 8: NURSE vowel production by ethnicity**
 
 In terms of duration across geographical location/ethnicity, the linear mixed model investigated how ethnicity influenced the NURSE vowel duration. The intercept for baseline (that is, Hausa) duration was estimated at 0.054, with a standard error of 0.0077 and a highly significant t-value of 6.981 (p < 0.001). Igbo and Yoruba had estimates of -0.003762 and -0.029069, respectively. Yoruba ethnicity's negative coefficient (-0.029069) indicated a shorter duration than the Hausa (reference group), with a significant t-value of -3.629 (p < 0.001). However, the -0.003762 coefficient for Igbo ethnicity is not statistically significant (p = 0.736). The random effects study finds that duration varies across the ethnicity (SD = 0.03) and the word as a standard deviation of 0.04.
 
-![](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-Nigerian-English/blob/main/images/unnamed-chunk-19-1.png)
+![](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-Nigerian-English/blob/main/images/unnamed-chunk-22-1.png)
 
 **Figure 9: NURSE vowel duration by ethnicity**
 
 The formant trajectories across the ethnicities were checked, and the models returned did not reveal any statistically significant relationships; however, the estimate values revealed some differences across the ethnicities (see Figure).
+
+![](https://github.com/ClassOrg-Data-Sci-2024/Sociophonetic-study-of-NURSE-vowels-in-Nigerian-English/blob/main/images/unnamed-chunk-25-1.png)
+
+**Figure 10: NURSE vowel trajectories by ethnicity**
 
 
 # Conclusion
