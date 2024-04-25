@@ -30,17 +30,17 @@ nurse_segment <- read_csv("C:/Users/oamon/Oluwasegun DS Project/Sociophonetic-st
                                      na=c("", "Na", "NA", "N/A", "n/a", "na", "-", "undefined"))
 
 #rename `outputfile` and `inputfile` as `file_name` and `id` respectively
-nurse_segment <- 
-  nurse_segment %>%
- rename(
-    file_name = contains("outputfile"),
-    id = contains("inputfile"))
+#nurse_segment <- 
+ # nurse_segment %>%
+ #rename(
+  #  file_name = contains("outputfile"),
+   # id = contains("inputfile"))
 ```
 ## NURSE vowel production in NE
 
 ### Variation in NURSE vowel 
 
-1a. What are the NURSE vowel production (any variation) in NE? (**which** variant is the most frequent in NE variety and does the variance describe how NURSE vowels in NE differs from other English varieties (such as British or American English?)
+1a. What are the distinct NURSE vowel production (any variation) in NE? (**which** variant is the most frequent in NE variety and does the variance describe how NURSE vowels in NE differs from other English varieties (such as British or American English?)
 
 Here, we identify variant phonemes that are produced as NURSE vowel in NE. This variation identifies the difference in phoneme by length to get specific NURSE vowel production.
 
@@ -68,6 +68,7 @@ Here, we identify variant phonemes that are produced as NURSE vowel in the varie
 Before analyzing the variation in NURSE vowel in NE, let's create a column (`vowel_variation`) that does not differentiate NURSE vowels by length.
 
 ```{r}
+#create a column that has the frequency of the variant form
 nurse_segment <- nurse_segment %>% 
   mutate(vowel_variation = case_when(
     vowel %in% c("ɒ", "ɔ") ~ "mid_back",
@@ -84,12 +85,16 @@ vowel_variation <- nurse_segment%>%
 head(vowel_variation)
 
 
-ggplot(nurse_segment, aes(x = vowel_variation, fill = vowel)) +
+ggplot(nurse_segment, aes(x = vowel_variation)) +
   geom_bar() +
-  labs(x = "vowel", y = "Frequency", color = "Vowel") +
-  ggtitle("Frequencies of NE vowel variation (with)out length contrast in NE") +
+  labs(x = "vowel", y = "Frequency") +
+  ggtitle("NURSE vowel distinction in NE") +
   theme_minimal()
 ```
+Unlike Li et al. (2021) who discovered three-way distinction in Scottish NURSE vowel, the findings revealed that there were five(5) NURSE vowel distinction in NE. The frequency distribution revealed open vowel [e.g., a] as the most frequent variant. Also, this analysis supported Collins & Mees (1990) who asserted that NURSE vowel could vary by vowel space. The distribution of Figure 1 revealed low front and back as the most frequent variant of NURSE, followed by mid-back and mid-front. This result could inform us that NE speakers often produced NURSE vowels as low (front/back), mid_back or mid_front vowels with different frequency.  
+
+As Penhallurick (2008) suggests that duration plays a role in determining the degree of mouth openness and lip-rounding. 
+
 The results show that `[ɜ]` in NURSE for BrE, AmE, CanE and New Zealand English is often realization as `[a]` with 99 (40%), `[ɔ]` with 81 (32%), `[ɜ]` with 16 (6.5%), and `[ɛ]` with 49 (19%). This shows that similar variant with the inner circle English is 6.5% possible in NE variety; however, it's more produced as [nas], [nɔs] and [nɛs]. The frequent production of [nɜs] as [nas], [nɔs] and [nɛs] in NE reveals that the variation of NURSE vowel is beyond presence or absence of rhotics. If we shift our focus rhotics of NURSE vowel in NE, we will eventually be discussing variant form that is 10% present in NE. 
 
 ### NURSE vowel variation by `backness`
@@ -109,6 +114,12 @@ nurse_segment <- nurse_segment %>%
 nurse_segment%>%
   select(nurse_vowel_space)%>%
   table()/246*100
+
+ggplot(nurse_segment, aes(x = nurse_vowel_space)) +
+  geom_bar() +
+  labs(x = "vowel", y = "Frequency") +
+  ggtitle("NURSE vowel distinction NE by vowel position") +
+  theme_minimal()
 ```
 The results show the distribution of vowel production in Nigerian English across front, central and back vowel space. Back vowels are frequent, accounting for 45.93% of overall vowel production, whereas front vowels were 47.56%, while the central vowel were the least common,  6.50% in NE. This distribution implies that Nigerian English has a somewhat equal proportion of back and front vowels, with back vowels being less common.
 
@@ -196,19 +207,81 @@ nurse_segment <- nurse_segment %>%
     nurse_vowel_space %in% "central_vowel" ~ "2",
       TRUE ~ "Other"
   ))
+```
+
+### Account for the phonological effect in NE
+
+Create a new column to account account for the phonological effect in NE NURSE 
+```{r}
+# Define a function to check if a word ends with any of the specified endings
+check_segment <- function(word, endings) {
+  for (ending in endings) {
+    if (endsWith(word, ending)) {
+      return(TRUE)
+    }
+  }
+  return(FALSE)
+}
+
+# List of consonant sounds
+consonant_letter <- c("w", "r", "j", "k", "s", "p", "n", "f", "t", "v", "th", "b", "m", "l", "g", "d", "ch", "sh", "c")
+
+# List of vowels
+vowels <- c("a", "e", "i", "o", "u")
+
+# List of endings
+endings <- c("_er_", "_ur_", "_ir_", "_or_", "_ear_", "_our_",
+             "_l", "_g", "_ur", "_ir")
+
+# Create a new column for phonological environment
+nurse_segment <- nurse_segment
+
+# Loop through each word in the 'word' column
+for (word in nurse_segment$word) {
+  # Check if the word ends with a consonant sound
+  if (substring(word, nchar(word)) %in% consonant_letter) {
+    # Check if the word ends with any of the specified endings
+    if (check_segment(word, endings)) {
+      nurse_segment$phonological_environment[nurse_segment$word == word] <- "After consonant"
+    } else {
+      nurse_segment$phonological_environment[nurse_segment$word == word] <- "After consonant (no specified endings)"
+    }
+  } else {
+    nurse_segment$phonological_environment[nurse_segment$word == word] <- "Not after consonant"
+  }
+}
+
+# Print the updated dataframe
+head(nurse_segment)
+```
+
+### Regression analysis for nurse determinant by phonological environment
+```{r}
 #make the categorical column numeric to satisfy poisson assumption
 nurse_segment <- nurse_segment %>%
   mutate(nurse_determinant = as.numeric(nurse_determinant))
 
 #regression analysis for the `phonological effect` on NURSE vowel production
-model_nurse_determinant <- glmer(nurse_determinant ~ 1 + (1|word), data = nurse_segment, family = poisson)
+model_nurse_determinant <- glmer(nurse_determinant ~ 1 + phonological_environment + (1|inputfile) + (1|word), data = nurse_segment, family = poisson)
 summary(model_nurse_determinant)
 
-ggplot(nurse_segment, aes(x = nurse_determinant, color = word)) +
+library(sjPlot)
+#Estimate table that explains the independent and the dependent variables.
+#formant_model %>% tab_model()
+model_nurse_determinant %>% tab_model()
+plot_model(model_nurse_determinant, type = "pred", terms = c("phonological_environment"))
+```
+
+
+
+### Visualization of phological effect in NURSE vowel production
+```{r}
+ggplot(nurse_segment, aes(x = vowel, fill = phonological_environment)) +
   geom_bar() +
   labs(x = "NURSE vowels", y = "Freq of NURSE vowels")+
-   ggtitle("Frequencies of NURSE vowel determinant by word")
+   ggtitle("Effect of phonological environment on NURSE vowel by social group")
 ```
+
 The model determines if `NURSE vowels` are affected by `phonological environment` and the intercept returned significant. The random effect for `word` indicates that the influence of `word` on vowel production varies. The standard deviation (`SD`) for the random effect (0.2752) estimates the degree of variability among words. Furthermore, the fixed effect estimate for the intercept (-0.5792) indicates the log of vowel productions when no word-specific factor is present. This support the evidence that the production of vowels in Nigerian English is determined by the `phonological environment` that NE speakers utter, with various words having variable impacts on vowel formation.
 
 The model was extended to investigate whether vowel production in Nigerian English is influenced by the specific `word` and the `speaker's speech style` [`broadcast interview` vs `broadcast talk`]. The model adds speaker identification `(id)`, indicating that the effects on vowel production vary between words and speakers. The model did not converge and I dropped `id` from the model.
@@ -252,7 +325,7 @@ segment_aggregate <-
     id = contains("file_name"))
 ```
 
-
+Vowel normalization and visualization
 ```{r}
 #store the new data to `my_nurse_vowel_formant` 
 my_nurse_vowel_formant <- segment_aggregate %>%
@@ -274,12 +347,6 @@ bark_norm <- function(fi) {
   return(zi)
 }
 
-# Example usage
-#fi <- 1000  # Example value for Fi
-#zi <- norm_zi(fi)
-#print(zi)
-
-
 my_nurse_vowel_formant <- my_nurse_vowel_formant %>%
   mutate(formant_bark_norms = sapply(hz, bark_norm))
 head(my_nurse_vowel_formant)
@@ -287,33 +354,27 @@ head(my_nurse_vowel_formant)
 #visualization
 ggplot(my_nurse_vowel_formant, aes(x = timepoint, y = formant_bark_norms, group = id, color = formant)) +
   geom_line() + 
-  facet_wrap(~vowel, nrow=3)+
-  ggtitle("Formant trajectories for NURSE vowels in NE at five points")+
+  facet_wrap(~vowel, nrow=2)+
+  ggtitle("Formant trajectories for NURSE vowels in NE")+
   theme_classic()
 ```
 
-
-```{r}
-#wider dataframe
-#table2 <- my_nurse_vowel_formant %>% 
- #   pivot_wider(names_from = formant, values_from = formant_bark_norms)
-```
 
 
 
 ### Regression analysis of formant features and trajectories
 
 ```{r}
-#formant.log.cen is a centered around grand mean
+#formant
 formant_model <- lmer(formant_bark_norms ~ 1 + timepoint + (1|formant), data = my_nurse_vowel_formant)
 formant_model %>% summary()
 library(sjPlot)
 #Estimate table that explains the independent and the dependent variables.
-#formant_model %>% tab_model()
+formant_model %>% tab_model()
 formant_model %>% plot_model()
-plot_model(formant_model, type = "pred", terms = c("timepoint", "formant"))
+#plot_model(formant_model, type = "pred", terms = c("timepoint", "formant"))
 ```
-This analysis shows the estimates, confidence intervals (CI), and p-values for `formant` with log-transformation. The intercept `formant 1` is estimated to be -0.97 with a 95% confidence interval between -0.99 and -0.96, and the p-value is <0.001, indicating high statistical significance. The other estimates (f2, f3, and f4) are 0.82, 1.37, and 1.70, respectively, with very narrow confidence intervals and highly significant p-values (<0.001). This indicates a strong positive association between each formant and the formant levels. 
+This analysis shows the estimates, confidence intervals (CI), and p-values for `formant` with normalization. The intercept `timepoint 1` is estimated to be -0.97 with a 95% confidence interval between -0.99 and -0.96, and the p-value is <0.001, indicating high statistical significance. The other estimates (f2, f3, and f4) are 0.82, 1.37, and 1.70, respectively, with very narrow confidence intervals and highly significant p-values (<0.001). This indicates a strong positive association between each formant and the formant levels. 
 
 The random effects analysis shows minimal variance both within and between time points, with a variance estimate `σ^2` of 0.01 and a variance estimate for the intercept across time points (τ00) of 0.01. The intra-class correlation coefficient (ICC) is estimated to be 0.38, indicating that time-point differences account for a moderate proportion of total variance. The model fit is excellent, with a marginal R^2 `0.998` and a conditional R^2 `0.999`. This indicates that the predictors (i.e., formant) explain a significant proportion of the variance in the outcome variable (`formant levels`), both independently and in conjunction with other predictors.
 
@@ -334,11 +395,21 @@ nurse_social <- read_csv("C:/Users/oamon/Oluwasegun DS Project/Sociophonetic-stu
 nurse_social <- nurse_social %>%
   rename(
     id = contains("files"))
+
+
+#rename `outputfile` and `inputfile` as `file_name` and `id` respectively
+nurse_segment <- 
+  nurse_segment %>%
+ rename(
+    file_name = contains("outputfile"),
+    id = contains("files"))
+
 #new dataframe as `nurse_social_segment` has both `nurse_social` and `nurse_segment` merged by `id`
 nurse_social_segment <- merge(nurse_segment, nurse_social, by = "id")
 #to view
 head(nurse_social_segment)
 ```
+
 ### NURSE vowel production in NE by age and gender
 
 The table (r code below) showed the production of NURSE vowels by age groups (`older` and `younger`). 17 `older` participants produced the vowel low back vowel while only 6 younger participants produced the same vowel. 8 older and 10 younger participants produced NURSE vowel as [ɒ]. Notably, older participants produced the vowel "æ" more frequently than younger participants, with 41 occurrences versus only three. These findings shed light on differences in the production of NURSE vowels across age groups, indicating that age may influence the production of NURSE vowel in Nigerian English.
@@ -351,7 +422,7 @@ head(nurse_freq_age)
 nurse_age_vowel <- nurse_social_segment %>%
   select(Age_category, Gender, vowel)%>%
   table()/246*100
-head(nurse_age_vowel)
+#head(nurse_age_vowel)
 
 ggplot(nurse_social_segment, aes(x = vowel, fill = Gender)) +
   geom_bar() +
@@ -363,23 +434,33 @@ ggplot(nurse_social_segment, aes(x = vowel, fill = Gender)) +
 By gender, `NURSE vowel` was produced as `[ɑ]` by 8 females and 15 males, as [ɒ] by 7 females and 11 males. Males produced the vowel as [æ] 38 times more frequently than females, while females produced "ɛ" 11 times more than males (18). Furthermore, "ɜ" was primarily produced by females, with 5 instances compared to only one among male speaker. These findings suggest that there may be gender-related variations in the production of NURSE vowels in the sample data.
 
 ```{r}
-model_nurse_age_det <- glmer(nurse_determinant ~ 1 + Gender + (1|word), data = nurse_social_segment, family = poisson)
+model_nurse_age_det <- glmer(nurse_determinant ~ 1 + phonological_environment + Gender + Age_category + (1|word), data = nurse_social_segment, family = poisson)
 summary(model_nurse_age_det)
 model_nurse_age_det %>% tab_model()
 #model_nurse_age_det %>% plot_model()
-
+plot_model(model_nurse_age_det, type = "pred", terms = c("Gender", "Age_category", "phonological_environment"))
 #cat_plot(poisson.model2, pred = tension, modx = wool, geom = "line", plot.points = TRUE)
 #library(jtools)
 #cat_plot(model_nurse_age_det, pred = word, modx = nurse_determinant)
 ```
 
 ```{r}
-ggplot(nurse_social_segment, aes(x = vowel, fill = word)) +
-  geom_bar() +
-  facet_wrap(vars(Age_category), ncol = 3) +
-  labs(x = "NURSE vowels", y = "Freq of NURSE vowels")+
-   ggtitle("Frequencies of NURSE vowel production by social group")
+#ggplot(nurse_social_segment, aes(x = vowel, fill = word)) +
+ # geom_bar() +
+  #facet_wrap(vars(Age_category), ncol = 3) +
+  #labs(x = "NURSE vowels", y = "Freq of NURSE vowels")+
+   #ggtitle("Frequencies of NURSE vowel production by social group")
 ```
+
+
+```{r}
+Nurse_segment <- lmer(nurse_determinant ~ 1 + phonological_environment*Gender + phonological_environment*Age_category + (1|word),  data = nurse_social_segment)
+Nurse_segment %>% summary()
+Nurse_segment %>% tab_model()
+plot_model(Nurse_segment, type = "pred", terms = c("Age_category", "phonological_environment", "Gender"))
+```
+
+We projected the phonological environment, gender and age category would determine NURSE vowel production. The intercept, 0.61, represents the determinant's baseline occurrence rate. The phonological context, particularly when not coming after a consonant, has a coefficient of 0.28, indicating a minor increase in occurrence rate, albeit statistically insignificant (p = 0.254). Gender and age category (younger) have correlations of -0.08 and 0.14, showing no significant effect on the prediction (p > 0.05). The interaction factors between phonological environment and gender, as well as phonological environment and age category, are statistically insignificant (p > 0.05). The random effects study shows a moderate level of variability in the determinant between terms, with an intraclass correlation value (ICC) of 0.31. Overall, the model accounts for a small amount of the determinant's variation, with a marginal R-squared value of 0.027 and a conditional R-squared value of 0.324.
 
 
 
@@ -390,28 +471,23 @@ nurse_social_segment %>%
   group_by(Age_category) %>%
   summarize(age_vdur = mean(duration.cen))
 
-age_nurse_vowel <- lmer(duration.cen ~ 1 + Age_category + Gender + (1|vowel),  nurse_social_segment) 
+age_nurse_vowel <- lmer(duration.cen ~ 1 + Age_category*duration.cen + duration.cen*Gender + (1|vowel),  nurse_social_segment) 
 age_nurse_vowel %>% summary()
 age_nurse_vowel %>% tab_model()
 
-plot_model(age_nurse_vowel, type = "pred", terms = c("Age_category", "Gender", "vowel"))
+#plot_model(age_nurse_vowel, type = "pred", terms = c("Age_category", "Gender"))
 ```
 Hooray! Younger Nigerian English speakers have short duration for NURSE vowel than the adult, however, the model
-This analysis provides estimates, confidence intervals (CI), and p-values for predictors in a model that investigates the relationship between duration and other variables. The intercept, which serves as the baseline level, is estimated at 0.01 with a 95% confidence interval of -0.02 to 0.03, and a p-value of 0.564, indicating a lack of statistical significance. Similarly, the estimates for age category (younger) and duration have p-values of 0.304 and 0.564, indicating that they are not significant predictors of duration. Gender (male) has a significant positive correlation with duration, with an estimated coefficient of 0.05, a 95% CI between 0.03 and 0.08, and a p-value of <0.001. This suggests that being male leads to longer duration.
-
-In terms of random effects, both within-vowel variance (σ^2) and variance between vowels (τ00) are estimated to be 0.00, indicating minimal variability in duration. The intra-class correlation coefficient (ICC) is estimated to be 0.02, indicating that vowel differences account for only a small portion of total duration variance. The model includes observations from 145 data points, but does not provide information on marginal or conditional R^2. In summary, the findings indicate that gender (male) is associated with longer durations, whereas age category (younger), duration, and most vowels have no significant effect on duration.
+The next mixed model examined the duration effect. The intercept of 0.02 represents the baseline duration for the NURSE vowel when every other factor is zero. Age group (younger) and gender (male) have negative correlations of -0.02, indicating shorter durations for younger speakers and males compared to their peers. The interaction factors for duration and age group, as well as duration and gender, had coefficients of 0.56 and 0.93, respectively. This shows that duration has different effects on different age groups and genders, with younger people and male speakers experiencing bigger changes in NURSE vowel duration. However, the random effects for word show a minimal level of variation in duration between occurrences, with an intraclass correlation coefficient (ICC) of 0.04. This model also reveals the percentage of the variance in duration, with a marginal R-squared value of 0.905 and a conditional R-squared value of 0.909.
 
 #### Visualization
 ```{r}
 ggplot(nurse_social_segment, aes(x = vowel, y = duration.cen, color = Gender)) +
-  geom_point() +
+  geom_boxplot() +
   facet_wrap(vars(Age_category), ncol = 3) +
   labs(x = "NURSE vowels", y = "Duration of NURSE vowels")+
-   ggtitle("Duration patterns NURSE vowel production by social group")
+   ggtitle("Duration patterns of NURSE vowel production by social group")
 ```
-
-
-
 
 
 ## NURSE vowel production by `ethnicity` (Geographical location of the speakers)
@@ -422,38 +498,68 @@ nurse_freq_ethnicity <- table(nurse_social_segment$vowel, nurse_social_segment$E
 head(nurse_freq_ethnicity)
 #percentage
 nurse_vowel_ethnicity <- nurse_social_segment %>%
-  select(Ethnicity, vowel)%>%
+  select(Ethnicity, nurse_vowel_space)%>%
   table()/246*100
 head(nurse_vowel_ethnicity)
 
 #visualization
-ggplot(nurse_social_segment, aes(x = vowel, fill = Ethnicity)) +
+ggplot(nurse_social_segment, aes(x = nurse_vowel_space, fill = Ethnicity)) +
   geom_bar() +
   labs(x = "NURSE vowels", y = "Freq of NURSE vowels")+
    ggtitle("Frequencies of NURSE vowel production by ethnicity")
 ```
+
 ```{r}
-age_nurse_ethnicity <- lmer(duration.cen ~ 1 + Ethnicity + vowel + (1|word),  nurse_social_segment) 
+age_nurse_ethnicity <- lmer(duration.cen ~ 1 + Ethnicity + (1|word),  nurse_social_segment) 
 age_nurse_ethnicity %>% summary()
 age_nurse_ethnicity %>% tab_model()
 ```
+
+This linear mixed model investigated how ethnicity influenced the NURSE vowel duration. The intercept for baseline length is estimated at 0.054, with a standard error of 0.0077 and a highly significant t-value of 6.981 (p < 0.001). The ethnicity variables, notably Igbo and Yoruba, have estimates of -0.003762 and -0.029069, respectively. Yoruba ethnicity's negative coefficient (-0.029069) indicates a shorter duration than the Hausa (reference group), with a significant t-value of -3.629 (p < 0.001). However, the -0.003762 coefficient for Igbo ethnicity is not statistically significant (p = 0.736). The random effects study finds that duration varies across the ethnicity (SD = 0.03) and the word as a standard deviation of 0.04.
+
+
 ```{r}
-ggplot(nurse_social_segment, aes(x = vowel, y = duration.cen, color = Gender)) +
+ggplot(nurse_social_segment, aes(x = Ethnicity, y = duration.cen, color = Gender)) +
   geom_boxplot() +
-  facet_wrap(vars(Ethnicity), ncol = 3) +
+  facet_wrap(vars(nurse_vowel_space), ncol = 3) +
   labs(x = "NURSE vowels", y = "Duration of NURSE vowels")+
-   ggtitle("Duration patterns NURSE vowel production by Ethnicity")
-
-
+   ggtitle("Duration patterns of NURSE vowel production by Ethnicity")
 ```
 
 ## NURSE vowel determinant by ethinicity
 
 ```{r}
-nurse_ethn_det <- glmer(nurse_determinant ~ 1 + Ethnicity + (1|word), data = nurse_social_segment, family = poisson)
+nurse_ethn_det <- glmer(nurse_determinant ~ 1 + Ethnicity*phonological_environment + (1|word), data = nurse_social_segment, family = poisson)
 summary(nurse_ethn_det)
-plot_model(nurse_ethn_det, type = "pred", terms = c("Ethnicity", "word"))
+nurse_ethn_det %>% tab_model()
+sjPlot::tab_model(nurse_ethn_det)
+plot_model(nurse_ethn_det, type = "pred", terms = c("Ethnicity"))
 ```
+## Formant trajectories by ethnicity
+```{r}
+#join these two dataframe by vowel
+nurse_social_segment
+my_nurse_vowel_formant
+ethni_formant <- merge(nurse_social_segment, my_nurse_vowel_formant, by = 'vowel')
+```
+```{r}
+ggplot(ethni_formant, aes(x = timepoint, y = formant_bark_norms, group = id.y, color = formant)) +
+  geom_line() + 
+  facet_wrap(~Ethnicity, nrow = 2)+
+  ggtitle("Formant trajectories for NURSE vowels across ethnicity")+
+  theme_classic()
+```
+```{r}
+#use dummy code for timepoint to identify how much formant trajectory varies across ethnicity
+ethni_formant <- ethni_formant%>% 
+  mutate(timepoint.num = as.numeric(timepoint))
+
+formant_by_ethnicity <- lmer(formant_bark_norms ~ 1 + Ethnicity + (1|vowel) + (1|id.y), data = ethni_formant)
+summary(formant_by_ethnicity)
+
+#the model did not converge
+```
+
 
 
 # Session info
