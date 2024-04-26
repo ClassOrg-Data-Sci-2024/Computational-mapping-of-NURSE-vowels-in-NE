@@ -153,6 +153,8 @@ Investigating Nigerian English has long piqued my interest, and I was able to lo
 
 Bekker, I. (2013). Nursing the cure: a phonetic analysis of/ʊə/in South African English. Stellenbosch Papers in Linguistics Plus, 42.
 
+Collins, B., & Mees, I. M. (1990). The phonetics of Cardiff English. English in Wales: Diversity, Conflict and Change, Nikolas Coupland (ed.), 87-103.
+
 Heselwood, B. (2009). Rhoticity without F3: Lowpass filtering, F1-F2 relations and the perception of rhoticity in NORTH-FORCE, START and NURSE words. Leeds working papers in linguistics and phonetics, 14, 49-64. 
 
 Li, Z., Gut, U., & Schützler, O. (2021). nurse Vowels in Scottish Standard English: Still Distinct or Merged? Journal of English Linguistics, 49(3), 305-330.
@@ -167,21 +169,25 @@ Mesthrie, R., & Chevalier, A. (2014). Sociophonetics and the Indian diaspora: Th
 
 Nearey, T. M. (2012). Vowel inherent spectral change in the vowels of North American English. Vowel inherent spectral change, 49-85.
 
-Watson, K., & Clark, L. (2013). How salient is the nurse~ square merger? 1. English Language & Linguistics, 17(2), 297-323.
-
-Wunder, E. M., Voormann, H., & Gut, U. (2010). The ICE Nigeria corpus project: Creating an open, rich and accurate corpus. icame Journal, 34(1), 78-88.
+Penhallurick, R. (2008). Welsh English: Phonology. Kortmann et al.(eds.), 105-121.
 
 Sims, M., Tucker, B. V., & Nearey, T. M. (2012). Modelling vowel inherent spectral change in spontaneous speech. Canadian Acoustics, 40(3), 36-37.
 
-Williams, D., van Leussen, J. W., & Escudero, P. (2015, August). Beyond North American English: modelling vowel inherent spectral change in British English and Dutch. In ICPhS.
+Walters, R. (1999). A study of the segmental and suprasegmental phonology of Rhondda Valleys English. Ph.D. dissertation, University of Glamorgan. http://resnt1.isd.glam.ac.uk/rhondda_valleys_english/ (9 November 2009)
 
-Mayr R. What exactly is a front rounded vowel? An acoustic and articulatory investigation of the nurse vowel in South Wales English. Journal of the International Phonetic Association. 2010;40(1):93-112. doi:10.1017/S0025100309990272 
-
-Collins, B., & Mees, I. M. (1990). The phonetics of Cardiff English. English in Wales: Diversity, Conflict and Change, Nikolas Coupland (ed.), 87-103.
-
-Penhallurick, R. (2008). Welsh English: Phonology. Kortmann et al.(eds.), 105-121.
+Watson, K., & Clark, L. (2013). How salient is the nurse~ square merger? 1. English Language & Linguistics, 17(2), 297-323.
 
 Wells, John C. 1982. Accents of English. Cambridge: Cambridge University Press.
 
-Walters, Rod. 1999. A study of the segmental and suprasegmental phonology of Rhondda Valleys English. Ph.D. dissertation, University of Glamorgan. http://resnt1.isd.glam.ac.uk/rhondda_valleys_english/ (9 November 2009)
+Williams, D., van Leussen, J. W., & Escudero, P. (2015, August). Beyond North American English: modelling vowel inherent spectral change in British English and Dutch. In ICPhS.
+
+Wunder, E. M., Voormann, H., & Gut, U. (2010). The ICE Nigeria corpus project: Creating an open, rich and accurate corpus. icame Journal, 34(1), 78-88.
+
+
+
+
+
+
+
+
 
